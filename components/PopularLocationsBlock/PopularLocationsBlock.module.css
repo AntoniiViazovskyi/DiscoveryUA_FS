@@ -1,4 +1,40 @@
-#app {
+.popularLocationContainer{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.popularLocationsTitle {
+  font-family: "Montserrat", sans-serif;
+font-weight: 700;
+font-size: 28px;
+line-height: 1.2;
+letter-spacing: -0.01em;
+color: #000;
+margin-bottom: 40px;
+}
+.popularLocationsLink{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Montserrat", sans-serif;
+font-weight: 500;
+font-size: 16px;
+line-height: 1.5;
+color: #fff;
+background-color: #cc6534;
+border: 1px solid #cc6534;
+border-radius: 6px;
+padding: 6px 12px;
+width: 114px;
+height: 48px;
+text-decoration: none;
+}
+.popularLocationsLink:hover,
+.popularLocationsLink:focus{
+
+}
+/* #app {
   height: 100%;
 }
 html,
@@ -23,27 +59,33 @@ body {
 .swiper {
   width: 100%;
   height: 100%;
+} */
+.mySwiper :global(.swiper-slide) {
+  height: 520px;
+  background-color: #eee;
 }
-
-.swiper-slide {
+/* .swiper-slide {
   text-align: center;
   font-size: 18px;
   background: #444;
 
-  /* Center slide text vertically */
+ 
   display: flex;
   justify-content: center;
   align-items: center;
-}
 
-.swiper-slide img {
+} */
+
+/* .swiper-slide img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-.wrapper {
+  
+} */
+.popularLocationWrapper {
   width: 100%;
+ 
 }
 
 .navigation {
@@ -52,12 +94,46 @@ body {
   gap: 8px;
   margin-top: 24px;
 }
-
+.arrowIcon {
+  width: 24px;
+  height: 24px;
+  /* display: block; */
+fill: #4C2613;
+}
 .prevButton,
 .nextButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 48px;
   height: 48px;
-  border: 1px solid #000;
-  background: transparent;
+border: 1px solid rgba(0, 0, 0, 0.15);
+border-radius: 8px;
+background-color: #ffe5d9;
   cursor: pointer;
+  transition: background-color 250ms ease, border-color 250ms ease, transform 150ms ease;
+}
+
+.prevButton:hover,
+.nextButton:hover,
+.prevButton:focus,
+.nextButton:focus{
+  border: 1px solid #ffa57a;
+  background-color: #f2f2f2;
+  transform: scale(1.05);
+
+}
+.prevButton:hover:active,
+.nextButton:hover:active{
+border: 1px solid #ffa57a;
+background-color: #ffa57a;
+transform: scale(1);
+}
+.prevButton:global(.swiper-button-disabled),
+.nextButton:global(.swiper-button-disabled) {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background-color: #f2f2f2;
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
 }

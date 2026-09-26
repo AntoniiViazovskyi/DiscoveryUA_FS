@@ -1,3 +1,6 @@
+import PopularLocationsBlock from "@/components/PopularLocationsBlock/PopularLocationsBlock";
+
+
 export default function HomePage() {
   return (
     <main className="workspace">
@@ -7,6 +10,7 @@ export default function HomePage() {
         The shared structure and dependencies are configured. Replace this page
         when product development begins.
       </p>
+      <PopularLocationsBlock/>
     </main>
   )
 }

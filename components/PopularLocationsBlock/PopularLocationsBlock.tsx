@@ -3,11 +3,12 @@
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
-// Import Swiper styles
 import 'swiper/css';
 
 
 import css from './PopularLocationsBlock.module.css';
+import Link from 'next/link';
+import Image from 'next/image';
 
 
 
@@ -22,16 +23,30 @@ export default function PopularLocationsBlock() {
   { _id: '6', name: 'Золоте Озеро' },
   ];
   return (
-    <div className={css.wrapper}>
+    <section>
+      <div className={css.popularLocationContainer}>
+      <h2 className={css.popularLocationsTitle}>Популярні локації</h2>
+   <Link href='/locations' className={css.popularLocationsLink}>Всі локації</Link>
+   </div>
+
+    <div className={css.popularLocationWrapper}>
       <Swiper
-         slidesPerView={3}
-        spaceBetween={30}
-       loop={true}
-        navigation={{
+         slidesPerView={1}
+        spaceBetween={24}
+       loop={false}
+          breakpoints={{
+    768: {
+      slidesPerView: 2,
+    },
+    1440: {
+      slidesPerView: 3,
+    },
+  }}
+   navigation={{
           nextEl: `.${css.nextButton}`,
           prevEl: `.${css.prevButton}`,
         }}
-         modules={[Navigation]}
+    modules={[Navigation]}
         className={css.mySwiper}
       >
 
@@ -49,7 +64,12 @@ export default function PopularLocationsBlock() {
           className={css.prevButton}
           aria-label="Попередні локації"
         >
-          ←
+        <Image
+        className={css.arrowIcon}
+        src="/arrow_back.svg"
+        alt="Previous slide"
+        width={24}
+  height={24}/>
         </button>
 
         <button
@@ -57,9 +77,15 @@ export default function PopularLocationsBlock() {
          className={css.nextButton}
           aria-label="Наступні локації"
         >
-          →
+          <Image
+          className={css.arrowIcon}
+          src="/arrow_forward.svg"
+          alt="Previous slide"
+          width={24}
+  height={24}/>
         </button>
       </div>
     </div>
+     </section>
   );
 }
