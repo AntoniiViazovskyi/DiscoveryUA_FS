@@ -1,6 +1,7 @@
 'use client'
 
 
+import SwiperSlider from '../SwiperSlider/SwiperSlider';
 // import { Swiper, SwiperSlide } from 'swiper/react';
 // import { Navigation } from 'swiper/modules';
 // import 'swiper/css';
@@ -8,7 +9,7 @@
 
 // import Image from 'next/image';
 
-import Slider from '../Slider/Slider';
+
 import css from './PopularLocationsBlock.module.css';
 import Link from 'next/link';
 
@@ -31,7 +32,7 @@ export default function PopularLocationsBlock() {
    <Link href='/locations' className={css.popularLocationsLink}>Всі локації</Link>
    </div>
 
-  <Slider
+  <SwiperSlider
         items={locations}
         sliderId="popular-locations"
         renderItem={location => (
