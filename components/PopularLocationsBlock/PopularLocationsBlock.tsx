@@ -1,14 +1,16 @@
 'use client'
 
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
-import 'swiper/css';
+// import { Swiper, SwiperSlide } from 'swiper/react';
+// import { Navigation } from 'swiper/modules';
+// import 'swiper/css';
 
 
+// import Image from 'next/image';
+
+import Slider from '../Slider/Slider';
 import css from './PopularLocationsBlock.module.css';
 import Link from 'next/link';
-import Image from 'next/image';
 
 
 
@@ -23,69 +25,84 @@ export default function PopularLocationsBlock() {
   { _id: '6', name: 'Золоте Озеро' },
   ];
   return (
-    <section>
+    <section className={css.popularLocationSection}>
       <div className={css.popularLocationContainer}>
       <h2 className={css.popularLocationsTitle}>Популярні локації</h2>
    <Link href='/locations' className={css.popularLocationsLink}>Всі локації</Link>
    </div>
 
-    <div className={css.popularLocationWrapper}>
-      <Swiper
-         slidesPerView={1}
-        spaceBetween={24}
-       loop={true}
-          breakpoints={{
-    768: {
-      slidesPerView: 2,
-    },
-    1440: {
-      slidesPerView: 3,
-    },
-  }}
-   navigation={{
-          nextEl: `.${css.nextButton}`,
-          prevEl: `.${css.prevButton}`,
-        }}
-    modules={[Navigation]}
-        className={css.mySwiper}
-      >
-
-      {locations.map(location => (
-  <SwiperSlide key={location._id}>
-    {/* <LocationCard location={location} /> */}Hello
-  </SwiperSlide>
-  
-))}   
-      </Swiper>
-
-      <div className={css.navigation}>
-        <button
-          type="button"
-          className={css.prevButton}
-          aria-label="Попередні локації"
-        >
-        <Image
-        className={css.arrowIcon}
-        src="./arrow_back.svg"
-        alt="Previous slide"
-        width={24}
-  height={24}/>
-        </button>
-
-        <button
-          type="button"
-         className={css.nextButton}
-          aria-label="Наступні локації"
-        >
-          <Image
-          className={css.arrowIcon}
-          src="./arrow_forward.svg"
-          alt="Previous slide"
-          width={24}
-  height={24}/>
-        </button>
-      </div>
-    </div>
+  <Slider
+        items={locations}
+        sliderId="popular-locations"
+        renderItem={location => (
+          <div>
+          {/* Здесь потом будет:*/}
+          CARD
+          {/* <LocationCard location={location} /> */}
+          </div>
+        )}
+      />
      </section>
   );
 }
+
+
+
+
+//     <div className={css.popularLocationWrapper}>
+//       <Swiper
+//          slidesPerView={1}
+//         spaceBetween={24}
+//        loop={true}
+//           breakpoints={{
+//     768: {
+//       slidesPerView: 2,
+//     },
+//     1440: {
+//       slidesPerView: 3,
+//     },
+//   }}
+//    navigation={{
+//           nextEl: `.${css.nextButton}`,
+//           prevEl: `.${css.prevButton}`,
+//         }}
+//     modules={[Navigation]}
+//         className={css.mySwiper}
+//       >
+
+//       {locations.map(location => (
+//   <SwiperSlide key={location._id}>
+//     <LocationCard location={location} />Hello
+//   </SwiperSlide>
+  
+// ))}   
+//       </Swiper>
+
+//       <div className={css.navigation}>
+//         <button
+//           type="button"
+//           className={css.prevButton}
+//           aria-label="Попередні локації"
+//         >
+//         <Image
+//         className={css.arrowIcon}
+//         src="./arrow_back.svg"
+//         alt="Previous slide"
+//         width={24}
+//   height={24}/>
+//         </button>
+
+//         <button
+//           type="button"
+//          className={css.nextButton}
+//           aria-label="Наступні локації"
+//         >
+//           <Image
+//           className={css.arrowIcon}
+//           src="./arrow_forward.svg"
+//           alt="Previous slide"
+//           width={24}
+//   height={24}/>
+//         </button>
+//       </div>
+//     </div>
