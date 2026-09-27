@@ -33,7 +33,7 @@ export default function PopularLocationsBlock() {
       <Swiper
          slidesPerView={1}
         spaceBetween={24}
-       loop={false}
+       loop={true}
           breakpoints={{
     768: {
       slidesPerView: 2,
@@ -66,7 +66,7 @@ export default function PopularLocationsBlock() {
         >
         <Image
         className={css.arrowIcon}
-        src="/arrow_back.svg"
+        src="./arrow_back.svg"
         alt="Previous slide"
         width={24}
   height={24}/>
@@ -79,7 +79,7 @@ export default function PopularLocationsBlock() {
         >
           <Image
           className={css.arrowIcon}
-          src="/arrow_forward.svg"
+          src="./arrow_forward.svg"
           alt="Previous slide"
           width={24}
   height={24}/>
