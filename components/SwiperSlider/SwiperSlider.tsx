@@ -12,12 +12,14 @@ import css from './SwiperSlider.module.css';
 type SliderProps<T> = {
   items: T[];
   sliderId: string;
+  getKey: (item: T) => string;
   renderItem: (item: T) => React.ReactNode;
 };
 
 export default function SwiperSlider<T>({
   items,
   sliderId,
+  getKey,
   renderItem,
 }: SliderProps<T>) {
   const prevButton = `${sliderId}-prev`;
@@ -44,8 +46,8 @@ export default function SwiperSlider<T>({
         modules={[Navigation]}
         className={css.swiper}
       >
-        {items.map((item, index) => (
-          <SwiperSlide key={index}>
+        {items.map(item => (
+          <SwiperSlide key={getKey(item)}>
             {renderItem(item)}
           </SwiperSlide>
         ))}
@@ -84,13 +86,14 @@ export default function SwiperSlider<T>({
   );
 }
 
-// Карточки кртятся по кругу сейчас  loop={true}
+// Карточки крутятся по кругу сейчас  loop={true}
 
 // В СВОЙ КОМПОНЕНТ import SwiperSlider from '../SwiperSlider/SwiperSlider';
 
 //   <SwiperSlider
 //         items={locations}
 //         sliderId="popular-locations" <-- ДЛЯ СЕКЦИИ СВОЁ НАЗВАНИЕ 
+//          getKey={location => location._id}
 //         renderItem={location => (
 //           <div>
 //           {/* Здесь потом будет:*/}

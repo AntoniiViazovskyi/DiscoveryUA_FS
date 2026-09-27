@@ -35,6 +35,7 @@ export default function PopularLocationsBlock() {
   <SwiperSlider
         items={locations}
         sliderId="popular-locations"
+         getKey={location => location._id}
         renderItem={location => (
           <div>
           {/* Здесь потом будет:*/}
