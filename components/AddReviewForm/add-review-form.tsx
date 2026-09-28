@@ -106,6 +106,29 @@ export function AddReviewForm({ onCancel, onSubmit }: AddReviewFormProps) {
         values,
       }) => (
         <Form className={styles.form} noValidate>
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor={descriptionId}>
+              Ваш відгук
+            </label>
+            <Field
+              as="textarea"
+              className={styles.textarea}
+              id={descriptionId}
+              name="description"
+              placeholder="Напишіть ваш відгук"
+              rows={6}
+              aria-describedby={descriptionErrorId}
+              aria-invalid={Boolean(touched.description && errors.description)}
+            />
+            <p
+              className={styles.error}
+              id={descriptionErrorId}
+              aria-live="polite"
+            >
+              {touched.description ? errors.description : ''}
+            </p>
+          </div>
+
           <fieldset
             className={styles.ratingGroup}
             aria-describedby={ratingErrorId}
@@ -125,28 +148,6 @@ export function AddReviewForm({ onCancel, onSubmit }: AddReviewFormProps) {
               {touched.rate ? errors.rate : ''}
             </p>
           </fieldset>
-
-          <div className={styles.field}>
-            <label className={styles.label} htmlFor={descriptionId}>
-              Ваш відгук
-            </label>
-            <Field
-              as="textarea"
-              className={styles.textarea}
-              id={descriptionId}
-              name="description"
-              rows={6}
-              aria-describedby={descriptionErrorId}
-              aria-invalid={Boolean(touched.description && errors.description)}
-            />
-            <p
-              className={styles.error}
-              id={descriptionErrorId}
-              aria-live="polite"
-            >
-              {touched.description ? errors.description : ''}
-            </p>
-          </div>
 
           <div className={styles.actions}>
             <button
