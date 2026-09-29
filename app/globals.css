@@ -1,64 +1,147 @@
 :root {
-  color-scheme: light dark;
-  font-family: Arial, Helvetica, sans-serif;
-  background: #f5f7fb;
-  color: #172033;
+  /* Colors */
+  --color-page-background: #d8d6d3;
+  --color-surface: #fff2ec;
+  --color-surface-accent: #ffe5d9;
+  --color-text-primary: #4c2613;
+  --color-text-secondary: #4c4c4c;
+  --color-accent: #cc6534;
+  --color-white: #ffffff;
+  --color-border: rgb(0 0 0 / 15%);
+  --color-overlay: rgb(0 0 0 / 60%);
+  --color-muted-background: rgb(0 0 0 / 5%);
+
+  --color-background: var(--color-page-background);
+  --color-text: var(--color-text-primary);
+
+  /* Typography */
+  --font-family-primary: var(--font-montserrat), sans-serif;
+  --font-size-small: 16px;
+  --font-size-regular: 18px;
+  --font-size-medium: 20px;
+  --font-size-heading-1: 56px;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --line-height-text: 1.5;
+  --line-height-heading: 1.1;
+
+  /* Border radius */
+  --radius-small: 6px;
+  --radius-medium: 12px;
+  --radius-large: 16px;
+  --radius-round: 999px;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 40px;
+  --space-8: 48px;
+  --space-9: 64px;
+  --space-10: 72px;
+  --space-11: 80px;
+
+  /* Layout */
+  --container-max-width: 1440px;
+  --container-padding: 20px;
+  --section-padding-small: 48px;
+  --section-padding-medium: 80px;
+  --section-padding-large: 72px;
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-html,
-body {
-  margin: 0;
+html {
   min-height: 100%;
 }
 
-body {
-  background: inherit;
-  color: inherit;
-}
-
-.workspace {
-  width: min(720px, calc(100% - 32px));
-  margin: 15vh auto;
-  padding: 40px;
-  border: 1px solid #dfe4ee;
-  border-radius: 20px;
-  background: #ffffff;
-  box-shadow: 0 16px 48px rgb(23 32 51 / 8%);
-}
-
-.workspace h1 {
-  margin: 8px 0 16px;
-}
-
-.workspace p {
-  line-height: 1.6;
-}
-
-.eyebrow {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol {
   margin: 0;
-  color: #526078;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
 }
 
-@media (prefers-color-scheme: dark) {
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+img,
+svg {
+  display: block;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-text);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  fill: currentColor;
+}
+
+@media (min-width: 768px) {
   :root {
-    background: #101521;
-    color: #f2f5fa;
+    --container-padding: 32px;
   }
+}
 
-  .workspace {
-    border-color: #2e3749;
-    background: #171e2c;
-  }
-
-  .eyebrow {
-    color: #a9b4c8;
+@media (min-width: 1440px) {
+  :root {
+    --container-padding: 64px;
   }
 }
