@@ -7,21 +7,15 @@
 }
 
 .swiper :global(.swiper-slide) {
-  height: 100%; 
-  background-color: #eee;
+  /* height: 100%;  */
+  /* background-color: #eee; */
 }
 
 .navigation {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
-  margin-top: 24px;
-}
-
-.arrowIcon {
-  width: 24px;
-  height: 24px;
-  fill: #4c2613;
+  gap: 10px;
+  /* margin-top: 40px; */
 }
 
 .prevButton,
@@ -31,6 +25,7 @@
   align-items: center;
   width: 48px;
   height: 48px;
+  padding: 0;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 8px;
   background-color: #ffe5d9;
@@ -64,4 +59,9 @@
   opacity: 0.4;
   cursor: not-allowed;
   pointer-events: none;
+}
+.arrowIcon {
+  width: 24px;
+  height: 24px;
+  fill: #4c2613;
 }
