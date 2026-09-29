@@ -1,0 +1,134 @@
+.footer {
+  background: var(--color-scheme-2-foreground);
+  padding: 48px 20px;
+  width: 100%;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 100%;
+  letter-spacing: -0.01em;
+  color: var(--color-scheme-2-text);
+  text-decoration: none;
+  cursor: pointer;
+  margin-bottom: 40px;
+  transition: opacity 0.2s ease;
+}
+
+.logo:hover {
+  opacity: 0.8;
+}
+
+.logoIcon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.socials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-scheme-2-text);
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.socialLink:hover {
+  transform: translateY(-2px);
+  color: #8b5e34;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.navLink {
+  font-family: var(--font-family, inherit);
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--color-scheme-2-text, #1c1c1c);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.navLink:hover {
+  color: #8b5e34;
+}
+
+.copyright {
+  width: 100%;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding-top: 24px;
+  font-family: var(--font-family, inherit);
+  font-size: 12px;
+  line-height: 1.4;
+  color: rgba(28, 28, 28, 0.6);
+}
+
+@media (min-width: 768px) {
+  .nav {
+    flex-direction: row;
+    gap: 32px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .footer {
+    padding: 60px 80px 32px;
+  }
+
+  .container {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+  }
+
+  .logo {
+    margin-bottom: 0;
+  }
+
+  .socials {
+    margin-bottom: 0;
+  }
+
+  .nav {
+    margin-bottom: 0;
+    justify-self: end;
+  }
+
+  .copyright {
+    grid-column: 1 / -1;
+    margin-top: 40px;
+  }
+}
