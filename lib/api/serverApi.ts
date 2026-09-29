@@ -3,7 +3,7 @@ import { LocationsHttpResponse } from '@/types/location';
 import { http } from './http';
 
 
-export async function fetchLocations(
+export async function fetchAllLocations(
   page: number = 1,
   limit: number = 10,
   region?: string,
