@@ -16,6 +16,7 @@
     "cookie": "^2.0.1",
     "formik": "^2.4.9",
     "next": "16.2.10",
+    "raty-js": "^4.3.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-loader-spinner": "^8.0.2",

@@ -91,7 +91,7 @@ export default function SwiperSlider<T>({
 // В СВОЙ КОМПОНЕНТ import SwiperSlider from '../SwiperSlider/SwiperSlider';
 
 //   <SwiperSlider
-//         items={locations}
+//         items={locations} 
 //         sliderId="popular-locations" <-- ДЛЯ СЕКЦИИ СВОЁ НАЗВАНИЕ 
 //          getKey={location => location._id}
 //         renderItem={location => (

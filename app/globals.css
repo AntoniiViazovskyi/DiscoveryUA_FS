@@ -97,7 +97,7 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  background-color: var(--color-background);
+  background-color: var(--color-surface);
   color: var(--color-text);
   font-family: var(--font-family-primary);
   font-weight: var(--font-weight-regular);
@@ -120,8 +120,10 @@ button:disabled {
 }
 
 .container {
+  max-width: 320px;
+  min-width: 375px;
   width: 100%;
-  max-width: var(--container-max-width);
+  /* max-width: var(--container-max-width); */
   margin-inline: auto;
   padding-inline: var(--container-padding);
 }
@@ -136,12 +138,19 @@ button:disabled {
 
 @media (min-width: 768px) {
   :root {
+    
     --container-padding: 32px;
+  }
+  .container{
+    max-width: 768px;
   }
 }
 
 @media (min-width: 1440px) {
   :root {
     --container-padding: 64px;
+  }
+   .container{
+    max-width: 1440px;
   }
 }
