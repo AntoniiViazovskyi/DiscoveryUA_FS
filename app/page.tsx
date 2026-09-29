@@ -3,7 +3,7 @@ import PopularLocationsBlock from "@/components/PopularLocationsBlock/PopularLoc
 
 export default function HomePage() {
   return (
-    <main className="workspace">
+    <main className="workspace container">
       <p className="eyebrow">Final Team Project</p>
       <h1>Frontend workspace is ready.</h1>
       <p>
