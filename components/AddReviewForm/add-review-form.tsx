@@ -2,6 +2,7 @@
 
 import { useId, useState } from 'react'
 import { Field, Form, Formik } from 'formik'
+import { Oval } from 'react-loader-spinner'
 
 import styles from './add-review-form.module.css'
 import {
@@ -37,7 +38,10 @@ function RatingField({
   const activeRate = disabled ? value : (previewRate ?? value)
 
   return (
-    <div className={styles.ratingOptions} onMouseLeave={() => setPreviewRate(null)}>
+    <div
+      className={styles.ratingOptions}
+      onMouseLeave={() => setPreviewRate(null)}
+    >
       {RATING_VALUES.map((rate) => {
         return (
           <label
@@ -67,7 +71,12 @@ function RatingField({
               onChange={() => onChange(rate)}
               onFocus={() => setPreviewRate(rate)}
             />
-            <svg className={styles.star} width="32" height="32" aria-hidden="true">
+            <svg
+              className={styles.star}
+              width="32"
+              height="32"
+              aria-hidden="true"
+            >
               <use
                 href={`/icons/sprite.svg#${rate <= activeRate ? 'icon-star-filled' : 'icon-star-rate'}`}
               />
@@ -89,12 +98,18 @@ export function AddReviewForm({ onCancel, onSubmit }: AddReviewFormProps) {
     <Formik<AddReviewFormValues>
       initialValues={{ rate: 0, description: '' }}
       validationSchema={addReviewSchema}
-      onSubmit={async (values, { resetForm }) => {
-        await onSubmit({
-          ...values,
-          description: values.description.trim(),
-        })
-        resetForm()
+      onSubmit={async (values, { resetForm, setStatus }) => {
+        setStatus(undefined)
+        try {
+          await onSubmit({ ...values, description: values.description.trim() })
+          resetForm()
+        } catch (error) {
+          setStatus(
+            error instanceof Error
+              ? error.message
+              : 'Не вдалося надіслати відгук. Спробуйте ще раз.',
+          )
+        }
       }}
     >
       {({
@@ -102,10 +117,11 @@ export function AddReviewForm({ onCancel, onSubmit }: AddReviewFormProps) {
         isSubmitting,
         setFieldTouched,
         setFieldValue,
+        status,
         touched,
         values,
       }) => (
-        <Form className={styles.form} noValidate>
+        <Form className={styles.form} noValidate aria-busy={isSubmitting}>
           <div className={styles.field}>
             <label className={styles.label} htmlFor={descriptionId}>
               Ваш відгук
@@ -117,6 +133,7 @@ export function AddReviewForm({ onCancel, onSubmit }: AddReviewFormProps) {
               name="description"
               placeholder="Напишіть ваш відгук"
               rows={6}
+              disabled={isSubmitting}
               aria-describedby={descriptionErrorId}
               aria-invalid={Boolean(touched.description && errors.description)}
             />
@@ -162,9 +179,26 @@ export function AddReviewForm({ onCancel, onSubmit }: AddReviewFormProps) {
               type="submit"
               disabled={isSubmitting}
             >
+              {isSubmitting && (
+                <span className={styles.loader}>
+                  <Oval
+                    width={18}
+                    height={18}
+                    color="currentColor"
+                    secondaryColor="currentColor"
+                    strokeWidth={5}
+                    ariaLabel="Надсилання відгуку"
+                  />
+                </span>
+              )}
               Надіслати
             </button>
           </div>
+          {typeof status === 'string' && (
+            <p className={styles.error} role="alert">
+              {status}
+            </p>
+          )}
         </Form>
       )}
     </Formik>

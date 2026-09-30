@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 
 import Modal from '@/components/Modal/Modal'
 import { AddReviewForm } from '@/components/AddReviewForm/add-review-form'
@@ -15,9 +15,18 @@ type AddReviewModalProps = {
 
 export function AddReviewModal({ onClose, onSubmit }: AddReviewModalProps) {
   const titleRef = useRef<HTMLHeadingElement>(null)
+  const titleId = useId()
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!mounted) return
     const previousFocus = document.activeElement
+    const dialog = titleRef.current?.closest('[role="dialog"]')
+    dialog?.setAttribute('aria-labelledby', titleId)
     titleRef.current?.focus()
 
     return () => {
@@ -25,11 +34,13 @@ export function AddReviewModal({ onClose, onSubmit }: AddReviewModalProps) {
         previousFocus.focus()
       }
     }
-  }, [])
+  }, [mounted, titleId])
+
+  if (!mounted) return null
 
   return (
     <Modal onClose={onClose}>
-      <h2 className={styles.title} ref={titleRef} tabIndex={-1}>
+      <h2 className={styles.title} id={titleId} ref={titleRef} tabIndex={-1}>
         Залишити відгук
       </h2>
       <AddReviewForm onCancel={onClose} onSubmit={onSubmit} />
