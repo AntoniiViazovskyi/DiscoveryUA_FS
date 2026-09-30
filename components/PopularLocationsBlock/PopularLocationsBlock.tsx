@@ -28,12 +28,14 @@ export default function PopularLocationsBlock() {
         items={locations}
         sliderId="popular-locations"
          getKey={location => location._id}
+         navigationMarginTop={40}
         renderItem={location => (
           <div>
           {/* Здесь потом будет:*/}
           CARD
           {/* <LocationCard location={location} /> */}
           </div>
+          
         )}
       />
      </section>
