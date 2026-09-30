@@ -2,12 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { api } from '../api';
 
 import { isAxiosError } from 'axios';
+import { cookies } from 'next/headers';
 
 
 export async function GET(request: NextRequest) {
 
     const searchParams = request.nextUrl.searchParams;
-
+  const cookieStore = await cookies();
   const page = Number(searchParams.get('page') ?? 1);
   const limit = Number(searchParams.get('limit') ?? 10);
   const region = searchParams.get('region') ?? '';
@@ -29,6 +30,9 @@ export async function GET(request: NextRequest) {
         ...(rate && { rate }),
         sortBy,
         sortOrder,
+      },
+         headers: {
+        Cookie: cookieStore.toString(),
       },
     });
 
