@@ -1,7 +1,6 @@
 'use client'
 
 
-import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
@@ -13,6 +12,7 @@ type SliderProps<T> = {
   items: T[];
   sliderId: string;
   getKey: (item: T) => string;
+  navigationMarginTop?: number;
   renderItem: (item: T) => React.ReactNode;
 };
 
@@ -20,6 +20,7 @@ export default function SwiperSlider<T>({
   items,
   sliderId,
   getKey,
+  navigationMarginTop = 50,
   renderItem,
 }: SliderProps<T>) {
   const prevButton = `${sliderId}-prev`;
@@ -34,9 +35,11 @@ export default function SwiperSlider<T>({
         breakpoints={{
           768: {
             slidesPerView: 2,
+            spaceBetween: 24,
           },
           1440: {
             slidesPerView: 3,
+            spaceBetween: 24,
           },
         }}
         navigation={{
@@ -53,19 +56,17 @@ export default function SwiperSlider<T>({
         ))}
       </Swiper>
 
-      <div className={css.navigation}>
+      <div className={css.navigation}
+      style={{ marginTop: `${navigationMarginTop}px` }}>
         <button
           type="button"
           className={`${css.prevButton} ${prevButton}`}
           aria-label="Попередній слайд"
         >
-          <Image
-            className={css.arrowIcon}
-            src="./arrow_back.svg"
-            alt="Previous slide"
-            width={24}
-            height={24}
-          />
+            <svg className={css.arrowIcon} width={24} height={24} aria-hidden="true">
+              <use href="/icons/sprite.svg#icon-arrow-back" />
+            </svg>
+          
         </button>
 
         <button
@@ -73,13 +74,9 @@ export default function SwiperSlider<T>({
           className={`${css.nextButton} ${nextButton}`}
           aria-label="Наступний слайд"
         >
-          <Image
-            className={css.arrowIcon}
-            src="./arrow_forward.svg"
-            alt="Next slide"
-            width={24}
-            height={24}
-          />
+   <svg className={css.arrowIcon} aria-hidden="true">
+              <use href="/icons/sprite.svg#icon-arrow-forward" />
+            </svg>
         </button>
       </div>
     </div>
@@ -91,14 +88,16 @@ export default function SwiperSlider<T>({
 // В СВОЙ КОМПОНЕНТ import SwiperSlider from '../SwiperSlider/SwiperSlider';
 
 //   <SwiperSlider
-//         items={locations}
+//         items={locations} 
 //         sliderId="popular-locations" <-- ДЛЯ СЕКЦИИ СВОЁ НАЗВАНИЕ 
 //          getKey={location => location._id}
+//  navigationMarginTop={50}  НЕ ОБОВЬЯЗКОВО. ЗА ЗАМОВЧУВАННЯМ 50PX ВІДСТАНЬ ВІД КНОПОК ДО КАРТОК
 //         renderItem={location => (
 //           <div>
 //           {/* Здесь потом будет:*/}
 //           CARD
 //           {/* <LocationCard location={location} /> */}
 //           </div>
+// 
 //         )}
 //       />

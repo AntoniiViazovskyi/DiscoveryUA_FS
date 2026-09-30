@@ -1,0 +1,62 @@
+"use client";
+import { Form, Formik, Field, FormikHelpers, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import css from "./SearchForm.module.css";
+import { useRouter } from "next/navigation";
+
+interface SearchFormValues {
+  search: string;
+}
+
+const initialValues: SearchFormValues = {
+  search: "",
+};
+
+const searchFormSchema = Yup.object().shape({
+  search: Yup.string()
+    .required("Введіть запит")
+    .min(3, "Введіть щонайменше 3 літери для пошуку"),
+});
+
+export default function SearchForm() {
+  const router = useRouter();
+  const handleSubmit = (
+    values: SearchFormValues,
+    actions: FormikHelpers<SearchFormValues>,
+  ) => {
+    console.log("Пошуковий запит:", values.search);
+    router.push(`/locations?query=${encodeURIComponent(values.search.trim())}`);
+    actions.resetForm({ values: initialValues });
+  };
+  return (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={searchFormSchema}
+      onSubmit={handleSubmit}
+      validateOnChange={false}
+      validateOnBlur={false}
+    >
+      {({ errors, touched }) => (
+      <Form className={css.searchForm} noValidate>
+        <div className={css.formGroup}>
+          <Field
+            type="text"
+            name="search"
+            placeholder="Введіть назву, тип або регіон..."
+            aria-label="Пошук локації або регіону"
+            id="searchQuery"
+            className={css.searchInput}         
+        
+            aria-invalid={errors.search && touched.search ? "true" : "false"}
+          />
+          <ErrorMessage name="search" component="span" className={css.error} />
+        </div>
+        
+        <button type="submit" className={css.searchBtn}>
+          Знайти місце
+        </button>
+      </Form>
+    )}
+    </Formik>
+  );
+}

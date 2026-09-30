@@ -7,21 +7,14 @@
 }
 
 .swiper :global(.swiper-slide) {
-  height: 100%; 
-  background-color: #eee;
+  /* height: 100%;  */
+  /* background-color: #eee; */
 }
 
 .navigation {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
-  margin-top: 24px;
-}
-
-.arrowIcon {
-  width: 24px;
-  height: 24px;
-  fill: #4c2613;
+  gap: 10px;
 }
 
 .prevButton,
@@ -31,27 +24,35 @@
   align-items: center;
   width: 48px;
   height: 48px;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  padding: 0;
+  border: 1px solid var(--color-border);
   border-radius: 8px;
-  background-color: #ffe5d9;
+  background-color: var(--color-surface-accent);
   cursor: pointer;
   transition:
-    background-color 250ms ease,
-    border-color 250ms ease,
-    transform 150ms ease;
+    background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
 }
 
 .prevButton:hover,
-.nextButton:hover,
+.nextButton:hover{
+  border: 1px solid #ffa57a;
+  background-color: #f2f2f2;
+  transform: scale(1.05);
+
+}
+
 .prevButton:focus,
 .nextButton:focus {
   border: 1px solid #ffa57a;
   background-color: #f2f2f2;
-  transform: scale(1.05);
+
 }
 
-.prevButton:hover:active,
-.nextButton:hover:active {
+.prevButton:active,
+.nextButton:active {
   border: 1px solid #ffa57a;
   background-color: #ffa57a;
   transform: scale(1);
@@ -59,9 +60,14 @@
 
 .prevButton:global(.swiper-button-disabled),
 .nextButton:global(.swiper-button-disabled) {
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--color-border);
   background-color: #f2f2f2;
   opacity: 0.4;
   cursor: not-allowed;
   pointer-events: none;
+}
+.arrowIcon {
+  width: 24px;
+  height: 24px;
+  color: var( --color-text-primary);
 }

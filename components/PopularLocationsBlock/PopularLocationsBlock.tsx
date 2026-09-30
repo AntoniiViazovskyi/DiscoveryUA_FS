@@ -2,18 +2,10 @@
 
 
 import SwiperSlider from '../SwiperSlider/SwiperSlider';
-// import { Swiper, SwiperSlide } from 'swiper/react';
-// import { Navigation } from 'swiper/modules';
-// import 'swiper/css';
-
-
-// import Image from 'next/image';
-
 
 import css from './PopularLocationsBlock.module.css';
 import Link from 'next/link';
-
-
+// import LocationCard from '../LocationCard/LocationCard';
 
 export default function PopularLocationsBlock() {
 
@@ -26,7 +18,7 @@ export default function PopularLocationsBlock() {
   { _id: '6', name: 'Золоте Озеро' },
   ];
   return (
-    <section className={css.popularLocationSection}>
+    <section className={`${css.popularLocationSection} ${css.container}`}>
       <div className={css.popularLocationContainer}>
       <h2 className={css.popularLocationsTitle}>Популярні локації</h2>
    <Link href='/locations' className={css.popularLocationsLink}>Всі локації</Link>
@@ -36,12 +28,14 @@ export default function PopularLocationsBlock() {
         items={locations}
         sliderId="popular-locations"
          getKey={location => location._id}
+         navigationMarginTop={40}
         renderItem={location => (
           <div>
           {/* Здесь потом будет:*/}
           CARD
           {/* <LocationCard location={location} /> */}
           </div>
+          
         )}
       />
      </section>
