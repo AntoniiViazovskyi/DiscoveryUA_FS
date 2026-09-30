@@ -1,0 +1,66 @@
+.wrapper {
+  width: 100%;
+}
+
+.swiper {
+  width: 100%;
+}
+
+.swiper :global(.swiper-slide) {
+  /* height: 100%;  */
+  /* background-color: #eee; */
+}
+
+.navigation {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.prevButton,
+.nextButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-surface-accent);
+  cursor: pointer;
+  transition:
+    background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.prevButton:hover,
+.nextButton:hover,
+.prevButton:focus,
+.nextButton:focus {
+  border: 1px solid #ffa57a;
+  background-color: #f2f2f2;
+  transform: scale(1.05);
+}
+
+.prevButton:hover:active,
+.nextButton:hover:active {
+  border: 1px solid #ffa57a;
+  background-color: #ffa57a;
+  transform: scale(1);
+}
+
+.prevButton:global(.swiper-button-disabled),
+.nextButton:global(.swiper-button-disabled) {
+  border: 1px solid var(--color-border);
+  background-color: #f2f2f2;
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.arrowIcon {
+  width: 24px;
+  height: 24px;
+  color: var( --color-text-primary);
+}
