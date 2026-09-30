@@ -34,16 +34,11 @@ function RatingField({
   onChange,
 }: RatingFieldProps) {
   const [previewRate, setPreviewRate] = useState<number | null>(null)
-  const activeRate = previewRate ?? value
+  const activeRate = disabled ? value : (previewRate ?? value)
 
   return (
     <div className={styles.ratingOptions} onMouseLeave={() => setPreviewRate(null)}>
       {RATING_VALUES.map((rate) => {
-        const starClassName =
-          rate <= activeRate
-            ? `${styles.star} ${styles.starSelected}`
-            : styles.star
-
         return (
           <label
             className={`${styles.ratingOption} ${
@@ -51,7 +46,9 @@ function RatingField({
             }`}
             htmlFor={`${groupId}-${rate}`}
             key={rate}
-            onMouseEnter={() => setPreviewRate(rate)}
+            onMouseEnter={() => {
+              if (!disabled) setPreviewRate(rate)
+            }}
           >
             <input
               className={styles.ratingInput}
@@ -70,9 +67,11 @@ function RatingField({
               onChange={() => onChange(rate)}
               onFocus={() => setPreviewRate(rate)}
             />
-            <span className={starClassName} aria-hidden="true">
-              ★
-            </span>
+            <svg className={styles.star} width="32" height="32" aria-hidden="true">
+              <use
+                href={`/icons/sprite.svg#${rate <= activeRate ? 'icon-star-filled' : 'icon-star-rate'}`}
+              />
+            </svg>
           </label>
         )
       })}
@@ -90,11 +89,12 @@ export function AddReviewForm({ onCancel, onSubmit }: AddReviewFormProps) {
     <Formik<AddReviewFormValues>
       initialValues={{ rate: 0, description: '' }}
       validationSchema={addReviewSchema}
-      onSubmit={async (values) => {
+      onSubmit={async (values, { resetForm }) => {
         await onSubmit({
           ...values,
           description: values.description.trim(),
         })
+        resetForm()
       }}
     >
       {({
