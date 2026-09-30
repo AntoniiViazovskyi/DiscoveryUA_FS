@@ -37,7 +37,7 @@ export default function Modal({ onClose, children }: ModalProps) {
         <button
           className={css.closeButton}
           onClick={onClose}
-          aria-label="Close modal"
+          aria-label="Закрити модальне вікно"
         >
           <svg className={css.icon} width="24" height="24">
             <use href="/icons/sprite.svg#icon-close"></use>
