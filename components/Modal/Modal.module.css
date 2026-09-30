@@ -1,0 +1,68 @@
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.25);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal {
+  position: relative;
+  min-width: 334px;
+  min-height: 595px;
+  border-radius: 24px;
+  background-color: #fff2ec;
+  padding: 64px 20px;
+}
+.closeButton {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  border: none;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition:
+    border 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.icon {
+  fill: #fff;
+  stroke: black;
+}
+.closeButton:hover {
+  border: 1px solid #000;
+}
+.closeButton:active {
+  border: 1px solid #000;
+  background-color: #d8d8d8;
+}
+.closeButton:disabled {
+  opacity: 0.3;
+}
+
+@media screen and (min-width: 768px) {
+  .modal {
+    min-width: 704px;
+    min-height: 530px;
+    padding: 64px 32px;
+  }
+}
+@media screen and (min-width: 1440px) {
+  .modal {
+    padding: 64px;
+    width: 768px;
+    min-height: 553px;
+  }
+}
