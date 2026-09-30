@@ -5,6 +5,8 @@
   font-size: 26px;
   font-weight: var(--font-weight-bold);
   line-height: 1.2;
+  text-align: center;
+  overflow-wrap: anywhere;
 }
 
 .title:focus-visible {
