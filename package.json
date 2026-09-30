@@ -19,6 +19,7 @@
     "raty-js": "^4.3.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "react-hot-toast": "^2.6.1",
     "react-loader-spinner": "^8.0.2",
     "react-paginate": "^8.3.0",
     "swiper": "^14.2.0",
