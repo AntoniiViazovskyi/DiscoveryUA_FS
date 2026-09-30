@@ -1,6 +1,7 @@
 import { LocationsHttpResponse } from '@/types/location';
 
 import { http } from './http';
+import { cookies } from 'next/headers';
 
 
 export async function fetchAllLocations(
@@ -13,6 +14,7 @@ export async function fetchAllLocations(
   sortBy: 'rate' | 'name' = 'rate',
   sortOrder: 'asc' | 'desc' = 'desc',
 ): Promise<LocationsHttpResponse> {
+   const cookieStore = await cookies();
   const response = await http.get<LocationsHttpResponse>('/locations', {
     params: {
       page,
@@ -23,6 +25,9 @@ export async function fetchAllLocations(
       rate,
       sortBy,
       sortOrder,
+    },
+     headers: {
+      Cookie: cookieStore.toString(),
     },
   });
 
