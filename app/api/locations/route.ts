@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const res = await api('/locations', {
-      params: 
+      params: {
         page,
         limit,
         ...(region && { region }),
@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
         sortBy,
         sortOrder,
       },
-    );
+    });
 
     return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
