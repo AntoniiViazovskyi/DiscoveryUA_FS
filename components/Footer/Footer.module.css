@@ -64,6 +64,12 @@
   color: #8b5e34;
 }
 
+.socialIcon {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
 .nav {
   display: flex;
   flex-direction: column;
