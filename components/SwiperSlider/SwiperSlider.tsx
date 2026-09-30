@@ -88,7 +88,7 @@ export default function SwiperSlider<T>({
 // В СВОЙ КОМПОНЕНТ import SwiperSlider from '../SwiperSlider/SwiperSlider';
 
 //   <SwiperSlider
-//         items={locations}
+//         items={locations} 
 //         sliderId="popular-locations" <-- ДЛЯ СЕКЦИИ СВОЁ НАЗВАНИЕ 
 //          getKey={location => location._id}
 //  navigationMarginTop={50}  НЕ ОБОВЬЯЗКОВО. ЗА ЗАМОВЧУВАННЯМ 50PX ВІДСТАНЬ ВІД КНОПОК ДО КАРТОК

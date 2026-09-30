@@ -1,5 +1,5 @@
 import PopularLocationsBlock from "@/components/PopularLocationsBlock/PopularLocationsBlock";
-
+import HeroBlock from "@/components/HeroBlock/HeroBlock";
 
 export default function HomePage() {
   return (
@@ -10,6 +10,7 @@ export default function HomePage() {
         The shared structure and dependencies are configured. Replace this page
         when product development begins.
       </p>
+      <HeroBlock/>
       <PopularLocationsBlock/>
     </main>
   )
