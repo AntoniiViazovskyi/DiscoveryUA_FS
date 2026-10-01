@@ -1,5 +1,6 @@
 import { isAxiosError } from 'axios'
 
+import { LocationsHttpResponse } from '@/types/location'
 import { http } from './http'
 
 export type RegisterRequest = {
@@ -35,6 +36,32 @@ function getRequestError(error: unknown): Error {
   return error instanceof Error
     ? error
     : new Error('Не вдалося зареєструватися. Спробуйте ще раз.')
+}
+
+export async function fetchAllLocations(
+  page: number = 1,
+  limit: number = 10,
+  region?: string,
+  type?: string,
+  search?: string,
+  rate?: number,
+  sortBy: 'rate' | 'name' = 'rate',
+  sortOrder: 'asc' | 'desc' = 'desc',
+): Promise<LocationsHttpResponse> {
+  const response = await http.get<LocationsHttpResponse>('/locations', {
+    params: {
+      page,
+      limit,
+      region,
+      type,
+      search,
+      rate,
+      sortBy,
+      sortOrder,
+    },
+  })
+
+  return response.data
 }
 
 export async function register(data: RegisterRequest): Promise<void> {
