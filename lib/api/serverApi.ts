@@ -1,8 +1,9 @@
-import { LocationsHttpResponse } from '@/types/location';
+import 'server-only'
 
-import { http } from './http';
-import { cookies } from 'next/headers';
+import { cookies } from 'next/headers'
 
+import { api } from '@/app/api/api'
+import type { LocationsHttpResponse } from '@/types/location'
 
 export async function fetchAllLocations(
   page: number = 1,
@@ -14,8 +15,8 @@ export async function fetchAllLocations(
   sortBy: 'rate' | 'name' = 'rate',
   sortOrder: 'asc' | 'desc' = 'desc',
 ): Promise<LocationsHttpResponse> {
-   const cookieStore = await cookies();
-  const response = await http.get<LocationsHttpResponse>('/locations', {
+  const cookieStore = await cookies()
+  const response = await api.get<LocationsHttpResponse>('/locations', {
     params: {
       page,
       limit,
@@ -26,10 +27,10 @@ export async function fetchAllLocations(
       sortBy,
       sortOrder,
     },
-     headers: {
+    headers: {
       Cookie: cookieStore.toString(),
     },
-  });
+  })
 
-  return response.data;
+  return response.data
 }

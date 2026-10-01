@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
           response: error.response?.data,
         },
         {
-          status: error.response?.status ?? 500,
+          status: error.response?.status ?? 502,
         },
       )
     }
