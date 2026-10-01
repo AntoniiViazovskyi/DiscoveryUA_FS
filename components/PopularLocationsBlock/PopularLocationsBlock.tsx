@@ -14,7 +14,7 @@ const { data, isLoading, isError } = useQuery({
   queryKey: ['popular-locations'],
   queryFn: () =>
     fetchAllLocations(
-            1,
+      1,
       6,
       undefined,
       undefined,
@@ -24,7 +24,7 @@ const { data, isLoading, isError } = useQuery({
       'desc',
     ),
 });
-const locations = data?.data ?? [];
+const locations = data?.locations ?? [];
 //       const locations = [
 //     { _id: '1', name: 'Поліська Пуща' },
 //     { _id: '2', name: 'Древлянські Світанки' },
@@ -48,13 +48,13 @@ const locations = data?.data ?? [];
          getKey={location => location._id}
          navigationMarginTop={40}
         renderItem={location => (
-          <div>
+          
           <LocationCard  location={location} 
            onView={location => {
     console.log(location);
   }}
           />
-          </div>
+          
           
         )}
       />
