@@ -1,0 +1,126 @@
+.footer {
+  background: var(--color-surface);
+  padding-block: var(--space-8);
+  width: 100%;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.topContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.logoMargin {
+  margin-bottom: var(--space-7);
+}
+
+.socials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-7);
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-primary);
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.socialLink:hover {
+  transform: translateY(-2px);
+  color: var(--color-accent);
+}
+
+.socialIcon {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.navLink {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-medium);
+  font-size: 15px;
+  color: var(--color-text-primary);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.navLink:hover {
+  color: var(--color-accent);
+}
+
+.copyright {
+  width: 100%;
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-5);
+  font-family: var(--font-family-primary);
+  font-size: 12px;
+  line-height: var(--line-height-text);
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .nav {
+    flex-direction: row;
+    gap: var(--space-6);
+  }
+}
+
+@media (min-width: 1440px) {
+  .footer {
+    padding-top: 60px;
+    padding-bottom: var(--space-6);
+  }
+  .topContent {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-7);
+  }
+
+  .logoMargin {
+    margin-bottom: 0;
+  }
+
+  .socials {
+    margin-bottom: 0;
+  }
+
+  .nav {
+    margin-bottom: 0;
+  }
+
+  .copyright {
+    padding-top: var(--space-5);
+  }
+}
