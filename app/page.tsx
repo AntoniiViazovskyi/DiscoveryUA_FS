@@ -1,5 +1,6 @@
 import PopularLocationsBlock from "@/components/PopularLocationsBlock/PopularLocationsBlock";
 import HeroBlock from "@/components/HeroBlock/HeroBlock";
+import AdvantagesBlock from "@/components/AdvantagesBlock/AdvantagesBlock";
 
 export default function HomePage() {
   return (
@@ -11,6 +12,7 @@ export default function HomePage() {
         when product development begins.
       </p>
       <HeroBlock/>
+      <AdvantagesBlock/>
       <PopularLocationsBlock/>
     </main>
   )
