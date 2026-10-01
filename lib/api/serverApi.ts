@@ -4,17 +4,18 @@ import { cookies } from 'next/headers'
 
 import { api } from '@/app/api/api'
 import type { LocationsHttpResponse } from '@/types/location'
+import { FetchLocationsParams } from './http'
 
-export async function fetchAllLocations(
-  page: number = 1,
-  limit: number = 10,
-  region?: string,
-  type?: string,
-  search?: string,
-  rate?: number,
-  sortBy: 'rate' | 'name' = 'rate',
-  sortOrder: 'asc' | 'desc' = 'desc',
-): Promise<LocationsHttpResponse> {
+export async function fetchAllLocations({
+  page = 1,
+  limit= 10,
+  region,
+  type,
+  search,
+  rate,
+  sortBy = 'rate',
+  sortOrder = 'desc',
+}: FetchLocationsParams): Promise<LocationsHttpResponse> {
   const cookieStore = await cookies()
   const response = await api.get<LocationsHttpResponse>('/locations', {
     params: {

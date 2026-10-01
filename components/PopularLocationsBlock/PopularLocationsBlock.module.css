@@ -53,7 +53,16 @@ color: #fff;
  
 }
 
-
+.rating{
+      display: flex;
+  align-items: center;
+  min-height: 24px;
+    margin-bottom: 12px;
+   
+}
+.star{
+ color: #000;
+}
 @media (min-width: 768px) {
  .popularLocationsTitle {
 font-size: 44px;
