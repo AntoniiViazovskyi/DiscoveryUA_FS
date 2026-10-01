@@ -2,14 +2,13 @@
 
 
 import SwiperSlider from '../SwiperSlider/SwiperSlider';
-
 import css from './PopularLocationsBlock.module.css';
 import Link from 'next/link';
 import LocationCard from '../LocationCard/LocationCard';
 import { fetchAllLocations } from '@/lib/api/clientApi';
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 
-import { useRouter } from 'next/navigation'
 
 export default function PopularLocationsBlock() {
 const router = useRouter();
@@ -46,7 +45,7 @@ if (isError) {
    <Link href='/locations' className={css.popularLocationsLink}>Всі локації</Link>
    </div>
 
- {!isLoading && (
+ 
   <SwiperSlider
         items={locations}
         sliderId="popular-locations"
@@ -73,12 +72,10 @@ if (isError) {
            onView={location => {
         router.push(`/locations/${location._id}`
         )
-
   }}
 />
      )}
  />
- )}
      </section>
   );
 };
