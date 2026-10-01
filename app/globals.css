@@ -46,6 +46,12 @@
   --space-10: 72px;
   --space-11: 80px;
 
+  /* Shared UI form fields */
+  --color-error: #b00101;
+  --color-border-hover: #ffa57a;
+  --color-placeholder: rgb(0 0 0 / 60%);
+  --font-size-xs: 12px;
+
   /* Layout */
   --container-max-width: 1440px;
   --container-padding: 20px;
