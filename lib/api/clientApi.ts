@@ -66,7 +66,7 @@ export async function fetchAllLocations(
 
 export async function register(data: RegisterRequest): Promise<void> {
   try {
-    await http.post('/api/auth/register', data)
+    await http.post('/auth/register', data)
   } catch (error) {
     throw getRequestError(error)
   }
