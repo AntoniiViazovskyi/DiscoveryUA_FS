@@ -40,13 +40,12 @@ if (isError) {
    <Link href='/locations' className={css.popularLocationsLink}>Всі локації</Link>
    </div>
 
- 
   <SwiperSlider
         items={locations}
         sliderId="popular-locations"
          getKey={location => location._id}
          navigationMarginTop={40}
-        renderItem={location => (    
+        renderItem={location => (
           <LocationCard
           location={location}
           
