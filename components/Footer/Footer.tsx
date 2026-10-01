@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className={styles.footer}>
       <div className={styles.container}>
         <div className={styles.topContent}>
-          <Logo className={styles.LogoMargin} />
+          <Logo className={styles.logoMargin} />
 
           <div className={styles.socials}>
             <a
@@ -69,7 +69,7 @@ const Footer = () => {
           </nav>
         </div>
         <div className={styles.copyright}>
-          © 2025 Природні Мандри. Усі права захищені.
+          © 2026 Природні Мандри. Усі права захищені.
         </div>
       </div>
     </footer>
