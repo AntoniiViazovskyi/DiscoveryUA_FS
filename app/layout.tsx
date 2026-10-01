@@ -75,8 +75,8 @@ export default function RootLayout({
   children, modal
 }: Readonly<{ children: React.ReactNode, modal:React.ReactNode}>) {
   return (
-    <html lang="uk">
-      <body className={montserrat.variable}>
+    <html lang="uk" className={montserrat.variable}>
+      <body>
         <AppProviders>
           {children}
           {modal}
