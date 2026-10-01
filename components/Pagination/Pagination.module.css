@@ -1,0 +1,88 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+
+  font-family: var(--font-family-primary);
+}
+
+.pageGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.pageButton,
+.arrowButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+  padding: 0;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-small);
+
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-regular);
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.pageButton {
+  background-color: var(--color-white);
+  color: var(--color-text-primary);
+}
+
+.arrowButton {
+  background-color: #ffe5d9;
+  color: var(--color-text-primary);
+}
+
+.pageButton:hover:not(:disabled),
+.arrowButton:hover:not(:disabled) {
+  border-color: var(--color-accent);
+}
+
+.pageButton.active {
+  border-color: var(--color-accent);
+  font-weight: var(--font-weight-medium);
+}
+
+.arrowButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 12px;
+
+  color: var(--color-text-primary);
+  font-size: var(--font-size-small);
+}
+
+.desktopPagination {
+  display: flex;
+}
+
+.mobilePagination {
+  display: none;
+}
+
+@media screen and (max-width: 767px) {
+  .desktopPagination {
+    display: none;
+  }
+
+  .mobilePagination {
+    display: flex;
+  }
+}
