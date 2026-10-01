@@ -1,5 +1,6 @@
 import PopularLocationsBlock from "@/components/PopularLocationsBlock/PopularLocationsBlock";
 import HeroBlock from "@/components/HeroBlock/HeroBlock";
+import ReviewsBlock from "@/components/ReviewsBlock/ReviewsBlock";
 
 export default function HomePage() {
   return (
@@ -12,6 +13,7 @@ export default function HomePage() {
       </p>
       <HeroBlock/>
       <PopularLocationsBlock/>
+      <ReviewsBlock />
     </main>
   )
 }

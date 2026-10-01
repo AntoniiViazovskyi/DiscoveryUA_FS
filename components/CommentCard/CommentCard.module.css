@@ -94,12 +94,14 @@
 
 @media (min-width: 1440px) {
   .card {
-    width: 335px;
+    width: 421px;
+    height: 227px;
+    min-height: 227px;
   }
 
   .comment {
     font-size: 20px;
-    -webkit-line-clamp: 1;
+    -webkit-line-clamp: 2;
   }
 
   .author {
