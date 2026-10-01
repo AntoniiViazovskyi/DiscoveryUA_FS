@@ -16,16 +16,12 @@ const router = useRouter();
 const { data, isLoading, isError } = useQuery({
   queryKey: ['popular-locations'],
   queryFn: () =>
-    fetchAllLocations(
-      1,
-      6,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      'rate',
-      'desc',
-    ),
+    fetchAllLocations({
+      page: 1,
+      limit: 6,
+      sortBy: 'rate',
+      sortOrder: 'desc',
+    }),
 });
 const locations = data?.locations ?? [];
 if (isLoading) {
