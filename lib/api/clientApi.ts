@@ -71,3 +71,44 @@ export async function register(data: RegisterRequest): Promise<void> {
     throw getRequestError(error)
   }
 }
+
+export type RegionCategory = {
+  _id: string
+  region: string
+  slug: string
+}
+
+export type LocationTypeCategory = {
+  _id: string
+  type: string
+  slug: string
+}
+
+export async function fetchRegions(): Promise<RegionCategory[]> {
+  try {
+    const response = await http.get<RegionCategory[]>('/categories/regions')
+    return response.data
+  } catch (error) {
+    throw getRequestError(error)
+  }
+}
+
+export async function fetchLocationTypes(): Promise<LocationTypeCategory[]> {
+  try {
+    const response = await http.get<LocationTypeCategory[]>(
+      '/categories/types',
+    )
+    return response.data
+  } catch (error) {
+    throw getRequestError(error)
+  }
+}
+
+export async function createLocation(data: FormData): Promise<{ _id: string }> {
+  try {
+    const response = await http.post('/locations', data)
+    return response.data
+  } catch (error) {
+    throw getRequestError(error)
+  }
+}
