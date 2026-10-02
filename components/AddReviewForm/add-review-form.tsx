@@ -13,6 +13,7 @@ import {
 type AddReviewFormProps = {
   onCancel: () => void
   onSubmit: (values: AddReviewFormValues) => Promise<void> | void
+  onSuccess?: () => void
 }
 
 type RatingFieldProps = {
@@ -88,7 +89,7 @@ function RatingField({
   )
 }
 
-export function AddReviewForm({ onCancel, onSubmit }: AddReviewFormProps) {
+export function AddReviewForm({ onCancel, onSubmit, onSuccess }: AddReviewFormProps) {
   const descriptionId = useId()
   const descriptionErrorId = `${descriptionId}-error`
   const ratingGroupId = useId()
@@ -102,14 +103,16 @@ export function AddReviewForm({ onCancel, onSubmit }: AddReviewFormProps) {
         setStatus(undefined)
         try {
           await onSubmit({ ...values, description: values.description.trim() })
-          resetForm()
         } catch (error) {
           setStatus(
             error instanceof Error
               ? error.message
               : 'Не вдалося надіслати відгук. Спробуйте ще раз.',
           )
+          return
         }
+        resetForm()
+        onSuccess?.()
       }}
     >
       {({

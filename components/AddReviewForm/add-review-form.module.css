@@ -1,5 +1,5 @@
 .form {
-  --review-error: #b00101;
+  --review-error: var(--color-error);
   --review-hover-text: var(--color-text-primary);
   --review-active-background: #66321a;
   display: flex;
@@ -105,7 +105,7 @@
 }
 
 .textarea::placeholder {
-  color: rgb(0 0 0 / 60%);
+  color: var(--color-placeholder);
 }
 
 .textarea:focus {
@@ -124,7 +124,7 @@
   min-height: 18px;
   margin: 8px 0 0;
   color: var(--review-error);
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   line-height: 18px;
   overflow-wrap: anywhere;
 }

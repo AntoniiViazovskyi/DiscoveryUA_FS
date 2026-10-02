@@ -64,7 +64,6 @@ export function AddReviewSubmission({
         throw new Error('Не вдалося підтвердити збереження відгуку.')
       }
       toast.success('Ваш відгук надіслано на модерацію.')
-      if (mounted.current) close()
     } catch (error) {
       const message =
         error instanceof DOMException && error.name === 'TimeoutError'
@@ -81,5 +80,13 @@ export function AddReviewSubmission({
     }
   }
 
-  return <AddReviewModal onClose={close} onSubmit={submit} />
+  return (
+    <AddReviewModal
+      onClose={close}
+      onSubmit={submit}
+      onSuccess={() => {
+        if (mounted.current) close()
+      }}
+    />
+  )
 }

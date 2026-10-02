@@ -11,9 +11,10 @@ import styles from './add-review-modal.module.css'
 type AddReviewModalProps = {
   onClose: () => void
   onSubmit: (values: AddReviewFormValues) => Promise<void> | void
+  onSuccess?: () => void
 }
 
-export function AddReviewModal({ onClose, onSubmit }: AddReviewModalProps) {
+export function AddReviewModal({ onClose, onSubmit, onSuccess }: AddReviewModalProps) {
   const titleRef = useRef<HTMLHeadingElement>(null)
   const titleId = useId()
   const [mounted, setMounted] = useState(false)
@@ -43,7 +44,7 @@ export function AddReviewModal({ onClose, onSubmit }: AddReviewModalProps) {
       <h2 className={styles.title} id={titleId} ref={titleRef} tabIndex={-1}>
         Залишити відгук
       </h2>
-      <AddReviewForm onCancel={onClose} onSubmit={onSubmit} />
+      <AddReviewForm onCancel={onClose} onSubmit={onSubmit} onSuccess={onSuccess} />
     </Modal>
   )
 }
