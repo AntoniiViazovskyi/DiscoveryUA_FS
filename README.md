@@ -5,7 +5,7 @@ The old NoteHub domain code and repository history are intentionally excluded.
 
 ## Requirements
 
-- Node.js 20.9 or newer
+- Node.js 24.4.1 (also pinned in `.nvmrc`)
 - npm
 
 ## Start

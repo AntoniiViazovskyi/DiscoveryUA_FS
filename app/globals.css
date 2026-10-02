@@ -1,6 +1,6 @@
 :root {
   /* Colors */
-  --color-page-background: #d8d6d3;
+  --color-page-background: #fff2ec;
   --color-surface: #fff2ec;
   --color-surface-accent: #ffe5d9;
   --color-text-primary: #4c2613;
@@ -45,6 +45,12 @@
   --space-9: 64px;
   --space-10: 72px;
   --space-11: 80px;
+
+  /* Shared UI form fields */
+  --color-error: #b00101;
+  --color-border-hover: #ffa57a;
+  --color-placeholder: rgb(0 0 0 / 60%);
+  --font-size-xs: 12px;
 
   /* Layout */
   --container-max-width: 1440px;
@@ -121,7 +127,8 @@ button:disabled {
 
 .container {
   width: 100%;
-  max-width: var(--container-max-width);
+  min-width: 320px;
+  max-width: 375px;
   margin-inline: auto;
   padding-inline: var(--container-padding);
 }
@@ -138,10 +145,18 @@ button:disabled {
   :root {
     --container-padding: 32px;
   }
+
+  .container {
+    max-width: 768px;
+  }
 }
 
 @media (min-width: 1440px) {
   :root {
     --container-padding: 64px;
+  }
+
+  .container {
+    max-width: var(--container-max-width);
   }
 }

@@ -1,12 +1,8 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import AppProviders from "@/components/providers/AppProviders";
-import {
-  SITE_DESCRIPTION,
-  SITE_NAME,
-  SITE_TITLE,
-  SITE_URL,
-} from "@/lib/seo";
+import Layout from "@/components/Layout/Layout";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -72,15 +68,16 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children, modal
-}: Readonly<{ children: React.ReactNode, modal:React.ReactNode}>) {
+  children,
+  modal,
+}: Readonly<{ children: React.ReactNode; modal: React.ReactNode }>) {
   return (
-    <html lang="uk">
-      <body className={montserrat.variable}>
+    <html lang="uk" className={montserrat.variable}>
+      <body>
         <AppProviders>
-          {children}
+          <Layout>{children}</Layout>
           {modal}
-          </AppProviders>
+        </AppProviders>
       </body>
     </html>
   );
