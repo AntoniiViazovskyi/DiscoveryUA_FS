@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react'
 import { Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
+import type { ComponentType, ReactNode } from 'react'
 
 import CommentCard from '@/components/CommentCard/CommentCard'
+import type { CommentCardProps } from '@/components/CommentCard/CommentCard'
 import type { Feedback } from '@/types/feedback'
 import type { Location } from '@/types/location'
 
@@ -13,6 +15,10 @@ import styles from './ReviewsBlock.module.css'
 
 type ReviewsBlockProps = {
   initialReviews?: Feedback[]
+  locationId?: string
+  title?: string | null
+  action?: ReactNode
+  CardComponent?: ComponentType<CommentCardProps>
 }
 
 type FeedbackApiItem = {
@@ -142,10 +148,15 @@ function getObjectIdTimestamp(id: string) {
   return /^[\da-f]{24}$/i.test(id) && Number.isFinite(timestamp) ? timestamp : 0
 }
 
-async function fetchAllReviews(signal: AbortSignal): Promise<Feedback[]> {
+async function fetchAllReviews(
+  signal: AbortSignal,
+  locationId?: string,
+): Promise<Feedback[]> {
   const locations = (await fetchLocations(signal)).filter(
     (location) =>
-      Array.isArray(location.feedbacksId) && location.feedbacksId.length > 0,
+      Array.isArray(location.feedbacksId) &&
+      location.feedbacksId.length > 0 &&
+      (!locationId || location._id === locationId),
   )
   const feedbacksByLocation = await Promise.all(
     locations.map((location) => fetchLocationFeedbacks(location, signal)),
@@ -160,7 +171,13 @@ async function fetchAllReviews(signal: AbortSignal): Promise<Feedback[]> {
     })
 }
 
-export default function ReviewsBlock({ initialReviews }: ReviewsBlockProps) {
+export default function ReviewsBlock({
+  initialReviews,
+  locationId,
+  title = 'Останні відгуки',
+  action,
+  CardComponent = CommentCard,
+}: ReviewsBlockProps) {
   const [reviews, setReviews] = useState(initialReviews ?? [])
   const [isLoading, setIsLoading] = useState(initialReviews === undefined)
   const [hasError, setHasError] = useState(false)
@@ -172,7 +189,7 @@ export default function ReviewsBlock({ initialReviews }: ReviewsBlockProps) {
 
     async function loadReviews() {
       try {
-        setReviews(await fetchAllReviews(controller.signal))
+        setReviews(await fetchAllReviews(controller.signal, locationId))
       } catch {
         if (!controller.signal.aborted) setHasError(true)
       } finally {
@@ -183,14 +200,27 @@ export default function ReviewsBlock({ initialReviews }: ReviewsBlockProps) {
     void loadReviews()
 
     return () => controller.abort()
-  }, [initialReviews])
+  }, [initialReviews, locationId])
+
+  const hasHeading = Boolean(title || action)
 
   return (
-    <section className={styles.section} aria-labelledby="reviews-title">
+    <section
+      className={styles.section}
+      aria-labelledby={title ? 'reviews-title' : undefined}
+      aria-label={title ? undefined : 'Відгуки'}
+    >
       <div className={styles.container}>
-        <h2 className={styles.title} id="reviews-title">
-          Останні відгуки
-        </h2>
+        {hasHeading && (
+          <div className={styles.heading}>
+            {title && (
+              <h2 className={styles.title} id="reviews-title">
+                {title}
+              </h2>
+            )}
+            {action}
+          </div>
+        )}
 
         {isLoading ? (
           <p className={styles.message} role="status">Завантажуємо відгуки...</p>
@@ -220,7 +250,7 @@ export default function ReviewsBlock({ initialReviews }: ReviewsBlockProps) {
             >
               {reviews.map((review) => (
                 <SwiperSlide className={styles.slide} key={review._id}>
-                  <CommentCard
+                  <CardComponent
                     rating={review.rate}
                     comment={review.description}
                     authorName={review.authorName}
