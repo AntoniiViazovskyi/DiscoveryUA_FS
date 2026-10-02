@@ -1,8 +1,9 @@
 'use client'
 
-
+import { useEffect, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
+import type { Swiper as SwiperType } from 'swiper';
 import 'swiper/css';
 
 import css from './SwiperSlider.module.css';
@@ -23,12 +24,31 @@ export default function SwiperSlider<T>({
   navigationMarginTop = 50,
   renderItem,
 }: SliderProps<T>) {
+  const swiperRef = useRef<SwiperType | null>(null);
+
   const prevButton = `${sliderId}-prev`;
   const nextButton = `${sliderId}-next`;
+  useEffect(() => {
+    if (!swiperRef.current) return;
+
+    const swiper = swiperRef.current;
+
+    swiper.params.navigation = {
+      ...(swiper.params.navigation as object),
+      prevEl: `.${prevButton}`,
+      nextEl: `.${nextButton}`,
+    };
+
+    swiper.navigation.init();
+    swiper.navigation.update();
+  }, [prevButton, nextButton]);
 
   return (
     <div className={css.wrapper}>
       <Swiper
+        onSwiper={swiper => {
+          swiperRef.current = swiper;
+        }}
         slidesPerView={1}
         spaceBetween={24}
         loop={true}
