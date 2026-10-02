@@ -72,24 +72,32 @@ export async function register(data: RegisterRequest): Promise<void> {
   }
 }
 
-export type Category = {
+export type RegionCategory = {
   _id: string
-  name: string
-  kind?: string
+  region: string
+  slug: string
 }
 
-export async function fetchRegions(): Promise<Category[]> {
+export type LocationTypeCategory = {
+  _id: string
+  type: string
+  slug: string
+}
+
+export async function fetchRegions(): Promise<RegionCategory[]> {
   try {
-    const response = await http.get<Category[]>('/categories/regions')
+    const response = await http.get<RegionCategory[]>('/categories/regions')
     return response.data
   } catch (error) {
     throw getRequestError(error)
   }
 }
 
-export async function fetchLocationTypes(): Promise<Category[]> {
+export async function fetchLocationTypes(): Promise<LocationTypeCategory[]> {
   try {
-    const response = await http.get<Category[]>('/categories/types')
+    const response = await http.get<LocationTypeCategory[]>(
+      '/categories/types',
+    )
     return response.data
   } catch (error) {
     throw getRequestError(error)

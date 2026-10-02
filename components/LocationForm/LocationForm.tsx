@@ -8,10 +8,12 @@ import toast, { Toaster } from "react-hot-toast";
 import { Oval } from "react-loader-spinner";
 import * as Yup from "yup";
 
+import Button from "@/components/Button/Button";
 import Select from "@/components/Select/Select";
 import Textarea from "@/components/Textarea/Textarea";
 import {
-  type Category,
+  type LocationTypeCategory,
+  type RegionCategory,
   createLocation,
   fetchLocationTypes,
   fetchRegions,
@@ -64,10 +66,16 @@ const LocationFormSchema = Yup.object().shape({
     .required("Додайте детальний опис"),
 });
 
-const toOptions = (categories: Category[]) =>
+const toTypeOptions = (categories: LocationTypeCategory[]) =>
   categories.map((category) => ({
-    value: category._id,
-    label: category.name,
+    value: category.slug,
+    label: category.type,
+  }));
+
+const toRegionOptions = (categories: RegionCategory[]) =>
+  categories.map((category) => ({
+    value: category.slug,
+    label: category.region,
   }));
 
 export default function LocationForm() {
@@ -75,8 +83,10 @@ export default function LocationForm() {
   const fieldId = useId();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [regions, setRegions] = useState<Category[]>([]);
-  const [locationTypes, setLocationTypes] = useState<Category[]>([]);
+  const [regions, setRegions] = useState<RegionCategory[]>([]);
+  const [locationTypes, setLocationTypes] = useState<LocationTypeCategory[]>(
+    [],
+  );
   const [optionsLoading, setOptionsLoading] = useState(true);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -255,7 +265,7 @@ export default function LocationForm() {
             name="type"
             label="Тип Місця"
             id={`${fieldId}-type`}
-            options={toOptions(locationTypes)}
+            options={toTypeOptions(locationTypes)}
             value={values.type}
             onChange={(value) => setFieldValue("type", value)}
             onBlur={() => setFieldTouched("type", true)}
@@ -268,7 +278,7 @@ export default function LocationForm() {
             name="region"
             label="Регіон"
             id={`${fieldId}-region`}
-            options={toOptions(regions)}
+            options={toRegionOptions(regions)}
             value={values.region}
             onChange={(value) => setFieldValue("region", value)}
             onBlur={() => setFieldTouched("region", true)}
@@ -293,7 +303,7 @@ export default function LocationForm() {
           />
 
           <div className={css.actions}>
-            <button
+            <Button
               className={css.submitButton}
               type="submit"
               disabled={!dirty || !isValid || isSubmitting}
@@ -318,15 +328,16 @@ export default function LocationForm() {
               ) : (
                 "Опублікувати"
               )}
-            </button>
+            </Button>
 
-            <button
+            <Button
               className={css.cancelButton}
               type="button"
+              disabled={isSubmitting}
               onClick={() => handleCancel(resetForm)}
             >
               Відмінити
-            </button>
+            </Button>
           </div>
 
           <Toaster position="top-right" />
