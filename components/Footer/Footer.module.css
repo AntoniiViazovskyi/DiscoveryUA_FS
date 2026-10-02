@@ -101,12 +101,6 @@
     padding-top: 60px;
     padding-bottom: var(--space-6);
   }
-  .topContent {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: var(--space-7);
-  }
 
   .logoMargin {
     margin-bottom: 0;
