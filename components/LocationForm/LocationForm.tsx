@@ -154,28 +154,6 @@ export default function LocationForm({
 
   const handleSubmit = async (values: LocationFormValues) => {
     try {
-      if (isEditMode) {
-        if (!locationId) {
-          throw new Error("Не знайдено id локації для редагування");
-        }
-
-        if (values.images) {
-          toast.error("Оновлення фото поки недоступне");
-          return;
-        }
-
-        await updateLocation(locationId, {
-          name: values.name,
-          locationType: values.type,
-          region: values.region,
-          description: values.description,
-        });
-
-        toast.success("Зміни збережено");
-        router.push(`/locations/${locationId}`);
-        return;
-      }
-
       const formData = new FormData();
 
       formData.append("name", values.name);
@@ -185,6 +163,18 @@ export default function LocationForm({
 
       if (values.images) {
         formData.append("images", values.images);
+      }
+
+      if (isEditMode) {
+        if (!locationId) {
+          throw new Error("Не знайдено id локації для редагування");
+        }
+
+        await updateLocation(locationId, formData);
+
+        toast.success("Зміни збережено");
+        router.push(`/locations/${locationId}`);
+        return;
       }
 
       const data = await createLocation(formData);

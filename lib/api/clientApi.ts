@@ -130,16 +130,9 @@ export async function fetchLocationById(locationId: string): Promise<Location> {
   }
 }
 
-export type UpdateLocationRequest = {
-  name: string
-  locationType: string
-  region: string
-  description: string
-}
-
 export async function updateLocation(
   locationId: string,
-  data: UpdateLocationRequest,
+  data: FormData,
 ): Promise<Location> {
   try {
     const response = await http.patch<Location>(
