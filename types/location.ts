@@ -11,7 +11,11 @@ export type Location = {
     lat: number;
     lon: number;
   };
-  ownerId: string;
+  ownerId: {
+    _id: string;
+    name: string;
+    avatarUrl: string;
+  };
   feedbacksId: string[];
 };
 
