@@ -17,6 +17,7 @@ import {
   createLocation,
   fetchLocationTypes,
   fetchRegions,
+  updateLocation,
 } from "@/lib/api/clientApi";
 import css from "./LocationForm.module.css";
 
@@ -28,43 +29,20 @@ type LocationFormValues = {
   description: string;
 };
 
-const initialValues: LocationFormValues = {
+type LocationFormProps = {
+  mode?: "create" | "edit";
+  locationId?: string;
+  initialImage?: string | null;
+  initialValues?: Partial<Omit<LocationFormValues, "images">>;
+};
+
+const emptyValues: LocationFormValues = {
   images: null,
   name: "",
   type: "",
   region: "",
   description: "",
 };
-
-const LocationFormSchema = Yup.object().shape({
-  images: Yup.mixed<File>()
-    .required("Додайте фото локації")
-    .test(
-      "fileType",
-      "Дозволені тільки JPG та PNG",
-      (file) => !file || ["image/jpeg", "image/png"].includes(file.type),
-    )
-    .test(
-      "fileSize",
-      "Розмір фото має бути менше 1 МБ",
-      (file) => !file || file.size < 1024 * 1024,
-    ),
-  name: Yup.string()
-    .trim()
-    .min(3, "Назва має містити щонайменше 3 символи")
-    .max(96, "Назва має містити не більше 96 символів")
-    .required("Вкажіть назву місця"),
-  type: Yup.string()
-    .max(64, "Тип місця має містити не більше 64 символів")
-    .required("Оберіть тип місця"),
-  region: Yup.string()
-    .max(64, "Регіон має містити не більше 64 символів")
-    .required("Оберіть регіон"),
-  description: Yup.string()
-    .min(20, "Опис має містити щонайменше 20 символів")
-    .max(6000, "Опис має містити не більше 6000 символів")
-    .required("Додайте детальний опис"),
-});
 
 const toTypeOptions = (categories: LocationTypeCategory[]) =>
   categories.map((category) => ({
@@ -78,10 +56,57 @@ const toRegionOptions = (categories: RegionCategory[]) =>
     label: category.region,
   }));
 
-export default function LocationForm() {
+export default function LocationForm({
+  mode = "create",
+  locationId,
+  initialImage = null,
+  initialValues = {},
+}: LocationFormProps = {}) {
   const router = useRouter();
   const fieldId = useId();
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const isEditMode = mode === "edit";
+
+  const formInitialValues: LocationFormValues = {
+    ...emptyValues,
+    ...initialValues,
+  };
+
+  const LocationFormSchema = Yup.object().shape({
+    images: Yup.mixed<File>()
+      .nullable()
+      .test(
+        "imageRequired",
+        "Додайте фото локації",
+        (file) => (isEditMode && initialImage ? true : file instanceof File),
+      )
+      .test(
+        "fileType",
+        "Дозволені тільки JPG та PNG",
+        (file) => !file || ["image/jpeg", "image/png"].includes(file.type),
+      )
+      .test(
+        "fileSize",
+        "Розмір фото має бути менше 1 МБ",
+        (file) => !file || file.size < 1024 * 1024,
+      ),
+    name: Yup.string()
+      .trim()
+      .min(3, "Назва має містити щонайменше 3 символи")
+      .max(96, "Назва має містити не більше 96 символів")
+      .required("Вкажіть назву місця"),
+    type: Yup.string()
+      .max(64, "Тип місця має містити не більше 64 символів")
+      .required("Оберіть тип місця"),
+    region: Yup.string()
+      .max(64, "Регіон має містити не більше 64 символів")
+      .required("Оберіть регіон"),
+    description: Yup.string()
+      .min(20, "Опис має містити щонайменше 20 символів")
+      .max(6000, "Опис має містити не більше 6000 символів")
+      .required("Додайте детальний опис"),
+  });
 
   const [regions, setRegions] = useState<RegionCategory[]>([]);
   const [locationTypes, setLocationTypes] = useState<LocationTypeCategory[]>(
@@ -140,13 +165,27 @@ export default function LocationForm() {
         formData.append("images", values.images);
       }
 
+      if (isEditMode) {
+        if (!locationId) {
+          throw new Error("Не знайдено id локації для редагування");
+        }
+
+        await updateLocation(locationId, formData);
+
+        toast.success("Зміни збережено");
+        router.push(`/locations/${locationId}`);
+        return;
+      }
+
       const data = await createLocation(formData);
       router.push(`/locations/${data._id}`);
     } catch (error) {
       toast.error(
         error instanceof Error
           ? error.message
-          : "Не вдалось створити локацію, спробуйте ще раз",
+          : isEditMode
+            ? "Не вдалося зберегти зміни, спробуйте ще раз"
+            : "Не вдалось створити локацію, спробуйте ще раз",
       );
     }
   };
@@ -166,7 +205,8 @@ export default function LocationForm() {
 
   return (
     <Formik
-      initialValues={initialValues}
+      enableReinitialize
+      initialValues={formInitialValues}
       validationSchema={LocationFormSchema}
       onSubmit={handleSubmit}
     >
@@ -182,19 +222,23 @@ export default function LocationForm() {
         setFieldValue,
         touched,
         values,
-      }) => (
+      }) => {
+        const previewSrc = imagePreview ?? initialImage;
+
+        return (
         <Form className={css.form} noValidate>
           <div className={css.imageField}>
             <span className={css.label}>Обкладинка</span>
 
             <div className={css.imageUpload}>
               <div className={css.imagePreview}>
-                {imagePreview ? (
+                {previewSrc ? (
                   <Image
                     className={css.previewImage}
-                    src={imagePreview}
+                    src={previewSrc}
                     alt="Попередній перегляд фото"
                     fill
+                    unoptimized
                     sizes="(min-width: 1440px) 1091px, (min-width: 768px) 704px, 335px"
                   />
                 ) : (
@@ -325,6 +369,8 @@ export default function LocationForm() {
                     strokeWidthSecondary={4}
                   />
                 </span>
+              ) : isEditMode ? (
+                "Зберегти зміни"
               ) : (
                 "Опублікувати"
               )}
@@ -336,13 +382,14 @@ export default function LocationForm() {
               disabled={isSubmitting}
               onClick={() => handleCancel(resetForm)}
             >
-              Відмінити
+              {isEditMode ? "Відмінити зміни" : "Відмінити"}
             </Button>
           </div>
 
           <Toaster position="top-right" />
         </Form>
-      )}
+        );
+      }}
     </Formik>
   );
 }
