@@ -22,7 +22,6 @@ export const ProfileInfo = ({ user, locationsAmount }: ProfileInfoProps) => {
           alt={displayName}
           width={145}
           height={145}
-          unoptimized
           className={styles.avatar}
         />
       ) : (

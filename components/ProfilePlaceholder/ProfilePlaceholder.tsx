@@ -11,8 +11,8 @@ export const ProfilePlaceholder = ({ isOwner }: ProfilePlaceholderProps) => {
     ? 'Ви ще нічого не публікували, поділіться своєю першою локацією!'
     : 'Цей користувач ще не ділився локаціями';
 
-  const linkText = isOwner ? 'Поділитися локацією' : 'Назад до локацій';
-  const href = isOwner ? '/locations/add' : '/locations';
+  const linkText = isOwner ? 'Поділитись локацією' : 'Назад до локацій';
+  const href = isOwner ? '/locations/add' : '/';
 
   return (
     <div className={styles.card}>

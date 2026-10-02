@@ -25,7 +25,7 @@ export default async function MyProfileRedirectPage() {
   }
 
   if (!currentUser) {
-    redirect('/register')
+    redirect('/login')
   }
 
   redirect(`/profile/${currentUser._id}`)
