@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import toast, { Toaster } from 'react-hot-toast'
 
 import { register } from '@/lib/api/clientApi'
+import Button from '@/components/Button/Button'
 
 import {
   registrationFormSchema,
@@ -122,13 +123,13 @@ export default function RegistrationForm() {
               </p>
             </div>
 
-            <button
+            <Button
               className={styles.submitButton}
               type="submit"
               disabled={isSubmitting}
             >
               {isSubmitting ? 'Реєструємо…' : 'Зареєструватись'}
-            </button>
+            </Button>
           </Form>
         )}
       </Formik>

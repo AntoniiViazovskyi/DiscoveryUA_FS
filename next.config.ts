@@ -5,8 +5,8 @@ const nextConfig: NextConfig = {
     reactCompiler: true,
   },
   turbopack: {
-    root: process.cwd()
-  }
+    root: __dirname,
+  },
 }
 
 export default nextConfig
