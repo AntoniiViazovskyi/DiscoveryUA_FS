@@ -1,7 +1,7 @@
 import { isAxiosError } from 'axios'
 
 import { Location, LocationsHttpResponse } from '@/types/location'
-import { http } from './http'
+import { FetchLocationsParams, http } from './http'
 
 export type RegisterRequest = {
   username: string
@@ -38,16 +38,16 @@ function getRequestError(error: unknown): Error {
     : new Error('Не вдалося зареєструватися. Спробуйте ще раз.')
 }
 
-export async function fetchAllLocations(
-  page: number = 1,
-  limit: number = 10,
-  region?: string,
-  type?: string,
-  search?: string,
-  rate?: number,
-  sortBy: 'rate' | 'name' = 'rate',
-  sortOrder: 'asc' | 'desc' = 'desc',
-): Promise<LocationsHttpResponse> {
+export async function fetchAllLocations({
+  page = 1,
+  limit = 10,
+  region,
+  type,
+  search,
+  rate,
+  sortBy = 'rate',
+  sortOrder = 'desc',
+}: FetchLocationsParams): Promise<LocationsHttpResponse> {
   const response = await http.get<LocationsHttpResponse>('/locations', {
     params: {
       page,

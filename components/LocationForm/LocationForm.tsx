@@ -8,6 +8,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { Oval } from "react-loader-spinner";
 import * as Yup from "yup";
 
+import Button from "@/components/Button/Button";
 import Select from "@/components/Select/Select";
 import Textarea from "@/components/Textarea/Textarea";
 import {
@@ -356,7 +357,7 @@ export default function LocationForm({
           />
 
           <div className={css.actions}>
-            <button
+            <Button
               className={css.submitButton}
               type="submit"
               disabled={!dirty || !isValid || isSubmitting}
@@ -383,16 +384,16 @@ export default function LocationForm({
               ) : (
                 "Опублікувати"
               )}
-            </button>
+            </Button>
 
-            <button
+            <Button
               className={css.cancelButton}
               type="button"
               disabled={isSubmitting}
               onClick={() => handleCancel(resetForm)}
             >
               {isEditMode ? "Відмінити зміни" : "Відмінити"}
-            </button>
+            </Button>
           </div>
 
           <Toaster position="top-right" />

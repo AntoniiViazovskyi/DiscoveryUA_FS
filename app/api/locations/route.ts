@@ -4,6 +4,41 @@ import { type NextRequest, NextResponse } from 'next/server'
 
 import { api } from '../api'
 
+export async function POST(request: NextRequest) {
+  const cookieStore = await cookies()
+
+  try {
+    const formData = await request.formData()
+
+    const response = await api.post('/locations', formData, {
+      headers: {
+        Cookie: cookieStore.toString(),
+      },
+    })
+
+    return NextResponse.json(response.data, {
+      status: response.status,
+    })
+  } catch (error) {
+    if (isAxiosError(error)) {
+      return NextResponse.json(
+        {
+          error: error.message,
+          response: error.response?.data,
+        },
+        {
+          status: error.response?.status ?? 502,
+        },
+      )
+    }
+
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 },
+    )
+  }
+}
+
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
   const cookieStore = await cookies()
