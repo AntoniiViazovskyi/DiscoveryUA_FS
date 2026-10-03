@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navigation from "./Navigation";
 import MobileMenu from "./MobileMenu";
 import styles from "./Header.module.css";
 
-//  замінити на реальну авторизацію, коли вона буде готова
+// замінити на реальну авторизацію, коли вона буде готова
 const MOCK_AUTH = false;
 const MOCK_USER = { id: "1", name: "Ім'я", avatarUrl: null as string | null };
 
@@ -22,6 +22,18 @@ export default function Header() {
     // TODO: відкрити ConfirmationModal
     console.log("logout clicked");
   };
+
+  // Скидаємо меню, коли екран розтягують до десктопу
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 1440px)");
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      if (e.matches) setIsOpen(false);
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
 
   return (
     <header className={`${styles.header} ${isOpen ? styles.menuOpen : ""}`}>

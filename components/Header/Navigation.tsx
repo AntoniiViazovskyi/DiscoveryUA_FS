@@ -75,14 +75,11 @@ export default function Navigation({
           </>
         ) : (
           <>
-            <Link
-              href="/sign-in"
-              className={`${styles.btn} ${styles.btnGhost}`}
-            >
+            <Link href="/login" className={`${styles.btn} ${styles.btnGhost}`}>
               Вхід
             </Link>
             <Link
-              href="/sign-up"
+              href="/register"
               className={`${styles.btn} ${styles.btnPrimary}`}
             >
               Реєстрація

@@ -53,14 +53,14 @@ export default function MobileMenu({
       ) : (
         <>
           <Link
-            href="/sign-in"
+            href="/login"
             className={`${styles.btn} ${styles.btnGhost}`}
             onClick={closeMenu}
           >
             Вхід
           </Link>
           <Link
-            href="/sign-up"
+            href="/register"
             className={`${styles.btn} ${styles.btnPrimary}`}
             onClick={closeMenu}
           >
