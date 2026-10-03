@@ -27,7 +27,7 @@ export default function LocationCard<TLocation extends LocationCardData>({
   return (
     <article className={css.card}>
       <div className={css.imageFrame}>
-        {location.image ? (
+        {location.image && (
           <Image
             className={css.image}
             src={location.image}
@@ -35,10 +35,6 @@ export default function LocationCard<TLocation extends LocationCardData>({
             fill
             unoptimized
           />
-        ) : (
-          <span className={css.imagePlaceholder} aria-hidden="true">
-            Фото відсутнє
-          </span>
         )}
       </div>
 
