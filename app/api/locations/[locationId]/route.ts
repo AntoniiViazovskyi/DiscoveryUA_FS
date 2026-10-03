@@ -2,15 +2,20 @@ import { isAxiosError } from 'axios'
 import { cookies } from 'next/headers'
 import { type NextRequest, NextResponse } from 'next/server'
 
-import { api } from '../api'
+import { api } from '../../api'
 
-export async function POST(request: NextRequest) {
+type RouteProps = {
+  params: Promise<{ locationId: string }>
+}
+
+export async function PATCH(request: NextRequest, { params }: RouteProps) {
+  const { locationId } = await params
   const cookieStore = await cookies()
 
   try {
     const formData = await request.formData()
 
-    const response = await api.post('/locations', formData, {
+    const response = await api.patch(`/locations/${locationId}`, formData, {
       headers: {
         Cookie: cookieStore.toString(),
       },
@@ -39,30 +44,12 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams
+export async function GET(_request: NextRequest, { params }: RouteProps) {
+  const { locationId } = await params
   const cookieStore = await cookies()
-  const page = Number(searchParams.get('page') ?? 1)
-  const limit = Number(searchParams.get('limit') ?? 10)
-  const region = searchParams.get('region') ?? ''
-  const type = searchParams.get('type') ?? ''
-  const search = searchParams.get('search') ?? ''
-  const rate = searchParams.get('rate')
-  const sortBy = searchParams.get('sortBy') ?? 'rate'
-  const sortOrder = searchParams.get('sortOrder') ?? 'desc'
 
   try {
-    const response = await api('/locations', {
-      params: {
-        page,
-        limit,
-        ...(region && { region }),
-        ...(type && { type }),
-        ...(search && { search }),
-        ...(rate && { rate }),
-        sortBy,
-        sortOrder,
-      },
+    const response = await api(`/locations/${locationId}`, {
       headers: {
         Cookie: cookieStore.toString(),
       },
