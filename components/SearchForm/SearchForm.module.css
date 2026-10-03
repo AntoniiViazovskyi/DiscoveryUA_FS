@@ -33,57 +33,26 @@
   color: transparent;
 }
 .searchInput[aria-invalid="true"] {
-  border: 1px solid  #b00101;
+  border: 1px solid #b00101;
   color: #b00101;
- }
-
-.searchBtn {
-  border: 1px solid #cc6534;
-  border-radius: 6px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 39px;
-  background-color: #cc6534;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 1.5;
-  cursor: pointer;
-  color: #fff;
-  transition:
-    background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
-    color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.errorText {
   font-family: var(--font-montserrat), sans-serif;
-}
-.searchBtn:hover {
-  background-color: #ffe5d9;
-  color: #1b391b;
-}
-.searchBtn:active {
-  background-color: #cc6534;
-  color: #fff;
-}
-.searchBtn:disabled {
-  opacity: 0.3;
-}
-.errorText{
-  font-family: var(--font-montserrat), sans-serif;
-  color: #b00101;  
+  color: #b00101;
 }
 .formGroup {
-    display: flex;
-    flex-direction: column;
-    font-size: 14px;
-    font-weight: 500;
-    color: #212529;
-  }
-   .error {
-    font-family: var(--font-montserrat), sans-serif;
-    color: #fff;
-    font-size: 12px;
-    margin-top: 4px;
-  }
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  font-weight: 500;
+  color: #212529;
+}
+.error {
+  font-family: var(--font-montserrat), sans-serif;
+  color: #fff;
+  font-size: 12px;
+  margin-top: 4px;
+}
 
 /* Styles for Tablet devices */
 @media screen and (min-width: 768px) {
@@ -96,16 +65,10 @@
   .searchInput {
     min-width: 331px;
   }
-  .searchBtn {
-    min-width: 137px;
-  }
 }
+/* Styles for Desktop devices */
 @media screen and (min-width: 1440px) {
   .searchInput {
-    height: 43px;
-  }
-  .searchBtn {
-    min-width: 165px;
     height: 43px;
   }
 }

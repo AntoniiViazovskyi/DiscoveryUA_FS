@@ -3,6 +3,7 @@ import { Form, Formik, Field, FormikHelpers, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import css from "./SearchForm.module.css";
 import { useRouter } from "next/navigation";
+import Button from "../Button/Button";
 
 interface SearchFormValues {
   search: string;
@@ -24,9 +25,8 @@ export default function SearchForm() {
     values: SearchFormValues,
     actions: FormikHelpers<SearchFormValues>,
   ) => {
-    console.log("Пошуковий запит:", values.search);
     router.push(`/locations?query=${encodeURIComponent(values.search.trim())}`);
-    actions.resetForm({ values: initialValues });
+    actions.resetForm();
   };
   return (
     <Formik
@@ -36,7 +36,7 @@ export default function SearchForm() {
       validateOnChange={false}
       validateOnBlur={false}
     >
-      {({ errors, touched }) => (
+      {({ errors, touched,  isSubmitting }) => (
       <Form className={css.searchForm} noValidate>
         <div className={css.formGroup}>
           <Field
@@ -52,9 +52,7 @@ export default function SearchForm() {
           <ErrorMessage name="search" component="span" className={css.error} />
         </div>
         
-        <button type="submit" className={css.searchBtn}>
-          Знайти місце
-        </button>
+      <Button type={'submit'}  disabled={isSubmitting}></Button>
       </Form>
     )}
     </Formik>

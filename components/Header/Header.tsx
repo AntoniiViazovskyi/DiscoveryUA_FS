@@ -6,24 +6,21 @@ import Navigation from "./Navigation";
 import MobileMenu from "./MobileMenu";
 import styles from "./Header.module.css";
 
-// замінити на реальну авторизацію, коли вона буде готова
 const MOCK_AUTH = false;
 const MOCK_USER = { id: "1", name: "Ім'я", avatarUrl: null as string | null };
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const isAuthenticated = MOCK_AUTH; // TODO: взяти зі стору/хука
-  const user = MOCK_USER; // TODO: взяти зі стору/хука
+  const isAuthenticated = MOCK_AUTH; 
+  const user = MOCK_USER;
 
   const closeMenu = () => setIsOpen(false);
   const handleLogout = () => {
     closeMenu();
-    // TODO: відкрити ConfirmationModal
     console.log("logout clicked");
   };
 
-  // Скидаємо меню, коли екран розтягують до десктопу
   useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 1440px)");
 

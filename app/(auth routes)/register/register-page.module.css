@@ -1,0 +1,46 @@
+.content {
+  display: flex;
+  min-height: 0;
+  flex: 1 0 auto;
+  align-items: flex-start;
+  justify-content: center;
+  padding-block: var(--space-9);
+}
+
+.authPanel {
+  display: flex;
+  width: 100%;
+  max-width: 644px;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.formPane {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.title {
+  color: #000;
+  font-size: 28px;
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  letter-spacing: -0.28px;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 44px;
+    letter-spacing: -0.44px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .title {
+    font-size: 52px;
+    letter-spacing: -0.52px;
+  }
+}
