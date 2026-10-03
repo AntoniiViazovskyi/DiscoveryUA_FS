@@ -54,8 +54,8 @@ if (isError) {
     {Array.from({ length: 5 }, (_, index) => {
       let icon = 'icon-star-rate';
 
-      const fullStars = Math.floor(location.rate);
-      const hasHalfStar = location.rate % 1 !== 0;
+      const fullStars = Math.floor(location.rate ?? 0);
+      const hasHalfStar = (location.rate ?? 0) % 1 !== 0;
 
       if (index < fullStars) {
         icon = 'icon-star-filled';

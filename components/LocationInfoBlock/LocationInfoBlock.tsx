@@ -9,7 +9,7 @@ type LocationInfoBlockProps = {
 export default function LocationInfoBlock({
   location,
 }: LocationInfoBlockProps) {
-  const rating = location.rate;
+  const rating = location.rate ?? 0;
 
   const fullStars = Math.floor(rating);
   const hasHalfStar = rating % 1 !== 0;
@@ -66,14 +66,15 @@ export default function LocationInfoBlock({
           </p>
         </li>
         <li className={css.item}>
-          <p className={css.text}>
-            Автор статті:
-            {location.ownerId?.name ? (
+          <p className={css.author}>
+
+           <span className={css.authorLabel}> Автор статті:</span>
+            {location.ownerId?.name || location.ownerId?.username ? (
               <Link
                 href={`/profile/${location.ownerId._id}`}
                 className={`${css.link} ${css.label}`}
               >
-                {location.ownerId.name}
+                {location.ownerId.name || location.ownerId?.username}
               </Link>
             ) : (
               <span className={css.label}>Автор не вказаний</span>
