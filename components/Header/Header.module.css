@@ -1,0 +1,244 @@
+.header {
+  position: relative;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  z-index: 101;
+}
+
+.header.menuOpen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: var(--space-4) var(--container-padding);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+  text-decoration: none;
+  color: var(--color-text-primary);
+}
+
+.logoText {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  color: inherit;
+}
+
+.logo svg {
+  fill: currentColor;
+}
+
+.nav {
+  display: none;
+}
+
+.navLink {
+  white-space: nowrap;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-text);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.navLink:hover {
+  color: var(--color-accent);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+/* Кнопки */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-1) var(--space-3);
+  min-height: 32px;
+  border-radius: var(--radius-small);
+  font-size: var(--font-size-small);
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  transition:
+    background-color 0.2s,
+    opacity 0.2s,
+    color 0.2s;
+}
+
+.btnGhost {
+  background: var(--color-muted-background);
+  border-color: var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+.btnGhost:hover {
+  background: var(--color-accent);
+  border-color: transparent;
+  color: var(--color-white);
+}
+
+.btnPrimary {
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+
+.btnPrimary:hover {
+  opacity: 0.8;
+}
+
+/* На мобільному кнопки в хедері ховаємо: вони в меню */
+.actions > .btn,
+.actions > .userInfo {
+  display: none;
+}
+
+/* Користувач */
+.userInfo {
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.avatar {
+  border-radius: var(--radius-round);
+  border: 1px solid var(--color-border);
+  object-fit: cover;
+}
+
+.userName {
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+}
+
+.logoutButton {
+  display: inline-flex;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.addLink {
+  font-size: var(--font-size-small);
+}
+
+/* Бургер */
+.burger {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-small);
+  background: var(--color-muted-background);
+}
+
+.burger span {
+  width: 16px;
+  height: 2px;
+  background: var(--color-text-secondary);
+  transition:
+    transform 0.3s,
+    opacity 0.3s;
+}
+
+.burger[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.burger[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+
+.burger[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Мобільне меню на весь екран */
+.mobileNav {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+  padding: 96px var(--container-padding) var(--space-8);
+  background: var(--color-surface);
+  overflow-y: auto;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-16px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    visibility 0.25s;
+}
+
+.mobileNav a:not(.btn) {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-regular);
+  text-decoration: none;
+}
+
+.mobileNav .btn {
+  width: 100%;
+  max-width: 335px;
+}
+
+.mobileNav.isOpen {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Планшет */
+@media (min-width: 768px) {
+  .actions > .btn,
+  .actions > .userInfo {
+    display: inline-flex;
+  }
+
+  .mobileNav .btn {
+    display: none;
+  }
+}
+
+/* Десктоп */
+@media (min-width: 1440px) {
+  .nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-6);
+    flex: 1;
+  }
+
+  .burger,
+  .mobileNav {
+    display: none;
+  }
+}
