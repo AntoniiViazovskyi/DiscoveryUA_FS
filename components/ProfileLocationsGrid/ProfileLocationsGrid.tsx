@@ -24,6 +24,7 @@ export default function ProfileLocationsGrid({
         <li key={location._id}>
           <LocationCard
             location={location}
+            rating={location.rate}
             onView={(loc) => router.push(`/locations/${loc._id}`)}
             onEdit={
               isOwner

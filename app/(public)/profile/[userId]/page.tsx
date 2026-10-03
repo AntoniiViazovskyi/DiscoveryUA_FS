@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
@@ -15,6 +15,8 @@ import { SITE_NAME } from '@/lib/seo'
 
 import styles from './profile-page.module.css'
 
+const OBJECT_ID_REGEX = /^[0-9a-f]{24}$/i
+
 type Props = {
   params: Promise<{ userId: string }>
   searchParams: Promise<{ page?: string }>
@@ -22,7 +24,13 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { userId } = await params
+
+  if (!OBJECT_ID_REGEX.test(userId)) {
+    return { title: 'Профіль не знайдено' }
+  }
+
   const user = await getPublicUser(userId).catch(() => null)
+
   const displayName = user?.name ?? user?.username ?? 'Профіль'
 
   return {
@@ -37,14 +45,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProfilePage({ params, searchParams }: Props) {
   const { userId } = await params
   const { page: pageParam } = await searchParams
-  const page = Math.max(1, Number(pageParam) || 1)
+
+  if (!OBJECT_ID_REGEX.test(userId)) {
+    notFound()
+  }
+
+  const parsedPage = Number(pageParam)
+  const page = Number.isInteger(parsedPage) && parsedPage > 0 ? parsedPage : 1
 
   let profileUser
   let locationsData
   let currentUser = null
 
   try {
-    // Fetch current user silently — null if not logged in
     ;[currentUser, profileUser, locationsData] = await Promise.all([
       getCurrentUser().catch(() => null),
       getPublicUser(userId),
@@ -64,6 +77,14 @@ export default async function ProfilePage({ params, searchParams }: Props) {
     }
     throw err
   }
+
+  if (
+  locationsData &&
+  locationsData.totalPages > 0 &&
+  page > locationsData.totalPages
+) {
+  redirect(`/profile/${userId}?page=${locationsData.totalPages}`)
+}
 
   if (!profileUser) {
     notFound()
