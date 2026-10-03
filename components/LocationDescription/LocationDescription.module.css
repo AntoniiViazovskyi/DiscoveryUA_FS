@@ -1,0 +1,14 @@
+.description {
+  width: 100%;
+  max-width: 865px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text {
+  text-align: left;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-regular);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-text);
+}

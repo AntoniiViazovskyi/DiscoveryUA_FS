@@ -1,0 +1,245 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.label {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-text);
+  color: var(--color-text-primary);
+}
+
+.input {
+  width: 100%;
+  height: 40px;
+  padding: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-small);
+  background-color: var(--color-surface-accent);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-text);
+  transition: border-color 0.2s ease;
+}
+
+.input::placeholder {
+  color: var(--color-placeholder);
+}
+
+.input:hover,
+.input:focus {
+  border-color: var(--color-border-hover);
+  outline: none;
+}
+
+.inputError,
+.inputError:hover,
+.inputError:focus {
+  border-color: var(--color-error);
+}
+
+.error {
+  margin-top: -2px;
+  color: var(--color-error);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-text);
+}
+
+.imageField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.imageUpload {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.imagePreview {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 335 / 223;
+  overflow: hidden;
+  border-radius: var(--radius-medium);
+  background-color: #dedede;
+}
+
+.previewImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imageIcon {
+  width: 96px;
+  height: 96px;
+  color: #b8b8b8;
+}
+
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.imageButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  width: 178px;
+  height: 32px;
+  padding: 4px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-small);
+  background-color: var(--color-muted-background);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-text);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.imageButton:hover,
+.imageButton:focus-visible {
+  border-color: var(--color-accent);
+  background-color: var(--color-surface-accent);
+}
+
+.imageButton:active {
+  border-color: var(--color-accent);
+  background-color: var(--color-muted-background);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.submitButton,
+.cancelButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 48px;
+  padding: 6px 12px;
+  border-radius: var(--radius-small);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-text);
+}
+
+.submitButton {
+  border: 1px solid var(--color-accent);
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.cancelButton {
+  border: 1px solid var(--color-border);
+  background-color: var(--color-muted-background);
+  color: var(--color-text-primary);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.submitButton:hover:not(:disabled),
+.cancelButton:hover {
+  background-color: var(--color-surface-accent);
+  color: var(--color-text-primary);
+}
+
+.submitButton:active:not(:disabled) {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+}
+
+.cancelButton:active {
+  border-color: var(--color-border-hover);
+  background-color: var(--color-muted-background);
+}
+
+.submitButton:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.loaderWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .form {
+    max-width: 704px;
+    margin-inline: auto;
+  }
+
+  .actions {
+    flex-direction: row;
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .submitButton,
+  .cancelButton {
+    width: 203px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .form {
+    max-width: 1091px;
+    margin-inline: 0;
+  }
+
+  .label,
+  .input {
+    font-size: var(--font-size-regular);
+  }
+
+  .input {
+    height: 43px;
+  }
+
+  .imageButton {
+    width: 219px;
+    height: 38px;
+    font-size: var(--font-size-medium);
+  }
+}
