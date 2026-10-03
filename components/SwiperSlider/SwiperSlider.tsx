@@ -11,7 +11,6 @@ import css from './SwiperSlider.module.css';
 
 type SliderProps<T> = {
   items: T[];
-  sliderId: string;
   getKey: (item: T) => string;
   navigationMarginTop?: number;
   renderItem: (item: T) => React.ReactNode;
@@ -19,39 +18,46 @@ type SliderProps<T> = {
 
 export default function SwiperSlider<T>({
   items,
-  sliderId,
   getKey,
   navigationMarginTop = 50,
   renderItem,
 }: SliderProps<T>) {
+
   const swiperRef = useRef<SwiperType | null>(null);
 
-  const prevButton = `${sliderId}-prev`;
-  const nextButton = `${sliderId}-next`;
-  useEffect(() => {
-    if (!swiperRef.current) return;
+  const prevRef = useRef<HTMLButtonElement | null>(null)
+  const nextRef = useRef<HTMLButtonElement | null>(null)
+  // const prevButton = `${sliderId}-prev`;
+  // const nextButton = `${sliderId}-next`;
 
+  useEffect(() => {
     const swiper = swiperRef.current;
 
-    swiper.params.navigation = {
-      ...(swiper.params.navigation as object),
-      prevEl: `.${prevButton}`,
-      nextEl: `.${nextButton}`,
-    };
+   
+  if (!swiper || !prevRef.current || !nextRef.current) return
 
-    swiper.navigation.init();
-    swiper.navigation.update();
-  }, [prevButton, nextButton]);
+  const navigation = swiper.params.navigation
+
+  if (!navigation || typeof navigation === 'boolean') return
+
+  navigation.prevEl = prevRef.current
+  navigation.nextEl = nextRef.current
+    swiper.navigation.destroy()
+    swiper.navigation.init()
+    swiper.navigation.update()
+  }, [items.length])
 
   return (
     <div className={css.wrapper}>
       <Swiper
+       modules={[Navigation]}
         onSwiper={swiper => {
           swiperRef.current = swiper;
         }}
         slidesPerView={1}
+         slidesPerGroup={1}
         spaceBetween={24}
-        loop={true}
+        loop={items.length > 3}
         breakpoints={{
           768: {
             slidesPerView: 2,
@@ -62,15 +68,10 @@ export default function SwiperSlider<T>({
             spaceBetween: 24,
           },
         }}
-        navigation={{
-          nextEl: `.${nextButton}`,
-          prevEl: `.${prevButton}`,
-        }}
-        modules={[Navigation]}
         className={css.swiper}
       >
         {items.map(item => (
-          <SwiperSlide key={getKey(item)}>
+          <SwiperSlide key={getKey(item)} className={css.slide}>
             {renderItem(item)}
           </SwiperSlide>
         ))}
@@ -80,7 +81,8 @@ export default function SwiperSlider<T>({
       style={{ marginTop: `${navigationMarginTop}px` }}>
         <button
           type="button"
-          className={`${css.prevButton} ${prevButton}`}
+          ref={prevRef}
+          className={`${css.prevButton}`}
           aria-label="Попередній слайд"
         >
             <svg className={css.arrowIcon} width={24} height={24} aria-hidden="true">
@@ -91,7 +93,8 @@ export default function SwiperSlider<T>({
 
         <button
           type="button"
-          className={`${css.nextButton} ${nextButton}`}
+          ref={nextRef}
+          className={css.nextButton}
           aria-label="Наступний слайд"
         >
    <svg className={css.arrowIcon} aria-hidden="true">
@@ -108,8 +111,7 @@ export default function SwiperSlider<T>({
 // В СВОЙ КОМПОНЕНТ import SwiperSlider from '../SwiperSlider/SwiperSlider';
 
 //   <SwiperSlider
-//         items={locations} 
-//         sliderId="popular-locations" <-- ДЛЯ СЕКЦИИ СВОЁ НАЗВАНИЕ 
+//         items={locations} <-- ДЛЯ СЕКЦИИ СВОЁ НАЗВАНИЕ 
 //          getKey={location => location._id}
 //  navigationMarginTop={50}  НЕ ОБОВЬЯЗКОВО. ЗА ЗАМОВЧУВАННЯМ 50PX ВІДСТАНЬ ВІД КНОПОК ДО КАРТОК
 //         renderItem={location => (
