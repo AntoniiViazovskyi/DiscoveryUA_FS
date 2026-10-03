@@ -27,25 +27,24 @@ export default function SwiperSlider<T>({
 
   const prevRef = useRef<HTMLButtonElement | null>(null)
   const nextRef = useRef<HTMLButtonElement | null>(null)
-  // const prevButton = `${sliderId}-prev`;
-  // const nextButton = `${sliderId}-next`;
 
   useEffect(() => {
     const swiper = swiperRef.current;
 
    
-  if (!swiper || !prevRef.current || !nextRef.current) return
+  if (!swiper || !prevRef.current || !nextRef.current) return;
 
   const navigation = swiper.params.navigation
 
-  if (!navigation || typeof navigation === 'boolean') return
+  if (!navigation || typeof navigation === 'boolean') return;
 
-  navigation.prevEl = prevRef.current
-  navigation.nextEl = nextRef.current
-    swiper.navigation.destroy()
-    swiper.navigation.init()
-    swiper.navigation.update()
-  }, [items.length])
+
+    navigation.prevEl = prevRef.current;
+    navigation.nextEl = nextRef.current;
+
+    swiper.navigation.init();
+    swiper.navigation.update();
+  }, [])
 
   return (
     <div className={css.wrapper}>
@@ -106,20 +105,17 @@ export default function SwiperSlider<T>({
   );
 }
 
-// Карточки крутятся по кругу сейчас  loop={true}
-
-// В СВОЙ КОМПОНЕНТ import SwiperSlider from '../SwiperSlider/SwiperSlider';
-
-//   <SwiperSlider
-//         items={locations} <-- ДЛЯ СЕКЦИИ СВОЁ НАЗВАНИЕ 
-//          getKey={location => location._id}
-//  navigationMarginTop={50}  НЕ ОБОВЬЯЗКОВО. ЗА ЗАМОВЧУВАННЯМ 50PX ВІДСТАНЬ ВІД КНОПОК ДО КАРТОК
-//         renderItem={location => (
-//           <div>
-//           {/* Здесь потом будет:*/}
-//           CARD
-//           {/* <LocationCard location={location} /> */}
-//           </div>
-// 
-//         )}
-//       />
+// В СВОЁМ КОМПОНЕНТЕ
+    // <SwiperSlider
+    //   items={reviews}
+    //   getKey={review => review._id}
+    //   renderItem={review => (
+    //     <CardComponent
+    //       rating={review.rate}
+    //       comment={review.description}
+    //       authorName={review.authorName}
+    //       locationName={review.locationName}
+    //       locationHref={`/locations/${review.locationId}`}
+    //     />
+    //   )}
+    // />
