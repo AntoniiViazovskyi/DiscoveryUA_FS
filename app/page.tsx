@@ -12,10 +12,10 @@ export default function HomePage() {
         The shared structure and dependencies are configured. Replace this page
         when product development begins.
       </p>
-      <HeroBlock/>
-      <AdvantagesBlock/>
-      <PopularLocationsBlock/>
+      <HeroBlock />
+      <AdvantagesBlock />
+      <PopularLocationsBlock />
       <ReviewsBlock />
     </main>
-  )
+  );
 }
