@@ -4,7 +4,7 @@ export type Location = {
   name: string;
   locationType: string;
   region: string;
-  rate: number;
+  rate?: number;
   description: string;
   advantages: string[];
   coordinates: {
@@ -13,9 +13,9 @@ export type Location = {
   };
   ownerId: string | null;
   feedbacksId: string[];
-  feedbacksCount: number;
-  createdAt: string;
-  updatedAt: string;
+  feedbacksCount?: number;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type LocationsHttpResponse = {
@@ -28,8 +28,9 @@ export type LocationsHttpResponse = {
 
 export type LocationOwner = {
   _id: string;
-  name: string;
-  avatarUrl: string;
+  name?: string;
+  username?: string;
+  avatarUrl?: string;
 };
 
 export type LocationDetails = {
@@ -38,7 +39,7 @@ export type LocationDetails = {
   name: string;
   locationType: string;
   region: string;
-  rate: number;
+  rate?: number;
   description: string;
   advantages: string[];
   coordinates: {
@@ -47,7 +48,7 @@ export type LocationDetails = {
   };
   ownerId: LocationOwner | null;
   feedbacksId: string[];
-  feedbacksCount: number;
-  createdAt: string;
-  updatedAt: string;
+  feedbacksCount?: number;
+  createdAt?: string;
+  updatedAt?: string;
 };
