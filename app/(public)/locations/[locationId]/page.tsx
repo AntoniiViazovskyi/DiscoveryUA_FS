@@ -1,3 +1,6 @@
+import { isAxiosError } from "axios";
+import { notFound } from "next/navigation";
+
 import LocationDescription from "@/components/LocationDescription/LocationDescription";
 import LocationGallery from "@/components/LocationGallery/LocationGallery";
 import LocationInfoBlock from "@/components/LocationInfoBlock/LocationInfoBlock";
@@ -12,12 +15,26 @@ type LocationDetailsPageProps = {
   }>;
 };
 
+const objectIdRegex = /^[0-9a-fA-F]{24}$/;
+
 export default async function LocationDetailsPage({
   params,
 }: LocationDetailsPageProps) {
   const { locationId } = await params;
 
-  const location = await fetchLocationById(locationId);
+  if (!objectIdRegex.test(locationId)) {
+    notFound();
+  }
+
+  let location;
+  try {
+    location = await fetchLocationById(locationId);
+  } catch (error) {
+    if (isAxiosError(error) && error.response?.status === 404) {
+      notFound();
+    }
+    throw error;
+  }
 
   return (
     <div className="container">
