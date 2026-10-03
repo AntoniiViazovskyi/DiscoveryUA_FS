@@ -9,8 +9,16 @@ const nextConfig: NextConfig = {
   },
   images: {
     remotePatterns: [
-      { protocol: "https", hostname: "res.cloudinary.com" },
-      { protocol: "https", hostname: "ftp.goit.study" },
+      {
+        protocol: "https",
+        hostname: "ftp.goit.study",
+        pathname: "/img/relax-map/**",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "/**",
+      },
     ],
   },
 };
