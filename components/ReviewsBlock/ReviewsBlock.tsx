@@ -83,7 +83,11 @@ async function fetchLocations(signal: AbortSignal): Promise<Location[]> {
   )
 }
 
-function normalizeFeedbacks(data: unknown, location: Location): Feedback[] {
+function normalizeFeedbacks(
+  data: unknown,
+  location: Location | undefined,
+  fallbackLocationId: string,
+): Feedback[] {
   const records = getArrayProperty(data, 'data').length
     ? getArrayProperty(data, 'data')
     : getArrayProperty(data, 'feedbacks')
@@ -110,21 +114,22 @@ function normalizeFeedbacks(data: unknown, location: Location): Feedback[] {
       rate,
       description,
       authorName,
-      locationId: location._id,
-      locationName: location.name,
+      locationId: location?._id ?? fallbackLocationId,
+      locationName: location?.name ?? '',
     }]
   })
 }
 
 async function fetchLocationFeedbacks(
-  location: Location,
+  locationId: string,
   signal: AbortSignal,
+  location?: Location,
 ): Promise<Feedback[]> {
   const firstPage = await fetchJson(
-    `/api/feedbacks?locationId=${encodeURIComponent(location._id)}&page=1&limit=${PAGE_SIZE}`,
+    `/api/feedbacks?locationId=${encodeURIComponent(locationId)}&page=1&limit=${PAGE_SIZE}`,
     signal,
   )
-  const feedbacks = normalizeFeedbacks(firstPage, location)
+  const feedbacks = normalizeFeedbacks(firstPage, location, locationId)
   const totalPages = getTotalPages(firstPage)
 
   if (totalPages <= 1) return feedbacks
@@ -132,14 +137,14 @@ async function fetchLocationFeedbacks(
   const remainingPages = await Promise.all(
     Array.from({ length: totalPages - 1 }, (_, index) =>
       fetchJson(
-        `/api/feedbacks?locationId=${encodeURIComponent(location._id)}&page=${index + 2}&limit=${PAGE_SIZE}`,
+        `/api/feedbacks?locationId=${encodeURIComponent(locationId)}&page=${index + 2}&limit=${PAGE_SIZE}`,
         signal,
       ),
     ),
   )
 
   return feedbacks.concat(
-    ...remainingPages.map((page) => normalizeFeedbacks(page, location)),
+    ...remainingPages.map((page) => normalizeFeedbacks(page, location, locationId)),
   )
 }
 
@@ -152,14 +157,23 @@ async function fetchAllReviews(
   signal: AbortSignal,
   locationId?: string,
 ): Promise<Feedback[]> {
+  if (locationId) {
+    const feedbacks = await fetchLocationFeedbacks(locationId, signal)
+    return feedbacks.sort((first, second) => {
+      const timestampDifference =
+        getObjectIdTimestamp(second._id) - getObjectIdTimestamp(first._id)
+      return timestampDifference || second._id.localeCompare(first._id)
+    })
+  }
+
   const locations = (await fetchLocations(signal)).filter(
     (location) =>
-      Array.isArray(location.feedbacksId) &&
-      location.feedbacksId.length > 0 &&
-      (!locationId || location._id === locationId),
+      Array.isArray(location.feedbacksId) && location.feedbacksId.length > 0,
   )
   const feedbacksByLocation = await Promise.all(
-    locations.map((location) => fetchLocationFeedbacks(location, signal)),
+    locations.map((location) =>
+      fetchLocationFeedbacks(location._id, signal, location),
+    ),
   )
 
   return feedbacksByLocation
@@ -171,7 +185,7 @@ async function fetchAllReviews(
     })
 }
 
-export default function ReviewsBlock({
+function ReviewsBlockContent({
   initialReviews,
   locationId,
   title = 'Останні відгуки',
@@ -288,4 +302,9 @@ export default function ReviewsBlock({
       </div>
     </section>
   )
+}
+
+export default function ReviewsBlock(props: ReviewsBlockProps) {
+  const key = props.locationId ?? 'all-locations'
+  return <ReviewsBlockContent key={key} {...props} />
 }
