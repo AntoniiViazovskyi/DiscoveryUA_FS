@@ -1,28 +1,32 @@
-import { isAxiosError } from 'axios'
+import { isAxiosError } from "axios";
 
-import { LocationsHttpResponse } from '@/types/location'
-import { FetchLocationsParams, http } from './http'
+import { LocationsHttpResponse } from "@/types/location";
+import { FetchLocationsParams, http } from "./http";
 
 export type RegisterRequest = {
-  username: string
-  email: string
-  password: string
-}
+  username: string;
+  email: string;
+  password: string;
+};
+export type LoginRequest = {
+  email: string;
+  password: string;
+};
 
 type ApiErrorResponse = {
-  error?: string
+  error?: string;
   response?: {
-    error?: string
-    message?: string
-  }
-}
+    error?: string;
+    message?: string;
+  };
+};
 
 function getRequestError(error: unknown): Error {
   if (isAxiosError(error)) {
-    const data = error.response?.data as ApiErrorResponse | undefined
+    const data = error.response?.data as ApiErrorResponse | undefined;
 
-    if (data?.response?.message === 'Email in use') {
-      return new Error('Користувач із такою поштою вже існує.')
+    if (data?.response?.message === "Email in use") {
+      return new Error("Користувач із такою поштою вже існує.");
     }
 
     return new Error(
@@ -30,12 +34,29 @@ function getRequestError(error: unknown): Error {
         data?.response?.error ??
         data?.error ??
         error.message,
-    )
+    );
   }
 
   return error instanceof Error
     ? error
-    : new Error('Не вдалося зареєструватися. Спробуйте ще раз.')
+    : new Error("Не вдалося зареєструватися. Спробуйте ще раз.");
+}
+
+function getLoginRequestError(error: unknown): Error {
+  if (isAxiosError(error)) {
+    const data = error.response?.data as ApiErrorResponse | undefined;
+
+    return new Error(
+      data?.response?.message ??
+        data?.response?.error ??
+        data?.error ??
+        error.message,
+    );
+  }
+
+  return error instanceof Error
+    ? error
+    : new Error("Не вдалося увійти. Спробуйте ще раз.");
 }
 
 export async function fetchAllLocations({
@@ -45,10 +66,10 @@ export async function fetchAllLocations({
   type,
   search,
   rate,
-  sortBy = 'rate',
-  sortOrder = 'desc',
+  sortBy = "rate",
+  sortOrder = "desc",
 }: FetchLocationsParams): Promise<LocationsHttpResponse> {
-  const response = await http.get<LocationsHttpResponse>('/locations', {
+  const response = await http.get<LocationsHttpResponse>("/locations", {
     params: {
       page,
       limit,
@@ -59,15 +80,23 @@ export async function fetchAllLocations({
       sortBy,
       sortOrder,
     },
-  })
+  });
 
-  return response.data
+  return response.data;
 }
 
 export async function register(data: RegisterRequest): Promise<void> {
   try {
-    await http.post('/auth/register', data)
+    await http.post("/auth/register", data);
   } catch (error) {
-    throw getRequestError(error)
+    throw getRequestError(error);
+  }
+}
+
+export async function login(data: LoginRequest): Promise<void> {
+  try {
+    await http.post("/auth/login", data);
+  } catch (error) {
+    throw getLoginRequestError(error);
   }
 }
