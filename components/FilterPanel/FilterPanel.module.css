@@ -1,0 +1,366 @@
+.filterContainer {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: var(--space-4);
+  margin-bottom: 40px;
+}
+.filterInput,
+.filterSelect,
+.filterSort {
+  height: 40px;
+  white-space: nowrap;
+  word-break: normal;
+  display: block;
+}
+
+.filterInput,
+.filterSelect,
+.filterSort,
+.typeTitle {
+  border: 1px solid var(--color-border);
+  border-radius: var( --radius-small);
+  padding: 0 var(--space-2);
+  background-color: var(--color-surface-accent);
+  font: inherit;
+  color: var(--color-overlay);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-text);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  transition: border-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.filterInput{
+    color: var(--color-text-primary)
+}
+.filterInput::placeholder{
+  color: var(--color-overlay);  
+}
+
+.filterInput,
+.filterSort {
+  width: 100%;
+}
+.filterRow {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: var( --space-4);
+}
+
+.filterSelect,
+.typeWrap {
+  display: block;
+  width: calc((100% - 16px) / 2);
+}
+.filterSelect option,
+.typeWrap option,
+.filterSort option {
+  background-color: var(--color-surface-accent);
+  color:var(--color-overlay);
+}
+
+.filterInput:is(:focus, :hover),
+.filterSelect:is(:focus, :hover),
+.filterSort:is(:focus, :hover),
+.checkboxLabel:hover,
+.typeWrap:is(:hover, :focus-within) .typeTitle {
+  border-color: var(--color-accent);
+  outline: none;
+}
+
+.filterInput:focus::placeholder {
+  color: transparent;
+}
+
+.filterSelect,
+.filterSort {
+  padding-right: 36px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='rgba(0, 0, 0, 0.6)' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  flex-shrink: 0;
+}
+
+/*Помилка валідації*/
+.searchWrap {
+  position: relative;
+  width: 100%;
+}
+
+.filterError {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin: 1px 0 2px;
+  font-size: 10px;
+  line-height: var(--line-height-text);
+  color: var(--color-error);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.filterInput[aria-invalid="true"] {
+  border-color: var(--color-error);
+}
+
+/* Тип локації  */
+.typeWrap {
+  position: relative;
+  height: 40px;
+  padding: 0;
+  outline: none;
+  transition: border-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.typeTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.typeTitle::after {
+  content: "";
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  background-color: var(--color-overlay);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  transition: rotate 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.typeWrap:focus-within .typeTitle::after {
+  rotate: 180deg;
+}
+.typeList {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  box-sizing: border-box;
+  max-height: 280px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: var(--space-1);
+  border: 1px solid var(--color-border);
+  border-radius: var( --radius-small);
+  background-color:var(--color-surface-accent);
+  white-space: normal;
+  scrollbar-width: none;
+}
+
+.typeList::-webkit-scrollbar {
+  display: none;
+}
+
+.typeWrap:focus-within .typeList {
+  display: block;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var( --radius-small);
+  color: var(--color-overlay);
+  line-height: var(--line-height-text);
+  cursor: pointer;
+  transition: border-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.checkboxLabel > span {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Кастомний випадний список */
+@supports (appearance: base-select) {
+  .filterSelect,
+  .filterSort {
+    appearance: base-select;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-2);
+    background-image: none;
+  }
+
+  .filterSelect::picker-icon,
+  .typeWrap::picker-icon,
+  .filterSort::picker-icon {
+    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%23000' stroke-opacity='0.6' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .filterSelect:open::picker-icon,
+  .typeWrap:open::picker-icon,
+  .filterSort:open::picker-icon {
+    rotate: 180deg;
+  }
+
+  .filterSelect::picker(select),
+  .filterSort::picker(select) {
+    appearance: base-select;
+    width: anchor-size(width);
+    max-width: anchor-size(width);
+    max-height: 280px;
+    margin-block: var(--space-1);
+    padding: var(--space-1);
+    border: 1px solid var(--color-border);
+    border-radius: var( --radius-small);
+    background-color:var(--color-surface-accent);
+    box-shadow: none;
+    font: inherit;
+    scrollbar-width: none;
+  }
+  .filterSelect::picker(select)::-webkit-scrollbar,
+  .filterSort::picker(select)::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background: transparent;
+  }
+
+  .filterSelect option,
+  .filterSort option {
+    padding: var(--space-1) 6px;
+    border: 1px solid transparent;
+    border-radius: var( --radius-small);
+    cursor: pointer;
+    color: var(--color-overlay);
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height:var(--line-height-text);
+    transition: border-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .filterSelect option:hover,
+  .filterSort option:hover {
+    border-color:var(--color-accent);
+  }
+
+  .filterSelect option:checked,
+  .filterSort option:checked {
+    background-color: var(--color-border-hover);
+  }
+  .filterSelect option::checkmark,
+  .filterSort option::checkmark {
+    display: none;
+  }
+}
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) 6px;
+  border-radius: var( --radius-small);
+  cursor: pointer;
+  color: var(--color-overlay);
+  transition: background-color 0.2s;
+}
+
+.checkboxInput {
+  appearance: none;
+  position: relative;
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  margin: 0 6px;
+  border: 1px solid var(--color-overlay);
+  border-radius: var( --radius-small);
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 250ms;
+}
+
+.checkboxInput:checked {
+  background-color: var(--color-border-hover);
+}
+
+.checkboxInput::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-overlay);
+  opacity: 0;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E")
+    center / 80% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E")
+    center / 80% no-repeat;
+  transition: opacity 250ms;
+}
+
+.checkboxInput:checked::after {
+  opacity: 1;
+}
+
+/* Styles for Tablet devices */
+@media screen and (min-width: 768px) {
+  .filterRow {
+    flex: 0 1 431px;
+    min-width: 431px;
+    width: auto;
+  }
+  .filterContainer {
+    column-gap: var(--space-4);
+  }
+  .filterSort {
+    flex: 0 1 190px;
+    min-width: 158px;
+    width: auto;
+    margin-left: auto;
+  }
+}
+/* Styles for Desktop devices */
+@media screen and (min-width: 1440px) {
+  .filterContainer {
+    gap: 0;
+  }
+  .filterRow {
+    min-width: 422px;
+    align-self: flex-start;
+    gap: var(--space-5);
+  }
+  .searchWrap {
+    width: 310px;
+    margin-right: var(--space-5);
+  }
+  .filterSort {
+    margin-left: auto;
+    min-width: 160px;
+  }
+  .filterInput {
+    min-width: 310px;
+  }
+
+  .filterInput,
+  .filterSelect,
+  .filterSort,
+  .typeWrap {
+    height: 43px;
+    font-size: var(--font-size-regular);
+    line-height: var(--line-height-text);
+  }
+  .typeTitle {
+    font-size: var(--font-size-regular);
+    line-height: var(--line-height-text);
+  }
+  .filterError {
+    top: 47px;
+  }
+  .filterError {
+    font-size: 12px;
+  }
+}
