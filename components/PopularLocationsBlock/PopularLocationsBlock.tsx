@@ -21,13 +21,16 @@ export default function PopularLocationsBlock() {
         sortOrder: "desc",
       }),
   });
+
   const locations = data?.locations ?? [];
+
   console.log(
     locations.map((location) => ({
       name: location.name,
       rate: location.rate,
     })),
   );
+
   if (isLoading) {
     return <p>Завантаження...</p>;
   }
@@ -40,6 +43,7 @@ export default function PopularLocationsBlock() {
     <section className={`${css.popularLocationSection} ${css.container}`}>
       <div className={css.popularLocationContainer}>
         <h2 className={css.popularLocationsTitle}>Популярні локації</h2>
+
         <Link href="/locations" className={css.popularLocationsLink}>
           Всі локації
         </Link>
@@ -57,8 +61,9 @@ export default function PopularLocationsBlock() {
                 {Array.from({ length: 5 }, (_, index) => {
                   let icon = "icon-star-rate";
 
-                  const fullStars = Math.floor(location.rate);
-                  const hasHalfStar = location.rate % 1 !== 0;
+                  const rate = location.rate ?? 0;
+                  const fullStars = Math.floor(rate);
+                  const hasHalfStar = rate % 1 !== 0;
 
                   if (index < fullStars) {
                     icon = "icon-star-filled";

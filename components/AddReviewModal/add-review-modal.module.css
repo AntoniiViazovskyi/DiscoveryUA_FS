@@ -1,0 +1,15 @@
+.title {
+  margin: 0 0 var(--space-5);
+  color: var(--review-color-text);
+  font-family: var(--font-family-primary);
+  font-size: var(--review-heading-size);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--review-heading-line-height);
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.title:focus-visible {
+  outline: var(--review-focus-width) solid var(--color-accent);
+  outline-offset: var(--space-1);
+}
