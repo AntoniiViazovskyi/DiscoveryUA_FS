@@ -1,0 +1,19 @@
+.gallery {
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-xlarge);
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 755 / 503;
+  object-fit: cover;
+}
+
+@media screen and (min-width: 1440px) {
+  .gallery {
+    max-width: 755px;
+  }
+}

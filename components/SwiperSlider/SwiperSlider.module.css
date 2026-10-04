@@ -6,11 +6,6 @@
   width: 100%;
 }
 
-.swiper :global(.swiper-slide) {
-  /* height: 100%;  */
-  /* background-color: #eee; */
-}
-
 .navigation {
   display: flex;
   justify-content: flex-end;
