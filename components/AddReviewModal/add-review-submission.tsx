@@ -15,7 +15,7 @@ export function AddReviewSubmission({
   locationId,
   onClose,
 }: AddReviewSubmissionProps) {
-  const pending = useRef(false)
+  const pending = useRef<Promise<void> | null>(null)
   const mounted = useRef(true)
   useEffect(() => {
     mounted.current = true
@@ -28,9 +28,14 @@ export function AddReviewSubmission({
     onClose()
   }, [onClose])
 
-  async function submit(values: AddReviewFormValues) {
-    if (pending.current) return
-    pending.current = true
+  function submit(values: AddReviewFormValues) {
+    if (pending.current) return pending.current
+    const request = Promise.resolve().then(() => send(values))
+    pending.current = request
+    return request
+  }
+
+  async function send(values: AddReviewFormValues) {
     try {
       const response = await fetch('/api/feedbacks', {
         method: 'POST',
@@ -79,7 +84,7 @@ export function AddReviewSubmission({
       toast.error(message, { toasterId: REVIEW_TOASTER_ID })
       throw new Error(message)
     } finally {
-      pending.current = false
+      pending.current = null
     }
   }
 
