@@ -116,27 +116,29 @@ export default function EditProfileModal({
           <div className={css.avatarSection}>
             <span className={css.label}>Аватар</span>
 
-            <div className={css.avatarPreview}>
-              <Image
-                className={css.avatarImage}
-                src={previewUrl}
-                alt="Попередній перегляд аватара"
-                width={120}
-                height={120}
-                unoptimized
-              />
-            </div>
+            <div className={css.avatarRow}>
+              <div className={css.avatarPreview}>
+                <Image
+                  className={css.avatarImage}
+                  src={previewUrl}
+                  alt="Попередній перегляд аватара"
+                  width={120}
+                  height={120}
+                  unoptimized
+                />
+              </div>
 
-            <label className={css.fileButton}>
-              Завантажити фото
-              <input
-                className={css.fileInput}
-                type="file"
-                accept="image/jpeg,image/png"
-                onChange={handleAvatarChange}
-                disabled={isSubmitting}
-              />
-            </label>
+              <label className={css.fileButton}>
+                Завантажити фото
+                <input
+                  className={css.fileInput}
+                  type="file"
+                  accept="image/jpeg,image/png"
+                  onChange={handleAvatarChange}
+                  disabled={isSubmitting}
+                />
+              </label>
+            </div>
           </div>
 
           <div className={css.field}>
@@ -150,27 +152,27 @@ export default function EditProfileModal({
               value={name}
               onChange={(event) => setName(event.target.value)}
               maxLength={32}
-              placeholder="Введіть ім'я"
+              placeholder="Введіть нове ім'я"
               disabled={isSubmitting}
             />
           </div>
 
           <div className={css.buttons}>
             <button
-              className={css.submitButton}
-              type="submit"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Зберігаємо..." : "Зберегти"}
-            </button>
-
-            <button
               className={css.cancelButton}
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
             >
-              Скасувати
+              Відмінити
+            </button>
+
+            <button
+              className={css.submitButton}
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Збереження..." : "Зберегти"}
             </button>
           </div>
         </form>
