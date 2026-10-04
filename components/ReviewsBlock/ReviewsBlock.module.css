@@ -10,6 +10,17 @@
   padding-bottom: var(--space-reviews-footer-compact);
 }
 
+.homeSection {
+  overflow-x: clip;
+}
+
+.homeContainer {
+  width: min(375px, 100vw);
+  max-width: none;
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
 .heading {
   display: flex;
   align-items: flex-start;
@@ -99,6 +110,10 @@
 }
 
 @media (min-width: 768px) {
+  .homeContainer {
+    width: min(768px, 100vw);
+  }
+
   .heading {
     align-items: center;
   }
@@ -109,6 +124,10 @@
 }
 
 @media (min-width: 1440px) {
+  .homeContainer {
+    width: min(1440px, 100vw);
+  }
+
   .locationSection {
     padding-top: var(--space-10);
     padding-bottom: var(--space-reviews-footer-wide);

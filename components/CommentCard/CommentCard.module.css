@@ -28,17 +28,18 @@
 }
 
 .comment {
-  min-height: 0;
+  height: 69px;
+  flex: 0 0 69px;
   margin-top: var(--space-4);
   overflow: hidden;
   font-size: var(--font-size-small);
   font-weight: var(--font-weight-regular);
-  line-height: var(--line-height-text);
+  line-height: 23px;
   letter-spacing: 0;
   overflow-wrap: anywhere;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
 }
 
 .author {
@@ -55,7 +56,7 @@
 
 .location {
   flex: 0 0 auto;
-  margin-top: var(--space-4);
+  margin-top: var(--space-1);
   overflow: hidden;
   color: var(--color-text-primary);
   font-size: var(--font-size-xs);
@@ -90,18 +91,27 @@
   .location {
     font-size: 10px;
   }
+
+  .comment {
+    height: 72px;
+    flex-basis: 72px;
+    line-height: var(--line-height-text);
+  }
 }
 
 @media (min-width: 1440px) {
   .card {
-    width: 421px;
+    width: 100%;
     height: 227px;
     min-height: 227px;
   }
 
   .comment {
+    height: 90px;
+    flex-basis: 90px;
     font-size: var(--font-size-medium);
-    -webkit-line-clamp: 2;
+    line-height: var(--line-height-text);
+    -webkit-line-clamp: 3;
   }
 
   .author {
