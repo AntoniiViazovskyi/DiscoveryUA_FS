@@ -19,6 +19,11 @@
   margin-top: 0;
 }
 
+.mapSection {
+  margin-top: var(--space-5);
+  padding-bottom: var(--space-6);
+}
+
 .reviewsSection {
   padding-top: var(--space-9);
   padding-bottom: var(--space-9);
@@ -26,6 +31,10 @@
 
 @media (min-width: 768px) {
   .descriptionSection {
+    margin-top: var(--space-6);
+  }
+
+  .mapSection {
     margin-top: var(--space-6);
   }
 }
@@ -45,5 +54,10 @@
   }
   .descriptionSection {
     margin-top: var(--space-8);
+  }
+
+  .mapSection {
+    margin-top: var(--space-8);
+    padding-bottom: var(--space-8);
   }
 }

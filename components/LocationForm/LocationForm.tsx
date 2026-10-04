@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 import { Oval } from "react-loader-spinner";
@@ -11,6 +12,7 @@ import * as Yup from "yup";
 import Button from "@/components/Button/Button";
 import Select from "@/components/Select/Select";
 import Textarea from "@/components/Textarea/Textarea";
+import type { LocationCoordinates } from "@/components/LocationPickerMap/LocationPickerMap";
 import {
   type LocationTypeCategory,
   type RegionCategory,
@@ -21,12 +23,18 @@ import {
 } from "@/lib/api/clientApi";
 import css from "./LocationForm.module.css";
 
+const LocationPickerMap = dynamic(
+  () => import("@/components/LocationPickerMap/LocationPickerMap"),
+  { ssr: false },
+);
+
 type LocationFormValues = {
   images: File | null;
   name: string;
   type: string;
   region: string;
   description: string;
+  coordinates: LocationCoordinates | null;
 };
 
 type LocationFormProps = {
@@ -42,6 +50,7 @@ const emptyValues: LocationFormValues = {
   type: "",
   region: "",
   description: "",
+  coordinates: null,
 };
 
 const toTypeOptions = (categories: LocationTypeCategory[]) =>
@@ -107,6 +116,16 @@ export default function LocationForm({
       .min(20, "Опис має містити щонайменше 20 символів")
       .max(6000, "Опис має містити не більше 6000 символів")
       .required("Додайте детальний опис"),
+    coordinates: Yup.mixed<LocationCoordinates>()
+      .nullable()
+      .test(
+        "coordinatesRequired",
+        "Оберіть розташування на карті",
+        (value) =>
+          value != null &&
+          Number.isFinite(value.lat) &&
+          Number.isFinite(value.lon),
+      ),
   });
 
   const [regions, setRegions] = useState<RegionCategory[]>([]);
@@ -161,6 +180,11 @@ export default function LocationForm({
       formData.append("type", values.type);
       formData.append("region", values.region);
       formData.append("description", values.description);
+
+      if (values.coordinates) {
+        formData.append("coordinates[lat]", String(values.coordinates.lat));
+        formData.append("coordinates[lon]", String(values.coordinates.lon));
+      }
 
       if (values.images) {
         formData.append("images", values.images);
@@ -346,6 +370,23 @@ export default function LocationForm({
                 : null
             }
           />
+
+          <div className={css.field}>
+            <span className={css.label}>Область розташування</span>
+
+            <LocationPickerMap
+              value={values.coordinates}
+              hasError={Boolean(touched.coordinates && errors.coordinates)}
+              onLocationSelect={(coordinates) => {
+                setFieldValue("coordinates", coordinates);
+                setFieldTouched("coordinates", true, false);
+              }}
+            />
+
+            <ErrorMessage name="coordinates">
+              {(message) => <span className={css.error}>{message}</span>}
+            </ErrorMessage>
+          </div>
 
           <div className={css.actions}>
             <Button

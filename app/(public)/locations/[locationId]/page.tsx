@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import LocationDescription from "@/components/LocationDescription/LocationDescription";
 import LocationGallery from "@/components/LocationGallery/LocationGallery";
 import LocationInfoBlock from "@/components/LocationInfoBlock/LocationInfoBlock";
+import LocationMap from "@/components/LocationMap/LocationMap";
 import { AddReviewSection } from "@/components/AddReviewModal/add-review-section";
 import { fetchLocationById } from "@/lib/api/serverApi";
 import {
@@ -131,6 +132,10 @@ export default async function LocationDetailsPage({
 
         <section className={styles.descriptionSection}>
           <LocationDescription description={location.description} />
+        </section>
+
+        <section className={styles.mapSection}>
+          <LocationMap coordinates={location.coordinates} name={location.name} />
         </section>
       </div>
 
