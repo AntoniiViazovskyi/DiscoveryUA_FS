@@ -1,18 +1,32 @@
 import Link from "next/link";
 import css from "./LocationInfoBlock.module.css";
 import { LocationDetails } from "../../types/location";
+import { Region, Type } from "@/types/categories";
 
 type LocationInfoBlockProps = {
   location: LocationDetails;
+  regions: Region[];
+  types: Type[];
 };
 
 export default function LocationInfoBlock({
-  location,
+  location, regions,
+  types,
+
 }: LocationInfoBlockProps) {
   const rating = location.rate ?? 0;
 
   const fullStars = Math.floor(rating);
   const hasHalfStar = rating % 1 !== 0;
+
+    const region = regions.find(
+    item => item.slug === location.region
+  );
+
+  const locationType = types.find(
+    item => item.slug === location.locationType
+  );
+
   return (
     <div className={css.infoContainer}>
       <div className={css.rate}>
@@ -55,20 +69,19 @@ export default function LocationInfoBlock({
         <li className={css.item}>
           <p className={css.text}>
             Регіон:
-            <span className={css.label}>{location.region}</span>
+            <span className={css.label}> {region?.region ?? location.region}</span>
           </p>
         </li>
 
         <li className={css.item}>
           <p className={css.text}>
             Тип локації:
-            <span className={css.label}>{location.locationType}</span>
+            <span className={css.label}>{locationType?.type ?? location.locationType}</span>
           </p>
         </li>
         <li className={css.item}>
           <p className={css.author}>
-
-           <span className={css.authorLabel}> Автор статті:</span>
+            <span className={css.authorLabel}> Автор статті:</span>
             {location.ownerId?.name || location.ownerId?.username ? (
               <Link
                 href={`/profile/${location.ownerId._id}`}

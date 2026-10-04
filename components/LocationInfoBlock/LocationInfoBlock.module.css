@@ -18,9 +18,9 @@
 .rateDot {
   width: 4px;
   height: 4px;
-   color: #1b391b;
+  color: #1b391b;
   margin: 0 9px;
-   flex-shrink: 0;
+  flex-shrink: 0;
 }
 .rateNumber {
   font-weight: var(--font-weight-regular);
