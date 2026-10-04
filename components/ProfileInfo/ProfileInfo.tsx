@@ -38,7 +38,7 @@ export const ProfileInfo = ({ user, locationsAmount }: ProfileInfoProps) => {
       )}
 
       <div className={styles.details}>
-        <h2 className={styles.name}>{displayName}</h2>
+        <h1 className={styles.name}>{displayName}</h1>
         <p className={styles.count}>Статей: {locationCount}</p>
       </div>
     </div>
