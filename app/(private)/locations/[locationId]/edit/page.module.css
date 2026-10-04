@@ -1,0 +1,33 @@
+.heading {
+  margin: 32px 0;
+  line-height: var(--line-height-heading);
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+}
+
+.state {
+  display: flex;
+  justify-content: center;
+  padding: 48px 0;
+}
+
+.error {
+  padding: 48px 0;
+  font-size: var(--font-size-regular);
+  line-height: var(--line-height-text);
+  color: var(--color-error);
+}
+
+@media (min-width: 768px) {
+  .heading {
+    font-size: 48px;
+    font-weight: var(--font-weight-bold);
+  }
+}
+
+@media (min-width: 1440px) {
+  .heading {
+    margin-top: 48px;
+    font-size: var(--font-size-heading-1);
+  }
+}
