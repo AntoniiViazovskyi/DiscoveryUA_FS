@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react'
 import { Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
+import type { ComponentType, ReactNode } from 'react'
 
 import CommentCard from '@/components/CommentCard/CommentCard'
+import type { CommentCardProps } from '@/components/CommentCard/CommentCard'
 import type { Feedback } from '@/types/feedback'
 import type { Location } from '@/types/location'
 
@@ -13,6 +15,10 @@ import styles from './ReviewsBlock.module.css'
 
 type ReviewsBlockProps = {
   initialReviews?: Feedback[]
+  locationId?: string
+  title?: string | null
+  action?: ReactNode
+  CardComponent?: ComponentType<CommentCardProps>
 }
 
 type FeedbackApiItem = {
@@ -77,7 +83,11 @@ async function fetchLocations(signal: AbortSignal): Promise<Location[]> {
   )
 }
 
-function normalizeFeedbacks(data: unknown, location: Location): Feedback[] {
+function normalizeFeedbacks(
+  data: unknown,
+  location: Location | undefined,
+  fallbackLocationId: string,
+): Feedback[] {
   const records = getArrayProperty(data, 'data').length
     ? getArrayProperty(data, 'data')
     : getArrayProperty(data, 'feedbacks')
@@ -104,21 +114,22 @@ function normalizeFeedbacks(data: unknown, location: Location): Feedback[] {
       rate,
       description,
       authorName,
-      locationId: location._id,
-      locationName: location.name,
+      locationId: location?._id ?? fallbackLocationId,
+      locationName: location?.name ?? '',
     }]
   })
 }
 
 async function fetchLocationFeedbacks(
-  location: Location,
+  locationId: string,
   signal: AbortSignal,
+  location?: Location,
 ): Promise<Feedback[]> {
   const firstPage = await fetchJson(
-    `/api/feedbacks?locationId=${encodeURIComponent(location._id)}&page=1&limit=${PAGE_SIZE}`,
+    `/api/feedbacks?locationId=${encodeURIComponent(locationId)}&page=1&limit=${PAGE_SIZE}`,
     signal,
   )
-  const feedbacks = normalizeFeedbacks(firstPage, location)
+  const feedbacks = normalizeFeedbacks(firstPage, location, locationId)
   const totalPages = getTotalPages(firstPage)
 
   if (totalPages <= 1) return feedbacks
@@ -126,14 +137,14 @@ async function fetchLocationFeedbacks(
   const remainingPages = await Promise.all(
     Array.from({ length: totalPages - 1 }, (_, index) =>
       fetchJson(
-        `/api/feedbacks?locationId=${encodeURIComponent(location._id)}&page=${index + 2}&limit=${PAGE_SIZE}`,
+        `/api/feedbacks?locationId=${encodeURIComponent(locationId)}&page=${index + 2}&limit=${PAGE_SIZE}`,
         signal,
       ),
     ),
   )
 
   return feedbacks.concat(
-    ...remainingPages.map((page) => normalizeFeedbacks(page, location)),
+    ...remainingPages.map((page) => normalizeFeedbacks(page, location, locationId)),
   )
 }
 
@@ -142,13 +153,27 @@ function getObjectIdTimestamp(id: string) {
   return /^[\da-f]{24}$/i.test(id) && Number.isFinite(timestamp) ? timestamp : 0
 }
 
-async function fetchAllReviews(signal: AbortSignal): Promise<Feedback[]> {
+async function fetchAllReviews(
+  signal: AbortSignal,
+  locationId?: string,
+): Promise<Feedback[]> {
+  if (locationId) {
+    const feedbacks = await fetchLocationFeedbacks(locationId, signal)
+    return feedbacks.sort((first, second) => {
+      const timestampDifference =
+        getObjectIdTimestamp(second._id) - getObjectIdTimestamp(first._id)
+      return timestampDifference || second._id.localeCompare(first._id)
+    })
+  }
+
   const locations = (await fetchLocations(signal)).filter(
     (location) =>
       Array.isArray(location.feedbacksId) && location.feedbacksId.length > 0,
   )
   const feedbacksByLocation = await Promise.all(
-    locations.map((location) => fetchLocationFeedbacks(location, signal)),
+    locations.map((location) =>
+      fetchLocationFeedbacks(location._id, signal, location),
+    ),
   )
 
   return feedbacksByLocation
@@ -160,7 +185,13 @@ async function fetchAllReviews(signal: AbortSignal): Promise<Feedback[]> {
     })
 }
 
-export default function ReviewsBlock({ initialReviews }: ReviewsBlockProps) {
+function ReviewsBlockContent({
+  initialReviews,
+  locationId,
+  title = 'Останні відгуки',
+  action,
+  CardComponent = CommentCard,
+}: ReviewsBlockProps) {
   const [reviews, setReviews] = useState(initialReviews ?? [])
   const [isLoading, setIsLoading] = useState(initialReviews === undefined)
   const [hasError, setHasError] = useState(false)
@@ -172,7 +203,7 @@ export default function ReviewsBlock({ initialReviews }: ReviewsBlockProps) {
 
     async function loadReviews() {
       try {
-        setReviews(await fetchAllReviews(controller.signal))
+        setReviews(await fetchAllReviews(controller.signal, locationId))
       } catch {
         if (!controller.signal.aborted) setHasError(true)
       } finally {
@@ -183,14 +214,27 @@ export default function ReviewsBlock({ initialReviews }: ReviewsBlockProps) {
     void loadReviews()
 
     return () => controller.abort()
-  }, [initialReviews])
+  }, [initialReviews, locationId])
+
+  const hasHeading = Boolean(title || action)
 
   return (
-    <section className={styles.section} aria-labelledby="reviews-title">
+    <section
+      className={styles.section}
+      aria-labelledby={title ? 'reviews-title' : undefined}
+      aria-label={title ? undefined : 'Відгуки'}
+    >
       <div className={styles.container}>
-        <h2 className={styles.title} id="reviews-title">
-          Останні відгуки
-        </h2>
+        {hasHeading && (
+          <div className={styles.heading}>
+            {title && (
+              <h2 className={styles.title} id="reviews-title">
+                {title}
+              </h2>
+            )}
+            {action}
+          </div>
+        )}
 
         {isLoading ? (
           <p className={styles.message} role="status">Завантажуємо відгуки...</p>
@@ -220,7 +264,7 @@ export default function ReviewsBlock({ initialReviews }: ReviewsBlockProps) {
             >
               {reviews.map((review) => (
                 <SwiperSlide className={styles.slide} key={review._id}>
-                  <CommentCard
+                  <CardComponent
                     rating={review.rate}
                     comment={review.description}
                     authorName={review.authorName}
@@ -258,4 +302,9 @@ export default function ReviewsBlock({ initialReviews }: ReviewsBlockProps) {
       </div>
     </section>
   )
+}
+
+export default function ReviewsBlock(props: ReviewsBlockProps) {
+  const key = props.locationId ?? 'all-locations'
+  return <ReviewsBlockContent key={key} {...props} />
 }

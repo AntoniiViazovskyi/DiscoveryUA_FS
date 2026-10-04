@@ -1,82 +1,82 @@
-.popularLocationSection{
-  padding-top: 64px;
-  padding-bottom: 64px;
+.popularLocationSection {
+  padding-top: var(--space-9);
+  padding-bottom: var(--space-9);
 }
 
-.popularLocationContainer{
+.popularLocationContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: var(--space-7);
 }
 
 .popularLocationsTitle {
-font-weight: 700;
-font-size: 28px;
-width: 100%;
-line-height: 1.2;
-letter-spacing: -0.01em;
-color: #000;
+  font-weight: var(--font-weight-bold);
+  font-size: 28px;
+  width: 100%;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #000;
 }
-.popularLocationsLink{
+.popularLocationsLink {
   display: flex;
   align-items: center;
   justify-content: center;
-font-weight: 500;
-font-size: 16px;
-line-height: 1.5;
-color: #fff;
-background-color: #cc6534;
-border: 1px solid #cc6534;
-border-radius: 6px;
-padding: 6px 0;
-min-width: 114px;
-height: 48px;
-text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-text);
+  color: #fff;
+  background-color: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-small);
+  padding: 6px 0;
+  min-width: 114px;
+  height: 48px;
+  text-decoration: none;
+    transition:
+    background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+   
 }
 .popularLocationsLink:hover,
-.popularLocationsLink:focus{
-background-color: #ffe5d9;
-color: #1b391b;
+.popularLocationsLink:focus {
+  background-color: var(--color-surface-accent);
+  color: #1b391b;
 }
-.popularLocationsLink:active{
-background-color: #cc6534;
-color: #fff;
+.popularLocationsLink:active {
+  background-color: var(--color-accent);
+  color: #fff;
 }
-/* .mySwiper :global(.swiper-slide) {
-  height: 520px;
-  background-color: #eee;
-} */
 
 .popularLocationWrapper {
   width: 100%;
 }
 
-.rating{
-      display: flex;
+.rating {
+  display: flex;
   align-items: center;
-  min-height: 24px;
-    margin-bottom: 12px;
+  min-height: var(--space-5);
+  margin-bottom: var(--space-3);
 }
-.star{
- color: #000;
+.star {
+  color: #000;
 }
 @media (min-width: 768px) {
- .popularLocationsTitle {
-font-size: 44px;
-}
+  .popularLocationsTitle {
+    font-size: 44px;
+  }
 }
 
 @media (min-width: 1440px) {
- .popularLocationSection{
-  padding-top: 72px;
-  padding-bottom: 72px;
-}
- .popularLocationsTitle {
-font-size: 52px;
-}
-.popularLocationsLink{
-font-size: 20px;
-min-width: 136px;
-}
+  .popularLocationSection {
+    padding-top: var(--space-10);
+    padding-bottom: var(--space-10);
+  }
+  .popularLocationsTitle {
+    font-size: 52px;
+  }
+  .popularLocationsLink {
+    font-size: var(--font-size-medium);
+    min-width: 136px;
+  }
 }
