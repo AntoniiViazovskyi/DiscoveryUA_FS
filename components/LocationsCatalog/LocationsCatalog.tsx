@@ -179,7 +179,7 @@ export default function LocationsCatalog() {
           onView={(location) => router.push(`/locations/${location._id}`)}
           getLocationTypeLabel={(location: Location) =>
             types.find((item) => item.slug === location.locationType)?.type ??
-            'Невідомий тип'
+            location.locationType
           }
           renderRating={(location) => {
             const rating = location.rate ?? 0

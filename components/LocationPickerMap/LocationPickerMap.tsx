@@ -10,6 +10,7 @@ import {
   useMapEvents,
 } from "react-leaflet";
 import toast from "react-hot-toast";
+import "leaflet/dist/leaflet.css";
 
 import css from "./LocationPickerMap.module.css";
 

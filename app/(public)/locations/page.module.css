@@ -1,0 +1,9 @@
+.page {
+  padding-bottom: var(--space-9);
+}
+
+@media (min-width: 1440px) {
+  .page {
+    padding-bottom: var(--space-10);
+  }
+}
