@@ -38,7 +38,9 @@ export type LocationDetails = {
   image: string;
   name: string;
   locationType: string;
+  locationTypeName: string;
   region: string;
+  regionName: string;
   rate?: number;
   description: string;
   advantages: string[];

@@ -55,20 +55,19 @@ export default function LocationInfoBlock({
         <li className={css.item}>
           <p className={css.text}>
             Регіон:
-            <span className={css.label}>{location.region}</span>
+            <span className={css.label}>{location.regionName}</span>
           </p>
         </li>
 
         <li className={css.item}>
           <p className={css.text}>
             Тип локації:
-            <span className={css.label}>{location.locationType}</span>
+            <span className={css.label}>{location.locationTypeName}</span>
           </p>
         </li>
         <li className={css.item}>
           <p className={css.author}>
-
-           <span className={css.authorLabel}> Автор статті:</span>
+            <span className={css.authorLabel}> Автор статті:</span>
             {location.ownerId?.name || location.ownerId?.username ? (
               <Link
                 href={`/profile/${location.ownerId._id}`}

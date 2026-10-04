@@ -19,10 +19,10 @@
   margin-top: 0;
 }
 
-.reviewsSection {
+/* .reviewsSection {
   padding-top: var(--space-9);
   padding-bottom: var(--space-9);
-}
+} */
 
 @media (min-width: 768px) {
   .descriptionSection {

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import LocationDescription from "@/components/LocationDescription/LocationDescription";
 import LocationGallery from "@/components/LocationGallery/LocationGallery";
 import LocationInfoBlock from "@/components/LocationInfoBlock/LocationInfoBlock";
-// import ReviewsSection from "@/components/ReviewsSection/ReviewsSection";
+import { AddReviewSection } from "@/components/AddReviewModal/add-review-section";
 import { fetchLocationById } from "@/lib/api/serverApi";
 
 import styles from "./location-details-page.module.css";
@@ -40,7 +40,7 @@ export default async function LocationDetailsPage({
     <div className="container">
       <section className={styles.headerSection}>
         <div className={styles.info}>
-          <LocationInfoBlock location={location}/>
+          <LocationInfoBlock location={location} />
         </div>
 
         <div className={styles.gallery}>
@@ -51,9 +51,8 @@ export default async function LocationDetailsPage({
       <section className={styles.descriptionSection}>
         <LocationDescription description={location.description} />
       </section>
-      {/* <section className={styles.reviewsSection}>
-        <ReviewsSection />
-      </section> */}
+
+      <AddReviewSection locationId={locationId} />
     </div>
   );
 }
