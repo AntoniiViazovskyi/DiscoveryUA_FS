@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import css from "./Modal.module.css";
 import { createPortal } from "react-dom";
 
@@ -10,11 +10,30 @@ interface ModalProps {
 }
 
 export default function Modal({ onClose, children, className }: ModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const previousActiveElementRef = useRef<HTMLElement | null>(null);
   const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.currentTarget === event.target) {
       onClose();
     }
   };
+  useEffect(() => {
+    previousActiveElementRef.current = document.activeElement as HTMLElement;
+
+    const modal = modalRef.current;
+
+    if (!modal) return;
+
+    const firstFocusableElement = modal.querySelector<HTMLElement>(
+      'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    );
+
+    firstFocusableElement?.focus();
+
+    return () => {
+      previousActiveElementRef.current?.focus();
+    };
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -39,7 +58,7 @@ export default function Modal({ onClose, children, className }: ModalProps) {
       role="dialog"
       aria-modal="true"
     >
-      <div className={`${css.modal} ${className ?? ""}`}>
+      <div ref={modalRef} className={`${css.modal} ${className ?? ""}`}>
         <button
           className={css.closeButton}
           onClick={onClose}

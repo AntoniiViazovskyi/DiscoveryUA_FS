@@ -3,7 +3,7 @@
   max-width: 334px;
   min-width: 0;
   min-height: 430px;
-  padding: 64px 20px;
+  padding: var(--space-9) 20px;
 }
 
 .content {
@@ -15,29 +15,29 @@
 
 .title {
   max-width: 294px;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-5);
 
-  color: #000;
+  color: var(--color-text-primary);
   font-size: 28px;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   line-height: 1.2;
   text-align: center;
 }
 
 .description {
   max-width: 294px;
-  margin-bottom: 32px;
+  margin-bottom: var(--space-6);
 
-  color: #000;
-  font-size: 16px;
-  line-height: 1.5;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-text);
   text-align: center;
 }
 
 .actions {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--space-5);
   width: 100%;
 }
 
@@ -48,26 +48,26 @@
   justify-content: center;
 
   width: 100%;
-  height: 48px;
-  border-radius: 6px;
+  height: var(--space-8);
+  border-radius: var(--radius-small);
 
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.5;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-text);
   text-decoration: none;
   white-space: nowrap;
 }
 
 .loginLink {
-  border: 1px solid #d8c8c1;
-  color: #4b2618;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
   background-color: transparent;
 }
 
 .registerLink {
-  border: 1px solid #cc6534;
-  color: #fff;
-  background-color: #cc6534;
+  border: 1px solid var(--color-accent);
+  color: var(--color-white);
+  background-color: var(--color-accent);
 }
 
 @media screen and (min-width: 768px) {
@@ -76,7 +76,7 @@
     max-width: 704px;
     height: 348px;
     min-height: 348px;
-    padding: 64px 32px;
+    padding: var(--space-9) var(--space-6);
   }
 
   .title {
@@ -105,7 +105,7 @@
     width: 768px;
     max-width: 768px;
     min-height: 400px;
-    padding: 72px 64px 64px;
+    padding: var(--space-10) var(--space-9);
   }
 
   .title {
@@ -115,6 +115,6 @@
 
   .description {
     max-width: 640px;
-    font-size: 18px;
+    font-size: var(--font-size-regular);
   }
 }
