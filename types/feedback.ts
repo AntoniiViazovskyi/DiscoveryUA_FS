@@ -5,4 +5,5 @@ export type Feedback = {
   authorName: string
   locationId: string
   locationName: string
+  locationType?: string
 }

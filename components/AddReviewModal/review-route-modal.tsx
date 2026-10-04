@@ -1,35 +1,23 @@
-"use client";
+'use client'
 
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation'
 
-import AuthPromptModal from "@/components/AuthPromptModal/AuthPromptModal";
-
-import { AddReviewSubmission } from "./add-review-submission";
-import { locationHref, takeReviewOrigin } from "./review-navigation";
+import AuthPromptModal from '@/components/AuthPromptModal/AuthPromptModal'
+import { AddReviewSubmission } from '@/components/AddReviewModal/add-review-submission'
 
 type ReviewRouteModalProps = {
-  locationId: string;
-  isAuthenticated: boolean;
-};
+  locationId: string
+  isAuthenticated: boolean
+}
 
-export function ReviewRouteModal({
+export default function ReviewRouteModal({
   locationId,
   isAuthenticated,
 }: ReviewRouteModalProps) {
-  const router = useRouter();
+  const router = useRouter()
+  const onClose = () => router.back()
 
-  function closeModal() {
-    if (takeReviewOrigin(locationId)) {
-      router.back();
-      return;
-    }
+  if (!isAuthenticated) return <AuthPromptModal onClose={onClose} />
 
-    router.replace(locationHref(locationId));
-  }
-
-  return isAuthenticated ? (
-    <AddReviewSubmission locationId={locationId} onClose={closeModal} />
-  ) : (
-    <AuthPromptModal onClose={closeModal} />
-  );
+  return <AddReviewSubmission locationId={locationId} onClose={onClose} />
 }

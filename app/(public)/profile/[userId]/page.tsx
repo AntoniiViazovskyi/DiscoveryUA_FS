@@ -1,4 +1,4 @@
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { isAxiosError } from 'axios'
@@ -13,6 +13,7 @@ import {
   ProfileApiUnavailableError,
 } from '@/lib/api/profile'
 import { SITE_NAME } from '@/lib/seo'
+import type { Location } from '@/types/location'
 
 import styles from './profile-page.module.css'
 
@@ -20,7 +21,7 @@ const OBJECT_ID_REGEX = /^[0-9a-f]{24}$/i
 
 type Props = {
   params: Promise<{ userId: string }>
-  searchParams: Promise<{ page?: string | string[] }>
+  searchParams: Promise<{ count?: string | string[] }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -45,33 +46,55 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProfilePage({ params, searchParams }: Props) {
   const { userId: rawUserId } = await params
-  const { page: pageParam } = await searchParams
+  const { count: countParam } = await searchParams
 
   if (!OBJECT_ID_REGEX.test(rawUserId)) {
     notFound()
   }
 
   const userId = rawUserId.toLowerCase()
-  const parsedPage = Number(Array.isArray(pageParam) ? pageParam[0] : pageParam)
-  const page = Number.isSafeInteger(parsedPage) && parsedPage > 0 ? parsedPage : 1
+  const parsedCount = Number(Array.isArray(countParam) ? countParam[0] : countParam)
+  const requestedPages =
+    Number.isSafeInteger(parsedCount) && parsedCount > 0 ? parsedCount : 1
 
   let profileUser
-  let locationsData
   let currentUser = null
+  let locations: Location[] = []
+  let total = 0
+  let totalPages = 0
 
   try {
-    ;[currentUser, profileUser] = await Promise.all([
+    const [currentUserResult, profileUserResult, firstPage] = await Promise.all([
       getCurrentUser().catch(() => null),
       getPublicUser(userId),
+      getUserLocations(userId, 1),
     ])
+
+    currentUser = currentUserResult
+    profileUser = profileUserResult
+
     if (!profileUser) {
       notFound()
     }
-    locationsData = await getUserLocations(userId, page)
+
+    total = firstPage.total
+    totalPages = firstPage.totalPages
+    locations = firstPage.data
+
+    const pagesToLoad = Math.min(requestedPages, totalPages)
+
+    if (pagesToLoad > 1) {
+      const nextPages = await Promise.all(
+        Array.from({ length: pagesToLoad - 1 }, (_, index) =>
+          getUserLocations(userId, index + 2),
+        ),
+      )
+      locations = [...locations, ...nextPages.flatMap((result) => result.data)]
+    }
   } catch (err) {
     if (
       err instanceof ProfileApiUnavailableError ||
-      (isAxiosError(err) && err.response && err.response.status >= 500)
+      (isAxiosError(err) && (err.response?.status ?? 0) >= 500)
     ) {
       return (
         <main className="container">
@@ -86,65 +109,31 @@ export default async function ProfilePage({ params, searchParams }: Props) {
     throw err
   }
 
-  if (
-    locationsData &&
-    locationsData.totalPages > 0 &&
-    page > locationsData.totalPages
-  ) {
-    redirect(`/profile/${userId}?page=${locationsData.totalPages}`)
-  }
-
   const isOwner = currentUser?._id === userId
-  const displayName = profileUser.name?.trim() || profileUser.username
-  const locations = locationsData?.data ?? []
-  const totalPages = locationsData?.totalPages ?? 1
-  const hasLocations = locations.length > 0
+  const loadedPages = Math.min(requestedPages, totalPages)
+  const hasMore = loadedPages < totalPages
 
   return (
     <main className="container">
       <div className={styles.page}>
-        <h1 className={styles.heading}>
-          {isOwner ? 'Мій профіль' : `Профіль ${displayName}`}
-        </h1>
+        <ProfileInfo user={profileUser} locationsAmount={total} />
 
-        <ProfileInfo
-          user={profileUser}
-          locationsAmount={locationsData?.total ?? locations.length}
-        />
-
-        <section className={styles.section} aria-labelledby="locations-title">
-          <h2 className={styles.sectionTitle} id="locations-title">
-            {isOwner ? 'Мої локації' : 'Локації користувача'}
-          </h2>
-
-          {hasLocations ? (
+        <section
+          className={styles.section}
+          aria-label={isOwner ? 'Мої локації' : 'Локації користувача'}
+        >
+          {locations.length > 0 ? (
             <>
               <ProfileLocationsGrid locations={locations} isOwner={isOwner} />
 
-              {totalPages > 1 && (
-                <nav className={styles.pagination} aria-label="Сторінки локацій">
-                  {page > 1 && (
-                    <Link
-                      href={`/profile/${userId}?page=${page - 1}`}
-                      className={styles.pageLink}
-                      aria-label="Попередня сторінка"
-                    >
-                      ←
-                    </Link>
-                  )}
-                  <span className={styles.pageInfo}>
-                    {page} / {totalPages}
-                  </span>
-                  {page < totalPages && (
-                    <Link
-                      href={`/profile/${userId}?page=${page + 1}`}
-                      className={styles.pageLink}
-                      aria-label="Наступна сторінка"
-                    >
-                      →
-                    </Link>
-                  )}
-                </nav>
+              {hasMore && (
+                <Link
+                  href={`/profile/${userId}?count=${loadedPages + 1}`}
+                  scroll={false}
+                  className={styles.loadMoreButton}
+                >
+                  Показати ще
+                </Link>
               )}
             </>
           ) : (

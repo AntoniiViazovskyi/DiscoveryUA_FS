@@ -6,11 +6,11 @@
   min-height: 203px;
   flex-direction: column;
   overflow: hidden;
-  padding: 16px;
-  border-radius: 16px;
-  background: #ffe5d9;
-  color: #4c2613;
-  font-family: var(--font-montserrat), sans-serif;
+  padding: var(--space-4);
+  border-radius: var(--radius-large);
+  background: var(--color-surface-accent);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-primary);
 }
 
 .rating {
@@ -24,16 +24,16 @@
   width: 24px;
   height: 24px;
   flex: 0 0 24px;
-  color: #000;
+  color: var(--color-black);
 }
 
 .comment {
   min-height: 0;
-  margin-top: 16px;
+  margin-top: var(--space-4);
   overflow: hidden;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.5;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-text);
   letter-spacing: 0;
   overflow-wrap: anywhere;
   display: -webkit-box;
@@ -43,11 +43,11 @@
 
 .author {
   flex: 0 0 auto;
-  margin-top: 16px;
+  margin-top: var(--space-4);
   overflow: hidden;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.5;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-text);
   letter-spacing: 0;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -55,12 +55,12 @@
 
 .location {
   flex: 0 0 auto;
-  margin-top: 16px;
+  margin-top: var(--space-4);
   overflow: hidden;
-  color: #4c2613;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 1.5;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-text);
   letter-spacing: 0;
   text-decoration-line: underline;
   text-decoration-color: transparent;
@@ -68,7 +68,7 @@
   text-underline-offset: 2px;
   text-overflow: ellipsis;
   white-space: nowrap;
-  transition: text-decoration-color 160ms ease;
+  transition: text-decoration-color var(--transition-interactive);
 }
 
 .location:hover,
@@ -79,7 +79,7 @@
 .location:focus-visible {
   border-radius: 2px;
   outline: 2px solid currentColor;
-  outline-offset: 2px;
+  outline-offset: var(--space-1);
 }
 
 @media (min-width: 768px) {
@@ -100,16 +100,16 @@
   }
 
   .comment {
-    font-size: 20px;
+    font-size: var(--font-size-medium);
     -webkit-line-clamp: 2;
   }
 
   .author {
-    font-size: 18px;
+    font-size: var(--font-size-regular);
   }
 
   .location {
-    font-size: 12px;
+    font-size: var(--font-size-xs);
   }
 }
 
