@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 import { Oval } from "react-loader-spinner";
@@ -11,6 +12,7 @@ import * as Yup from "yup";
 import Button from "@/components/Button/Button";
 import Select from "@/components/Select/Select";
 import Textarea from "@/components/Textarea/Textarea";
+import type { LocationCoordinates } from "@/components/LocationPickerMap/LocationPickerMap";
 import {
   type LocationTypeCategory,
   type RegionCategory,
@@ -19,7 +21,13 @@ import {
   fetchRegions,
   updateLocation,
 } from "@/lib/api/clientApi";
+
 import css from "./LocationForm.module.css";
+
+const LocationPickerMap = dynamic(
+  () => import("@/components/LocationPickerMap/LocationPickerMap"),
+  { ssr: false },
+);
 
 type LocationFormValues = {
   images: File | null;
@@ -27,6 +35,7 @@ type LocationFormValues = {
   type: string;
   region: string;
   description: string;
+  coordinates: LocationCoordinates | null;
 };
 
 type LocationFormProps = {
@@ -42,6 +51,7 @@ const emptyValues: LocationFormValues = {
   type: "",
   region: "",
   description: "",
+  coordinates: null,
 };
 
 const toTypeOptions = (categories: LocationTypeCategory[]) =>
@@ -89,22 +99,37 @@ export default function LocationForm({
         "Розмір фото має бути менше 1 МБ",
         (file) => !file || file.size < 1024 * 1024,
       ),
+
     name: Yup.string()
       .trim()
       .min(3, "Назва має містити щонайменше 3 символи")
       .max(96, "Назва має містити не більше 96 символів")
       .required("Вкажіть назву місця"),
+
     type: Yup.string()
       .max(64, "Тип місця має містити не більше 64 символів")
       .required("Оберіть тип місця"),
+
     region: Yup.string()
       .max(64, "Регіон має містити не більше 64 символів")
       .required("Оберіть регіон"),
+
     description: Yup.string()
       .trim()
       .min(20, "Опис має містити щонайменше 20 символів")
       .max(6000, "Опис має містити не більше 6000 символів")
       .required("Додайте детальний опис"),
+
+    coordinates: Yup.mixed<LocationCoordinates>()
+      .nullable()
+      .test(
+        "coordinatesRequired",
+        "Оберіть розташування на карті",
+        (value) =>
+          value != null &&
+          Number.isFinite(value.lat) &&
+          Number.isFinite(value.lon),
+      ),
   });
 
   const [regions, setRegions] = useState<RegionCategory[]>([]);
@@ -125,6 +150,7 @@ export default function LocationForm({
         ]);
 
         if (cancelled) return;
+
         setRegions(regionsData);
         setLocationTypes(typesData);
       } catch {
@@ -132,7 +158,9 @@ export default function LocationForm({
           toast.error("Не вдалося завантажити дані для форми");
         }
       } finally {
-        if (!cancelled) setOptionsLoading(false);
+        if (!cancelled) {
+          setOptionsLoading(false);
+        }
       }
     };
 
@@ -160,6 +188,11 @@ export default function LocationForm({
       formData.append("region", values.region);
       formData.append("description", values.description);
 
+      if (values.coordinates) {
+        formData.append("coordinates[lat]", String(values.coordinates.lat));
+        formData.append("coordinates[lon]", String(values.coordinates.lon));
+      }
+
       if (values.images) {
         formData.append("images", values.images);
       }
@@ -173,10 +206,12 @@ export default function LocationForm({
 
         toast.success("Зміни збережено");
         router.push(`/locations/${locationId}`);
+
         return;
       }
 
       const data = await createLocation(formData);
+
       router.push(`/locations/${data._id}`);
     } catch (error) {
       toast.error(
@@ -195,6 +230,7 @@ export default function LocationForm({
     if (imagePreview) {
       URL.revokeObjectURL(imagePreview);
     }
+
     setImagePreview(null);
 
     if (fileInputRef.current) {
@@ -267,6 +303,10 @@ export default function LocationForm({
                   accept="image/jpeg,image/png"
                   onChange={(event) => {
                     const file = event.currentTarget.files?.[0] ?? null;
+
+                    if (imagePreview) {
+                      URL.revokeObjectURL(imagePreview);
+                    }
 
                     setFieldValue("images", file);
                     setFieldTouched("images", true, false);
@@ -341,6 +381,23 @@ export default function LocationForm({
                   : null
               }
             />
+
+            <div className={css.field}>
+              <span className={css.label}>Область розташування</span>
+
+              <LocationPickerMap
+                value={values.coordinates}
+                hasError={Boolean(touched.coordinates && errors.coordinates)}
+                onLocationSelect={(coordinates) => {
+                  setFieldValue("coordinates", coordinates);
+                  setFieldTouched("coordinates", true, false);
+                }}
+              />
+
+              <ErrorMessage name="coordinates">
+                {(message) => <span className={css.error}>{message}</span>}
+              </ErrorMessage>
+            </div>
 
             <div className={css.actions}>
               <Button

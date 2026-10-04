@@ -1,24 +1,42 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+
+import EditProfileModal from "@/components/EditProfileModal/EditProfileModal";
+import { fetchCurrentUser } from "@/lib/api/clientApi";
 import Navigation from "./Navigation";
 import MobileMenu from "./MobileMenu";
 import styles from "./Header.module.css";
 
-const MOCK_AUTH = false;
-const MOCK_USER = { id: "1", name: "Ім'я", avatarUrl: null as string | null };
-
 export default function Header() {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const isAuthenticated = MOCK_AUTH; 
-  const user = MOCK_USER;
+  const { data: currentUser } = useQuery({
+    queryKey: ["me"],
+    queryFn: fetchCurrentUser,
+    retry: false,
+  });
+
+  const isAuthenticated = Boolean(currentUser);
+  const user = {
+    id: currentUser?._id ?? "",
+    name: currentUser?.username ?? "",
+    avatarUrl: currentUser?.avatarUrl ?? null,
+  };
 
   const closeMenu = () => setIsOpen(false);
   const handleLogout = () => {
     closeMenu();
     console.log("logout clicked");
+  };
+  const handleEditProfile = () => {
+    closeMenu();
+    setIsEditModalOpen(true);
   };
 
   useEffect(() => {
@@ -48,6 +66,7 @@ export default function Header() {
           isAuthenticated={isAuthenticated}
           user={user}
           onLogout={handleLogout}
+          onEditProfile={handleEditProfile}
         />
       </div>
 
@@ -58,6 +77,14 @@ export default function Header() {
         userId={user.id}
         onLogout={handleLogout}
       />
+
+      {isEditModalOpen && isAuthenticated && (
+        <EditProfileModal
+          user={user}
+          onClose={() => setIsEditModalOpen(false)}
+          onSuccess={() => router.refresh()}
+        />
+      )}
     </header>
   );
 }
