@@ -1,0 +1,120 @@
+.authModal.authModal {
+  width: calc(100vw - 40px);
+  max-width: 334px;
+  min-width: 0;
+  min-height: 430px;
+  padding: 64px 20px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.title {
+  max-width: 294px;
+  margin-bottom: 24px;
+
+  color: #000;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.description {
+  max-width: 294px;
+  margin-bottom: 32px;
+
+  color: #000;
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.loginLink,
+.registerLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 48px;
+  border-radius: 6px;
+
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.loginLink {
+  border: 1px solid #d8c8c1;
+  color: #4b2618;
+  background-color: transparent;
+}
+
+.registerLink {
+  border: 1px solid #cc6534;
+  color: #fff;
+  background-color: #cc6534;
+}
+
+@media screen and (min-width: 768px) {
+  .authModal.authModal {
+    width: 704px;
+    max-width: 704px;
+    height: 348px;
+    min-height: 348px;
+    padding: 64px 32px;
+  }
+
+  .title {
+    max-width: 520px;
+    font-size: 32px;
+  }
+
+  .description {
+    max-width: 600px;
+  }
+
+  .actions {
+    flex-direction: row;
+    justify-content: center;
+    width: auto;
+  }
+
+  .loginLink,
+  .registerLink {
+    width: 203px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .authModal.authModal {
+    width: 768px;
+    max-width: 768px;
+    min-height: 400px;
+    padding: 72px 64px 64px;
+  }
+
+  .title {
+    max-width: 600px;
+    font-size: 44px;
+  }
+
+  .description {
+    max-width: 640px;
+    font-size: 18px;
+  }
+}

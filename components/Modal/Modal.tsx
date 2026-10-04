@@ -6,13 +6,16 @@ import { createPortal } from "react-dom";
 interface ModalProps {
   onClose: () => void;
   children: React.ReactNode;
+  className?: string;
 }
-export default function Modal({ onClose, children }: ModalProps) {
+
+export default function Modal({ onClose, children, className }: ModalProps) {
   const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.currentTarget === event.target) {
       onClose();
     }
   };
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -26,6 +29,9 @@ export default function Modal({ onClose, children }: ModalProps) {
       document.body.style.overflow = "";
     };
   }, [onClose]);
+  if (typeof document === "undefined") {
+    return null;
+  }
   return createPortal(
     <div
       className={css.backdrop}
@@ -33,7 +39,7 @@ export default function Modal({ onClose, children }: ModalProps) {
       role="dialog"
       aria-modal="true"
     >
-      <div className={css.modal}>
+      <div className={`${css.modal} ${className ?? ""}`}>
         <button
           className={css.closeButton}
           onClick={onClose}
