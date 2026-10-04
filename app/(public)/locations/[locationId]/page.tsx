@@ -24,19 +24,40 @@ export async function generateMetadata({
 }: LocationDetailsPageProps): Promise<Metadata> {
   const { locationId } = await params;
 
-  const location = await fetchLocationById(locationId);
+    if (!objectIdRegex.test(locationId)) {
+    return {
+      title: "Локацію не знайдено",
+      description: "Запитувану локацію не знайдено.",
+    };
+  }
+
+  let location;
+
+  try {
+    location = await fetchLocationById(locationId);
+  } catch (error) {
+    if (isAxiosError(error) && error.response?.status === 404) {
+      return {
+        title: "Локацію не знайдено",
+        description: "Запитувану локацію не знайдено.",
+      };
+    }
+
+    throw error;
+  }
+  
 
   return {
     title: location.name,
-    description: location.description?.slice(0, 30),
+    description: location.description?.slice(0, 160),
 
     alternates: {
-      canonical: `https://final-team-project-fs.vercel.app/locations/${locationId}`,
+      canonical: `${process.env.NEXT_PUBLIC_APP_URL}/locations/${locationId}`,
     },
     openGraph: {
       title: location.name,
-      description: location.description?.slice(0, 30),
-      url: `https://final-team-project-fs.vercel.app/locations/${locationId}`,
+      description: location.description?.slice(0, 160),
+      url: `${process.env.NEXT_PUBLIC_APP_URL}/locations/${locationId}`,
       siteName: "RelaxMap",
       images: location.image
         ? [
@@ -53,7 +74,7 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title: location.name,
-      description: location.description?.slice(0, 30),
+      description: location.description?.slice(0, 160),
       images: location.image ? [location.image] : [],
     },
   };
@@ -77,11 +98,12 @@ export default async function LocationDetailsPage({
     throw error;
   }
 
-const [types, regions] = await Promise.all([
+const [typesResult, regionsResult] = await Promise.allSettled([
   getAllTypesServer(),
   getAllRegionsServer(),
 ]);
-
+  const types = typesResult.status === "fulfilled" ? typesResult.value : [];
+  const regions = regionsResult.status === "fulfilled" ? regionsResult.value : [];
   return (
     <div className="container">
       <section className={styles.headerSection}>
