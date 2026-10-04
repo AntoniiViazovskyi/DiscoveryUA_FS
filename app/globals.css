@@ -64,11 +64,36 @@
   --color-placeholder: rgb(0 0 0 / 60%);
   --color-black: #000000;
   --color-surface-hover: #f2f2f2;
+  --color-form-text: var(--color-black);
+  --color-field-background: var(--color-surface-accent);
+  --color-field-placeholder: var(--color-placeholder);
+  --color-field-error: var(--color-error);
   --font-size-xs: 12px;
+  --font-size-logo: 17px;
+  --font-size-auth-heading: 28px;
+  --font-size-auth-heading-tablet: 44px;
+  --font-size-auth-heading-desktop: 52px;
+  --line-height-title: 1.2;
+  --line-height-tight: 1;
+  --letter-spacing-tight: -0.01em;
   --space-2-5: 10px;
   --radius-button: 8px;
-  --transition-interactive: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-transform: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-duration-interactive: 250ms;
+  --transition-duration-fast: 150ms;
+  --transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-interactive: var(--transition-duration-interactive) var(--transition-easing);
+  --transition-transform: var(--transition-duration-fast) var(--transition-easing);
+  --opacity-disabled: 0.3;
+  --opacity-hover: 0.8;
+  --focus-outline-width: 2px;
+  --focus-outline-offset: 2px;
+
+  /* Auth controls: preserve the existing sizes */
+  --auth-input-height: 42px;
+  --auth-input-height-desktop: 45px;
+  --auth-button-height: 44px;
+  --auth-nav-height: 49px;
+  --auth-nav-height-desktop: 51px;
 
   /* Layout */
   --container-max-width: 1440px;
