@@ -7,4 +7,4 @@ when an endpoint is implemented; an empty directory does not expose a route.
 - `users/me`, `users/[userId]`, `users/[userId]/locations`
 - `categories/regions`, `categories/types`
 - `locations`, `locations/[locationId]`
-- `feedbacks`
+- `feedbacks`, `feedbacks/latest`

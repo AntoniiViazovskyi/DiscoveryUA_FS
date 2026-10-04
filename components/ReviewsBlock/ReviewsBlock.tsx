@@ -8,7 +8,6 @@ import type { ComponentType, ReactNode } from 'react'
 
 import CommentCard from '@/components/CommentCard/CommentCard'
 import type { CommentCardProps } from '@/components/CommentCard/CommentCard'
-import { fetchLocationTypes } from '@/lib/api/clientApi'
 import type { Feedback } from '@/types/feedback'
 import type { Location } from '@/types/location'
 
@@ -35,11 +34,10 @@ type FeedbackApiItem = {
   author?: { name?: string }
   owner?: { name?: string }
   user?: { name?: string }
+  location?: { _id?: string; name?: string; locationType?: string }
 }
 
 const PAGE_SIZE = 50
-const HOME_LOCATION_LIMIT = 12
-const MAX_HOME_REVIEW_LOCATIONS = 8
 
 function getArrayProperty(data: unknown, property: string): unknown[] {
   if (Array.isArray(data)) return data
@@ -94,9 +92,10 @@ function normalizeFeedbacks(
       rate,
       description,
       authorName,
-      locationId: location?._id ?? fallbackLocationId,
-      locationName: location?.name ?? '',
-      locationType: locationType ?? location?.locationType,
+      locationId: location?._id ?? item.location?._id ?? fallbackLocationId,
+      locationName: location?.name ?? item.location?.name ?? '',
+      locationType:
+        locationType ?? item.location?.locationType ?? location?.locationType,
     }]
   })
 }
@@ -151,34 +150,8 @@ function sortReviews(reviews: Feedback[]) {
 }
 
 async function fetchHomeReviews(signal: AbortSignal): Promise<Feedback[]> {
-  const [locationsResponse, locationTypesResponse] = await Promise.all([
-    fetchJson(
-      `/api/locations?page=1&limit=${HOME_LOCATION_LIMIT}&sortBy=feedbacksCount&sortOrder=desc`,
-      signal,
-    ),
-    fetchLocationTypes().catch(() => []),
-  ])
-  const locationTypeNames = new Map(
-    locationTypesResponse.map(({ slug, type }) => [slug, type]),
-  )
-  const locations = (getArrayProperty(locationsResponse, 'locations') as Location[])
-    .filter(
-      (location) =>
-        (location.feedbacksCount ?? location.feedbacksId?.length ?? 0) > 0,
-    )
-    .slice(0, MAX_HOME_REVIEW_LOCATIONS)
-  const feedbacksByLocation = await Promise.all(
-    locations.map((location) =>
-      fetchLocationFeedbacks(
-        location._id,
-        signal,
-        location,
-        locationTypeNames.get(location.locationType) ?? location.locationType,
-      ),
-    ),
-  )
-
-  return sortReviews(feedbacksByLocation.flat())
+  const response = await fetchJson('/api/feedbacks/latest', signal)
+  return normalizeFeedbacks(response, undefined, '')
 }
 
 async function fetchReviews(
@@ -223,7 +196,7 @@ function ReviewsBlockContent({
   const hasHeading = Boolean(title || action)
   const sectionClassName = locationId
     ? `${styles.section} ${styles.locationSection}`
-    : styles.section
+    : `${styles.section} ${styles.homeSection}`
 
   return (
     <section
@@ -231,7 +204,7 @@ function ReviewsBlockContent({
       aria-labelledby={title ? 'reviews-title' : undefined}
       aria-label={title ? undefined : 'Відгуки'}
     >
-      <div className="container">
+      <div className={locationId ? 'container' : styles.homeContainer}>
         {hasHeading && (
           <div className={styles.heading}>
             {title && (
