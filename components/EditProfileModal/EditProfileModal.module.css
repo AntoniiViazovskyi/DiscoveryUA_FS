@@ -6,7 +6,7 @@
 .title {
   margin-bottom: var(--space-5);
   color: var(--color-text-primary);
-  font-size: 26px;
+  font-size: var(--font-size-card-title);
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-heading);
   text-align: left;
