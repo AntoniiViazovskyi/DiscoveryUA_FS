@@ -1,14 +1,6 @@
 .section {
-  width: calc(100% + var(--container-padding) + var(--container-padding));
-  margin-inline: calc(0px - var(--container-padding));
-  padding: 64px 20px;
+  padding-block: var(--space-9);
   color: #4c2613;
-}
-
-.container {
-  width: 100%;
-  max-width: 1440px;
-  margin-inline: auto;
 }
 
 .heading {
@@ -92,7 +84,6 @@
 @media (min-width: 768px) {
   .section {
     height: 532px;
-    padding-inline: 32px;
   }
 
   .title {
@@ -100,17 +91,10 @@
   }
 }
 
-@media (max-width: 767px) {
-  .container {
-    max-width: 335px;
-  }
-}
-
 @media (min-width: 1440px) {
   .section {
     height: 581px;
-    padding-block: 72px;
-    padding-inline: 64px;
+    padding-block: var(--space-10);
   }
 
   .title {
