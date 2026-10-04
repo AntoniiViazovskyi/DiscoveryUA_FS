@@ -11,11 +11,7 @@
   margin: 0 auto;
 }
 .heroContainer {
-  min-width: 320px;
-  max-width: 375px;
   height: 100%;  
-  margin: 0 auto;
-  padding: 0 20px;
   display: flex;
   justify-content: center;
 
@@ -66,10 +62,6 @@ margin-bottom: 32px;
 
 /* Styles for Tablet devices */
 @media screen and (min-width: 768px) {
-  .heroContainer {
-    padding: 0 32px;
-    max-width: 768px;
-  }
   /* .heroSection {
     max-width: 768px;
   } */
@@ -82,10 +74,6 @@ font-size: 48px;
     min-height: 724px;
     /* max-width: 1440px; */
     padding: 72px 0;
-  }
-  .heroContainer {
-    padding: 0 64px;
-    max-width: 1440px;
   }
     .heroTitle{
 font-size: 56px;

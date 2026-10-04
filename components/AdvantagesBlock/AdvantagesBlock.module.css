@@ -1,35 +1,35 @@
 .section {
-  padding-block: 64px;
+  padding-block: var(--space-9);
 }
 
 .heading {
-  margin-bottom: 32px;
+  margin-bottom: var(--space-6);
   font-size: 28px;
   font-weight: var(--font-weight-bold);
   line-height: 1.2;
   letter-spacing: -0.01em;
-  color: var(--color-text-primary);
+  color: var(--color-scheme-2-text);
 }
 
 .list {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 24px;
+  gap: var(--space-5);
 }
 
 .card {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 16px;
+  gap: var(--space-4);
+  padding: var(--space-4);
   border-radius: var(--radius-large);
   background-color: var(--color-surface-accent);
   color: var(--color-text-primary);
 }
 
 .icon {
-  width: 64px;
-  height: 64px;
+  width: var(--space-9);
+  height: var(--space-9);
 }
 
 .cardTitle {
@@ -37,6 +37,7 @@
   font-weight: var(--font-weight-bold);
   line-height: 1.4;
   letter-spacing: -0.01em;
+  color: var(--color-scheme-2-text);
 }
 
 .cardText {

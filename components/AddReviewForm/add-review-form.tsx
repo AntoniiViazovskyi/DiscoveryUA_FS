@@ -4,6 +4,8 @@ import { useId, useState } from 'react'
 import { Field, Form, Formik } from 'formik'
 import { Oval } from 'react-loader-spinner'
 
+import Button from '@/components/Button/Button'
+import Textarea from '@/components/Textarea/Textarea'
 import styles from './add-review-form.module.css'
 import tokens from './review-tokens.module.css'
 import {
@@ -135,7 +137,7 @@ export function AddReviewForm({ onCancel, onSubmit, onSuccess }: AddReviewFormPr
               Ваш відгук
             </label>
             <Field
-              as="textarea"
+              as={Textarea}
               className={styles.textarea}
               id={descriptionId}
               name="description"
@@ -175,14 +177,14 @@ export function AddReviewForm({ onCancel, onSubmit, onSuccess }: AddReviewFormPr
           </fieldset>
 
           <div className={styles.actions}>
-            <button
+            <Button
               className={styles.cancelButton}
               type="button"
               onClick={onCancel}
             >
               Відмінити
-            </button>
-            <button
+            </Button>
+            <Button
               className={styles.submitButton}
               type="submit"
               disabled={isSubmitting}
@@ -200,7 +202,7 @@ export function AddReviewForm({ onCancel, onSubmit, onSuccess }: AddReviewFormPr
                 </span>
               )}
               Надіслати
-            </button>
+            </Button>
           </div>
           {typeof status === 'string' && (
             <p className={styles.error} role="alert">

@@ -1,0 +1,155 @@
+.authModal.authModal {
+  width: calc(100vw - 40px);
+  max-width: 334px;
+  min-width: 0;
+  min-height: 430px;
+  padding: var(--space-9) 20px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.title {
+  max-width: 294px;
+  margin-bottom: var(--space-5);
+
+  color: var(--color-text-primary);
+  font-size: 28px;
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  text-align: center;
+}
+
+.description {
+  max-width: 294px;
+  margin-bottom: var(--space-6);
+
+  color: var(--color-text-primary);
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-text);
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  width: 100%;
+}
+
+.loginLink,
+.registerLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: var(--space-8);
+  border-radius: var(--radius-small);
+
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.loginLink {
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  background-color: transparent;
+}
+
+.registerLink {
+  border: 1px solid var(--color-accent);
+  color: var(--color-white);
+  background-color: var(--color-accent);
+}
+
+.loginLink,
+.registerLink {
+  transition:
+    background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.loginLink:hover,
+.loginLink:focus-visible {
+  background-color: var(--color-muted-background);
+}
+
+.loginLink:active {
+  background-color: var(--color-border);
+}
+
+.registerLink:hover,
+.registerLink:focus-visible {
+  background-color: var(--color-surface-accent);
+  border-color: var(--color-surface-accent);
+  color: var(--color-text-primary);
+}
+
+.registerLink:active {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+}
+
+.loginLink:focus-visible,
+.registerLink:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+@media screen and (min-width: 768px) {
+  .authModal.authModal {
+    width: 704px;
+    max-width: 704px;
+    height: 348px;
+    min-height: 348px;
+    padding: var(--space-9) var(--space-6);
+  }
+
+  .title {
+    max-width: 520px;
+    font-size: 32px;
+  }
+
+  .description {
+    max-width: 600px;
+  }
+
+  .actions {
+    flex-direction: row;
+    justify-content: center;
+    width: auto;
+  }
+
+  .loginLink,
+  .registerLink {
+    width: 203px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .authModal.authModal {
+    width: 768px;
+    max-width: 768px;
+    min-height: 400px;
+    padding: var(--space-10) var(--space-9);
+  }
+
+  .title {
+    max-width: 600px;
+    font-size: 44px;
+  }
+
+  .description {
+    max-width: 640px;
+    font-size: var(--font-size-regular);
+  }
+}
