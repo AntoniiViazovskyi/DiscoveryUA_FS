@@ -20,6 +20,8 @@
   /* Typography */
   --font-family-primary: var(--font-montserrat), sans-serif;
   --font-size-small: 16px;
+  --font-size-caption: 14px;
+  --font-size-card-title: 26px;
   --font-size-regular: 18px;
   --font-size-medium: 20px;
   --font-size-heading-1: 56px;

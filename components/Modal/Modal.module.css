@@ -59,7 +59,8 @@
 
 @media screen and (min-width: 768px) {
   .modal {
-    min-width: 704px;
+    width: 704px;
+    max-width: 704px;
     min-height: 530px;
     padding: 64px 32px;
   }
@@ -68,6 +69,7 @@
   .modal {
     padding: 64px;
     width: 768px;
+    max-width: 768px;
     min-height: 553px;
   }
 }
