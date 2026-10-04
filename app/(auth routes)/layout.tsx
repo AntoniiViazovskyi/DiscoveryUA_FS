@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import Link from 'next/link'
+import Logo from '@/components/Logo/Logo'
 
 import styles from './auth-layout.module.css'
 
@@ -12,17 +12,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
     <main className={styles.page}>
       <div className={`container ${styles.shell}`}>
         <header className={styles.header}>
-          <Link className={styles.logo} href="/" aria-label="Relax Map — головна">
-            <svg
-              className={styles.logoIcon}
-              width="24"
-              height="24"
-              aria-hidden="true"
-            >
-              <use href="/icons/sprite.svg#icon-map-search" />
-            </svg>
-            <span>Relax Map</span>
-          </Link>
+          <Logo className={styles.logo} />
         </header>
 
         {children}
