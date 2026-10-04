@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import styles from "./Footer.module.css";
 import Logo from "../Logo/Logo";
@@ -5,7 +7,7 @@ import Logo from "../Logo/Logo";
 const Footer = () => {
   return (
     <footer className={styles.footer}>
-      <div className={styles.container}>
+      <div className="container">
         <div className={styles.topContent}>
           <Logo className={styles.logoMargin} />
 
@@ -69,7 +71,7 @@ const Footer = () => {
           </nav>
         </div>
         <div className={styles.copyright}>
-          © 2026 Природні Мандри. Усі права захищені.
+          © {new Date().getFullYear()} Природні Мандри. Усі права захищені.
         </div>
       </div>
     </footer>

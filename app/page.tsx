@@ -5,19 +5,11 @@ import AdvantagesBlock from "@/components/AdvantagesBlock/AdvantagesBlock";
 
 export default function HomePage() {
   return (
-    <main className="workspace">
-      <div className="container">
-        <p className="eyebrow">Final Team Project</p>
-        <h1>Frontend workspace is ready.</h1>
-        <p>
-          The shared structure and dependencies are configured. Replace this page
-          when product development begins.
-        </p>
-      </div>
-      <HeroBlock/>
-      <AdvantagesBlock/>
-      <PopularLocationsBlock/>
+    <main>
+      <HeroBlock />
+      <AdvantagesBlock />
+      <PopularLocationsBlock />
       <ReviewsBlock />
     </main>
-  )
+  );
 }
