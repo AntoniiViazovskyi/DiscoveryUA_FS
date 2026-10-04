@@ -2,6 +2,8 @@
   background: var(--color-surface-accent);
   padding-block: var(--space-8);
   width: 100%;
+  margin-top: auto;
+  flex-shrink: 0;
 }
 
 .topContent {
@@ -82,10 +84,6 @@
 }
 
 @media (min-width: 768px) {
-  .footer {
-    padding: var(--space-8) var(--space-6);
-  }
-
   .topContent {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -125,10 +123,7 @@
 
 @media (min-width: 1440px) {
   .footer {
-    padding: var(--space-11) var(--space-9);
-  }
-  .footer .container {
-    max-width: var(--container-max-width);
+    padding-block: var(--space-11);
   }
 
   .topContent {

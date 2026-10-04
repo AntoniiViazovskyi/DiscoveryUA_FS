@@ -15,7 +15,7 @@ type ProfileInfoProps = {
 export const ProfileInfo = ({ user, locationsAmount }: ProfileInfoProps) => {
   const [imageFailed, setImageFailed] = useState(false);
 
-  const displayName = user.name ?? user.username;
+  const displayName = user.name?.trim() || user.username;
   const locationCount = locationsAmount ?? user.articlesAmount ?? 0;
   const initial = displayName.charAt(0).toUpperCase();
   const showAvatar = Boolean(user.avatarUrl) && !imageFailed;
