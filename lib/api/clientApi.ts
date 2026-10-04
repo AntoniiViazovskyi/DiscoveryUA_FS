@@ -105,6 +105,58 @@ export async function login(data: LoginRequest): Promise<void> {
   }
 }
 
+export type CurrentUser = {
+  _id: string;
+  username: string;
+  email: string;
+  avatarUrl?: string;
+  name?: string;
+};
+
+type CurrentUserProfile = {
+  status: number;
+  data: CurrentUser;
+};
+
+export async function fetchCurrentUser(): Promise<CurrentUser> {
+  try {
+    const response = await http.get<CurrentUserProfile>("/users/me");
+    return response.data.data;
+  } catch (error) {
+    throw getRequestError(error);
+  }
+}
+
+export async function uploadUserImage(file: File): Promise<string> {
+  try {
+    const formData = new FormData();
+    formData.append("image", file);
+    const response = await http.post<{ url: string }>(
+      "/uploads/image",
+      formData,
+    );
+    return response.data.url;
+  } catch (error) {
+    throw getRequestError(error);
+  }
+}
+
+export type UpdateCurrentUserRequest = {
+  username?: string;
+  avatarUrl?: string;
+};
+
+export async function updateCurrentUser(
+  data: UpdateCurrentUserRequest,
+): Promise<CurrentUser> {
+  try {
+    const response = await http.patch<CurrentUserProfile>("/users/me", data);
+    return response.data.data;
+  } catch (error) {
+    throw getRequestError(error);
+  }
+}
+
 export type RegionCategory = {
   _id: string;
   region: string;

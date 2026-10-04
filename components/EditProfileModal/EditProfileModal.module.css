@@ -1,0 +1,209 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  margin-bottom: var(--space-5);
+  color: var(--color-text-primary);
+  font-size: 26px;
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-heading);
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.avatarSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.avatarSection .label {
+  align-self: stretch;
+}
+
+.avatarPreview {
+  width: 120px;
+  height: 120px;
+  overflow: hidden;
+  border: 2px solid var(--color-surface-accent);
+  border-radius: var(--radius-round);
+  background-color: var(--color-image-placeholder);
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fileButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 4px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-small);
+  background-color: var(--color-muted-background);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-text);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.fileButton:hover,
+.fileButton:focus-visible {
+  border-color: var(--color-accent);
+  background-color: var(--color-surface-accent);
+}
+
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.label {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-text);
+}
+
+.input {
+  width: 100%;
+  height: var(--space-7);
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-small);
+  background-color: var(--color-surface-accent);
+  color: var(--color-text-secondary);
+  font-family: inherit;
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-text);
+  transition: border-color 0.2s ease;
+}
+
+.input::placeholder {
+  color: var(--color-placeholder);
+}
+
+.input:hover,
+.input:focus {
+  border-color: var(--color-border-hover);
+  outline: none;
+}
+
+.input:disabled {
+  cursor: not-allowed;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.submitButton,
+.cancelButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: var(--space-8);
+  padding: 6px 12px;
+  border-radius: var(--radius-small);
+  font-family: inherit;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-text);
+}
+
+.submitButton {
+  border: 1px solid var(--color-accent);
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.cancelButton {
+  border: 1px solid var(--color-border);
+  background-color: var(--color-muted-background);
+  color: var(--color-text-primary);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.submitButton:hover:not(:disabled),
+.cancelButton:hover:not(:disabled) {
+  background-color: var(--color-surface-accent);
+  color: var(--color-text-primary);
+}
+
+.submitButton:disabled,
+.cancelButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (min-width: 768px) {
+  .title {
+    margin-bottom: var(--space-6);
+    font-size: 32px;
+  }
+
+  .buttons {
+    flex-direction: row;
+    justify-content: center;
+    gap: var(--space-4);
+  }
+
+  .submitButton,
+  .cancelButton {
+    width: 203px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .title {
+    font-size: 40px;
+  }
+
+  .label,
+  .input {
+    font-size: var(--font-size-regular);
+  }
+
+  .input {
+    height: 43px;
+  }
+}
