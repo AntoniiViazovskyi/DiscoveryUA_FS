@@ -1,17 +1,7 @@
 .footer {
-  background: var(--color-surface);
+  background: var(--color-surface-accent);
   padding-block: var(--space-8);
   width: 100%;
-}
-
-.container {
-  width: 100%;
-  max-width: var(--container-max-width);
-  margin-inline: auto;
-  padding-inline: var(--container-padding);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .topContent {
@@ -51,8 +41,8 @@
 }
 
 .socialIcon {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   fill: currentColor;
 }
 
@@ -80,6 +70,8 @@
 
 .copyright {
   width: 100%;
+  max-width: 250px;
+  margin-inline: auto;
   border-top: 1px solid var(--color-border);
   padding-top: var(--space-5);
   font-family: var(--font-family-primary);
@@ -91,21 +83,13 @@
 
 @media (min-width: 768px) {
   .footer {
-    padding-top: var(--space-8);
-    padding-bottom: var(--space-6);
-  }
-
-  .footer .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 100%;
+    padding: var(--space-8) var(--space-6);
   }
 
   .topContent {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    row-gap: var(--space-5);
+    row-gap: var(--space-6);
     margin-bottom: var(--space-6);
     width: 100%;
   }
@@ -115,12 +99,15 @@
     justify-self: start;
     margin-bottom: 0;
   }
-
+  .socialIcon {
+    width: 24px;
+    height: 24px;
+  }
   .socials {
     grid-column: 2;
     justify-self: end;
     margin-bottom: 0;
-    gap: var(--space-4);
+    gap: var(--space-3);
   }
 
   .nav {
@@ -131,14 +118,14 @@
     margin-bottom: 0;
   }
   .copyright {
+    max-width: 100%;
     padding-top: var(--space-5);
   }
 }
 
 @media (min-width: 1440px) {
   .footer {
-    padding-top: var(--space-11);
-    padding-bottom: var(--space-8);
+    padding: var(--space-11) var(--space-9);
   }
   .footer .container {
     max-width: var(--container-max-width);
@@ -149,7 +136,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 43px;
+    margin-bottom: var(--space-8);
   }
 
   .logoMargin {

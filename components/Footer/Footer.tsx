@@ -69,7 +69,7 @@ const Footer = () => {
           </nav>
         </div>
         <div className={styles.copyright}>
-          © 2026 Природні Мандри. Усі права захищені.
+          © {new Date().getFullYear()} Природні Мандри. Усі права захищені.
         </div>
       </div>
     </footer>
