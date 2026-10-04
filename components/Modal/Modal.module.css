@@ -9,14 +9,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-y: auto;
+  padding-block: 20px;
 }
 .modal {
   position: relative;
-  min-width: 334px;
+  width: calc(100vw - 40px);
+  max-width: 334px;
+  min-width: 0;
   min-height: 595px;
   border-radius: 24px;
   background-color: #fff2ec;
   padding: 64px 20px;
+  margin-block: auto;
 }
 .closeButton {
   position: absolute;
@@ -54,7 +59,8 @@
 
 @media screen and (min-width: 768px) {
   .modal {
-    min-width: 704px;
+    width: 704px;
+    max-width: 704px;
     min-height: 530px;
     padding: 64px 32px;
   }
@@ -63,6 +69,7 @@
   .modal {
     padding: 64px;
     width: 768px;
+    max-width: 768px;
     min-height: 553px;
   }
 }
