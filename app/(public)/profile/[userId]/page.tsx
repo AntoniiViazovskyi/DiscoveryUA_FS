@@ -112,7 +112,7 @@ export default async function ProfilePage({ params, searchParams }: Props) {
   return (
     <main className="container">
       <div className={styles.page}>
-        <ProfileInfo user={profileUser} locationsAmount={total} />
+        <ProfileInfo user={profileUser} locationsAmount={total} isOwner={isOwner} />
 
         <section
           className={styles.section}

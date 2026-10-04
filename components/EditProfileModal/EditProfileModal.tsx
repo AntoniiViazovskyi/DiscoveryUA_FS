@@ -18,11 +18,13 @@ type EditProfileModalProps = {
     avatarUrl: string | null;
   };
   onClose: () => void;
+  onSuccess?: () => void;
 };
 
 export default function EditProfileModal({
   user,
   onClose,
+  onSuccess,
 }: EditProfileModalProps) {
   const queryClient = useQueryClient();
   const [name, setName] = useState(user.name);
@@ -89,6 +91,7 @@ export default function EditProfileModal({
 
       await updateCurrentUser(body);
       await queryClient.invalidateQueries({ queryKey: ["me"] });
+      onSuccess?.();
 
       toast.success("Профіль оновлено");
       onClose();
