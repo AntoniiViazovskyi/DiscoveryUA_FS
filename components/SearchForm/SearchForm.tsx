@@ -33,7 +33,7 @@ export default function SearchForm() {
       initialValues={initialValues}
       validationSchema={searchFormSchema}
       onSubmit={handleSubmit}
-      validateOnChange={false}
+      validateOnChange={true}
       validateOnBlur={false}
     >
       {({ errors, touched,  isSubmitting }) => (
@@ -52,7 +52,7 @@ export default function SearchForm() {
           <ErrorMessage name="search" component="span" className={css.error} />
         </div>
         
-      <Button type={'submit'}  disabled={isSubmitting}></Button>
+      <Button type={'submit'}  disabled={isSubmitting}>Знайти місце</Button>
       </Form>
     )}
     </Formik>
