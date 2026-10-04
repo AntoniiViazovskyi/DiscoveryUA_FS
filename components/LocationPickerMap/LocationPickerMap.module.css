@@ -79,7 +79,7 @@
   height: 188px;
   overflow: hidden;
   border: 1px solid transparent;
-  border-radius: var(--radius-medium);
+  border-radius: 0;
 }
 
 .mapWrapError {

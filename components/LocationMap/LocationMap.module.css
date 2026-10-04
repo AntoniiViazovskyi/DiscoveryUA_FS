@@ -2,7 +2,7 @@
   width: 100%;
   height: 188px;
   overflow: hidden;
-  border-radius: var(--radius-medium);
+  border-radius: 8px;
 }
 
 .mapCanvas {
