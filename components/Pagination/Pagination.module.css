@@ -25,22 +25,28 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-small);
 
+  color: var(--color-text-primary);
+
   font-family: var(--font-family-primary);
   font-size: var(--font-size-small);
   font-weight: var(--font-weight-regular);
   line-height: 1;
 
   cursor: pointer;
+
+  transition:
+    background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .pageButton {
   background-color: var(--color-white);
-  color: var(--color-text-primary);
 }
 
 .arrowButton {
-  background-color: #ffe5d9;
-  color: var(--color-text-primary);
+  background-color: var(--color-surface-accent);
 }
 
 .pageButton:hover:not(:disabled),
@@ -48,11 +54,23 @@
   border-color: var(--color-accent);
 }
 
-.pageButton.active {
+.pageButton:focus-visible,
+.arrowButton:focus-visible {
   border-color: var(--color-accent);
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.pageButton:active:not(:disabled),
+.arrowButton:active:not(:disabled) {
+  border-color: var(--color-accent);
+}
+
+.pageButton:active:not(:disabled) {
   font-weight: var(--font-weight-medium);
 }
 
+.pageButton:disabled,
 .arrowButton:disabled {
   opacity: 0.4;
   cursor: not-allowed;
@@ -60,36 +78,34 @@
 
 .dots {
   display: flex;
+  min-width: 12px;
   align-items: center;
   justify-content: center;
-
-  min-width: 12px;
 
   color: var(--color-text-primary);
   font-size: var(--font-size-small);
 }
 
 .desktopPagination {
-  display: flex;
-}
-
-.mobilePagination {
   display: none;
 }
 
-@media screen and (max-width: 767px) {
-  .desktopPagination {
-    display: none;
-  }
-
-  .mobilePagination {
-    display: flex;
-  }
+.mobilePagination {
+  display: flex;
 }
 
 .arrowIcon {
   width: 24px;
   height: 24px;
   fill: currentColor;
-  /* stroke: currentColor; */
+}
+
+@media screen and (min-width: 768px) {
+  .desktopPagination {
+    display: flex;
+  }
+
+  .mobilePagination {
+    display: none;
+  }
 }
