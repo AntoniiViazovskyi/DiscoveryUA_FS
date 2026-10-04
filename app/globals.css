@@ -10,6 +10,9 @@
   --color-border: rgb(0 0 0 / 15%);
   --color-overlay: rgb(0 0 0 / 60%);
   --color-muted-background: rgb(0 0 0 / 5%);
+  --color-scheme-2-text: #1b391b;
+  --color-image-placeholder: #dedede;
+  --color-image-icon: #b8b8b8;
 
   --color-background: var(--color-page-background);
   --color-text: var(--color-text-primary);
