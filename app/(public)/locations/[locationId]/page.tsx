@@ -23,7 +23,7 @@ export default async function LocationDetailsPage({
     <div className="container">
       <section className={styles.headerSection}>
         <div className={styles.info}>
-          <LocationInfoBlock />
+          <LocationInfoBlock location={location}/>
         </div>
 
         <div className={styles.gallery}>
