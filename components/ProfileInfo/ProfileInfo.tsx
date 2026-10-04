@@ -46,17 +46,17 @@ export const ProfileInfo = ({ user, locationsAmount, isOwner = false }: ProfileI
       <div className={styles.details}>
         <h1 className={styles.name}>{displayName}</h1>
         <p className={styles.count}>Статей: {locationCount}</p>
-
-        {isOwner && (
-          <button
-            type="button"
-            className={styles.editButton}
-            onClick={() => setIsEditOpen(true)}
-          >
-            Редагувати профіль
-          </button>
-        )}
       </div>
+
+      {isOwner && (
+        <button
+          type="button"
+          className={styles.editButton}
+          onClick={() => setIsEditOpen(true)}
+        >
+          Редагувати профіль
+        </button>
+      )}
 
       {isEditOpen && (
         <EditProfileModal

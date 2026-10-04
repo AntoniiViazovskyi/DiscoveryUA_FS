@@ -79,7 +79,7 @@
   height: 188px;
   overflow: hidden;
   border: 1px solid transparent;
-  border-radius: 0;
+  border-radius: var(--radius-medium);
 }
 
 .mapWrapError {
@@ -123,7 +123,7 @@
 @media (min-width: 768px) {
   .searchForm {
     flex-direction: row;
-    gap: var(--space-5);
+    gap: var(--space-4);
   }
 
   .searchInput {
