@@ -10,6 +10,7 @@ export type LocationsGridProps<TLocation extends Location = Location> = {
   onView: (location: TLocation) => void
   onEdit?: (location: TLocation) => void
   renderRating?: (location: TLocation) => ReactNode
+  getLocationTypeLabel?: (location: TLocation) => string | undefined
 }
 
 export default function LocationsGrid<TLocation extends Location>({
@@ -17,6 +18,7 @@ export default function LocationsGrid<TLocation extends Location>({
   onView,
   onEdit,
   renderRating,
+  getLocationTypeLabel,
 }: LocationsGridProps<TLocation>) {
   return (
     <div className={css.grid}>
@@ -24,6 +26,7 @@ export default function LocationsGrid<TLocation extends Location>({
         <LocationCard
           key={location._id}
           location={location}
+          locationTypeLabel={getLocationTypeLabel?.(location)}
           rating={renderRating?.(location)}
           onView={onView}
           onEdit={onEdit}

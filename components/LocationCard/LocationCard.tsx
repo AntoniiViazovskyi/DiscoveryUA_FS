@@ -27,10 +27,12 @@ export default function LocationCard<TLocation extends LocationCardData>({
   onView,
   onEdit,
 }: LocationCardProps<TLocation>) {
+  const typeLabel = locationTypeLabel?.trim() || location.locationType?.trim()
+
   return (
     <article className={css.card}>
       <div className={css.imageFrame}>
-        {location.image && (
+        {location.image ? (
           <Image
             className={css.image}
             src={location.image}
@@ -38,12 +40,14 @@ export default function LocationCard<TLocation extends LocationCardData>({
             fill
             unoptimized
           />
+        ) : (
+          <p className={css.imagePlaceholder}>Фото відсутнє</p>
         )}
       </div>
 
       <div className={css.content}>
-        {locationTypeLabel && (
-          <p className={css.type}>{locationTypeLabel}</p>
+        {typeLabel && (
+          <p className={css.type}>{typeLabel}</p>
         )}
         {rating && <div className={css.rating}>{rating}</div>}
         <h3 className={css.name}>{location.name}</h3>

@@ -40,7 +40,7 @@ export default function PopularLocationsBlock() {
   }
 
   return (
-    <section className={`${css.popularLocationSection} ${css.container}`}>
+    <section className={`${css.popularLocationSection} container`}>
       <div className={css.popularLocationContainer}>
         <h2 className={css.popularLocationsTitle}>Популярні локації</h2>
 
