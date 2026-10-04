@@ -1,7 +1,14 @@
 .heading {
-  margin: 32px 0;
+  margin: var(--space-6) 0;
   line-height: var(--line-height-heading);
   letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+}
+
+.notice {
+  padding: var(--space-8) 0;
+  font-size: var(--font-size-regular);
+  line-height: var(--line-height-text);
   color: var(--color-text-primary);
 }
 
@@ -14,7 +21,7 @@
 
 @media (min-width: 1440px) {
   .heading {
-    margin-top: 48px;
+    margin-top: var(--space-8);
     font-size: var(--font-size-heading-1);
   }
 }

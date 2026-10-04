@@ -87,7 +87,7 @@
   min-width: 0;
 }
 
-.textarea {
+.form .field .textarea {
   display: block;
   width: 100%;
   min-height: var(--review-field-height);
@@ -103,19 +103,23 @@
   line-height: var(--line-height-text);
 }
 
-.textarea::placeholder {
+.form .field .textarea::placeholder {
   color: var(--color-placeholder);
 }
 
-.textarea:focus {
+.form .field .textarea:hover {
+  border-color: var(--color-border);
+}
+
+.form .field .textarea:focus {
   border-color: var(--color-accent);
 }
 
-.textarea:focus-visible {
+.form .field .textarea:focus-visible {
   outline: none;
 }
 
-.textarea[aria-invalid='true'] {
+.form .field .textarea[aria-invalid='true'] {
   border-color: var(--review-error);
 }
 
@@ -228,7 +232,7 @@
 
 @media (min-width: 1440px) {
   .label,
-  .textarea {
+  .form .field .textarea {
     font-size: var(--font-size-regular);
   }
   .cancelButton,
