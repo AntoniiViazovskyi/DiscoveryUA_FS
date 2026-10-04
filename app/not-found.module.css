@@ -19,8 +19,3 @@
     color: var(--color-text-secondary);
     font-size: var(--font-size-small);
 }
-
-.link {
-    text-decoration: none;
-    color: inherit;
-}

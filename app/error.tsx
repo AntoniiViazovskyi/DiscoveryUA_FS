@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 
 import Button from '@/components/Button/Button';
 
@@ -12,9 +13,19 @@ type ErrorPageProps = {
 };
 
 export default function Error({ error, reset }: ErrorPageProps) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
   useEffect(() => {
     console.error(error);
   }, [error]);
+
+  const handleRetry = () => {
+    startTransition(() => {
+      router.refresh();
+      reset();
+    });
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -22,8 +33,8 @@ export default function Error({ error, reset }: ErrorPageProps) {
       <p className={styles.text}>
         Спробуйте ще раз або поверніться пізніше.
       </p>
-      <Button type="button" onClick={reset}>
-        Спробувати ще
+      <Button type="button" onClick={handleRetry} disabled={isPending}>
+        {isPending ? 'Зачекайте...' : 'Спробувати ще'}
       </Button>
     </div>
   );
