@@ -25,7 +25,7 @@ export default function SearchForm() {
     values: SearchFormValues,
     actions: FormikHelpers<SearchFormValues>,
   ) => {
-    router.push(`/locations?query=${encodeURIComponent(values.search.trim())}`);
+    router.push(`/locations?search=${encodeURIComponent(values.search.trim())}`);
     actions.resetForm();
   };
   return (

@@ -1,9 +1,11 @@
 .form {
+  --review-error: var(--color-error);
+  --review-hover-text: var(--color-text-primary);
   display: flex;
   width: 100%;
   flex-direction: column;
-  gap: 24px;
-  font-family: var(--font-montserrat), sans-serif;
+  gap: var(--space-5);
+  font-family: var(--font-family-primary);
 }
 
 .ratingGroup {
@@ -15,18 +17,18 @@
 
 .label {
   display: block;
-  margin-bottom: 8px;
-  color: #000;
+  margin-bottom: var(--space-2);
+  color: var(--review-color-text);
   font-size: var(--font-size-small);
   font-weight: var(--font-weight-regular);
-  line-height: 1.5;
+  line-height: var(--line-height-text);
 }
 
 .ratingGroup .label {
   position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
+  width: var(--review-hidden-size);
+  height: var(--review-hidden-size);
+  margin: calc(-1 * var(--review-hidden-size));
   padding: 0;
   overflow: hidden;
   clip: rect(0 0 0 0);
@@ -35,15 +37,15 @@
 
 .ratingOptions {
   display: flex;
-  min-height: 32px;
+  min-height: var(--review-star-size);
   align-items: center;
 }
 
 .ratingOption {
   position: relative;
   display: inline-flex;
-  width: 32px;
-  height: 32px;
+  width: var(--review-star-size);
+  height: var(--review-star-size);
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -55,9 +57,9 @@
 
 .ratingInput {
   position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
+  width: var(--review-hidden-size);
+  height: var(--review-hidden-size);
+  margin: calc(-1 * var(--review-hidden-size));
   padding: 0;
   overflow: hidden;
   border: 0;
@@ -66,19 +68,19 @@
 }
 
 .star {
-  width: 32px;
-  height: 32px;
-  color: #000;
+  width: var(--review-star-size);
+  height: var(--review-star-size);
+  color: var(--review-color-text);
 }
 
 .ratingInput:focus-visible + .star {
-  border-radius: 4px;
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
+  border-radius: var(--review-focus-radius);
+  outline: var(--review-focus-width) solid var(--color-accent);
+  outline-offset: var(--review-focus-offset);
 }
 
 .ratingInput:disabled + .star {
-  opacity: 0.45;
+  opacity: var(--review-disabled-opacity);
 }
 
 .field {
@@ -88,20 +90,21 @@
 .textarea {
   display: block;
   width: 100%;
-  min-height: 180px;
+  min-height: var(--review-field-height);
+  height: var(--review-field-height);
   resize: vertical;
-  padding: 12px;
-  border: 1px solid var(--color-border);
+  padding: var(--space-3);
+  border: var(--review-border-width) solid var(--color-border);
   border-radius: var(--radius-small);
   background: var(--color-surface-accent);
-  color: #000;
+  color: var(--review-color-text);
   font: inherit;
   font-size: var(--font-size-small);
-  line-height: 1.5;
+  line-height: var(--line-height-text);
 }
 
 .textarea::placeholder {
-  color: rgb(0 0 0 / 60%);
+  color: var(--color-placeholder);
 }
 
 .textarea:focus {
@@ -109,20 +112,19 @@
 }
 
 .textarea:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
+  outline: none;
 }
 
 .textarea[aria-invalid='true'] {
-  border-color: #b00101;
+  border-color: var(--review-error);
 }
 
 .error {
-  min-height: 18px;
-  margin: 8px 0 0;
-  color: #b00101;
-  font-size: 12px;
-  line-height: 18px;
+  min-height: var(--review-error-height);
+  margin: var(--space-2) 0 0;
+  color: var(--review-error);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-text);
   overflow-wrap: anywhere;
 }
 
@@ -133,20 +135,27 @@
 .actions {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--space-5);
 }
 
 .cancelButton,
 .submitButton {
-  min-height: 48px;
-  padding: 12px 6px;
-  border: 1px solid var(--color-border);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--review-control-height);
+  padding: var(--review-button-padding-block) var(--space-3);
+  border: var(--review-border-width) solid var(--color-border);
   border-radius: var(--radius-small);
   font: inherit;
   font-size: var(--font-size-small);
   font-weight: var(--font-weight-medium);
-  line-height: 1.5;
+  line-height: var(--line-height-text);
   cursor: pointer;
+  transition:
+    background-color var(--review-transition-duration) var(--review-transition-easing),
+    color var(--review-transition-duration) var(--review-transition-easing);
 }
 
 .cancelButton {
@@ -161,26 +170,52 @@
 }
 
 .cancelButton:hover,
-.submitButton:hover {
-  opacity: 0.85;
+.cancelButton:focus-visible {
+  border-color: transparent;
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+
+.submitButton:hover:not(:disabled),
+.submitButton:focus-visible {
+  background: var(--color-surface-accent);
+  color: var(--review-hover-text);
+}
+
+.cancelButton:active {
+  background: var(--review-color-active);
+  color: var(--color-white);
+}
+
+.submitButton:active:not(:disabled) {
+  background: var(--color-accent);
+  color: var(--color-white);
 }
 
 .cancelButton:focus-visible,
 .submitButton:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
+  outline: var(--review-focus-width) solid var(--color-accent);
+  outline-offset: var(--review-focus-offset);
 }
 
 .submitButton:disabled {
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: var(--review-disabled-opacity);
+}
+
+.loader {
+  position: absolute;
+  left: var(--space-3);
+  display: flex;
+  width: var(--review-error-height);
+  height: var(--review-error-height);
 }
 
 @media (min-width: 768px) {
   .actions {
     flex-direction: row;
     width: 100%;
-    max-width: 430px;
+    max-width: var(--review-actions-width);
     margin-inline: auto;
   }
 
@@ -188,5 +223,16 @@
   .submitButton {
     flex: 1;
     min-width: 0;
+  }
+}
+
+@media (min-width: 1440px) {
+  .label,
+  .textarea {
+    font-size: var(--font-size-regular);
+  }
+  .cancelButton,
+  .submitButton {
+    font-size: var(--font-size-medium);
   }
 }
