@@ -53,6 +53,8 @@
   --space-10: 72px;
   --space-11: 80px;
   --space-slider-controls: 50px;
+  --space-reviews-footer-compact: 74px;
+  --space-reviews-footer-wide: 82px;
 
   /* Shared UI form fields */
   --color-error: #b00101;
