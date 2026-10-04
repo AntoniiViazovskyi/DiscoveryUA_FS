@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { isAxiosError } from 'axios'
 
 import { ProfileInfo } from '@/components/ProfileInfo/ProfileInfo'
 import { ProfilePlaceholder } from '@/components/ProfilePlaceholder/ProfilePlaceholder'
@@ -91,7 +92,10 @@ export default async function ProfilePage({ params, searchParams }: Props) {
       locations = [...locations, ...nextPages.flatMap((result) => result.data)]
     }
   } catch (err) {
-    if (err instanceof ProfileApiUnavailableError) {
+    if (
+      err instanceof ProfileApiUnavailableError ||
+      (isAxiosError(err) && (err.response?.status ?? 0) >= 500)
+    ) {
       return (
         <main className="container">
           <div className={styles.page}>
