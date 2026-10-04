@@ -24,7 +24,7 @@ export async function generateMetadata({
 }: LocationDetailsPageProps): Promise<Metadata> {
   const { locationId } = await params;
 
-    if (!objectIdRegex.test(locationId)) {
+  if (!objectIdRegex.test(locationId)) {
     return {
       title: "Локацію не знайдено",
       description: "Запитувану локацію не знайдено.",
@@ -45,7 +45,6 @@ export async function generateMetadata({
 
     throw error;
   }
-  
 
   return {
     title: location.name,
@@ -98,17 +97,22 @@ export default async function LocationDetailsPage({
     throw error;
   }
 
-const [typesResult, regionsResult] = await Promise.allSettled([
-  getAllTypesServer(),
-  getAllRegionsServer(),
-]);
+  const [typesResult, regionsResult] = await Promise.allSettled([
+    getAllTypesServer(),
+    getAllRegionsServer(),
+  ]);
   const types = typesResult.status === "fulfilled" ? typesResult.value : [];
-  const regions = regionsResult.status === "fulfilled" ? regionsResult.value : [];
+  const regions =
+    regionsResult.status === "fulfilled" ? regionsResult.value : [];
   return (
     <div className="container">
       <section className={styles.headerSection}>
         <div className={styles.info}>
-          <LocationInfoBlock location={location} regions={regions} types={types} />
+          <LocationInfoBlock
+            location={location}
+            regions={regions}
+            types={types}
+          />
         </div>
 
         <div className={styles.gallery}>
