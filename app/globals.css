@@ -41,6 +41,7 @@
 
   /* Spacing */
   --space-1: 4px;
+  --space-1-5: 6px;
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
@@ -51,12 +52,19 @@
   --space-9: 64px;
   --space-10: 72px;
   --space-11: 80px;
+  --space-slider-controls: 50px;
 
   /* Shared UI form fields */
   --color-error: #b00101;
   --color-border-hover: #ffa57a;
   --color-placeholder: rgb(0 0 0 / 60%);
+  --color-black: #000000;
+  --color-surface-hover: #f2f2f2;
   --font-size-xs: 12px;
+  --space-2-5: 10px;
+  --radius-button: 8px;
+  --transition-interactive: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-transform: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 
   /* Layout */
   --container-max-width: 1440px;

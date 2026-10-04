@@ -5,11 +5,14 @@ import { notFound } from "next/navigation";
 import LocationDescription from "@/components/LocationDescription/LocationDescription";
 import LocationGallery from "@/components/LocationGallery/LocationGallery";
 import LocationInfoBlock from "@/components/LocationInfoBlock/LocationInfoBlock";
-// import ReviewsSection from "@/components/ReviewsSection/ReviewsSection";
+import { AddReviewSection } from "@/components/AddReviewModal/add-review-section";
 import { fetchLocationById } from "@/lib/api/serverApi";
+import {
+  getAllRegionsServer,
+  getAllTypesServer,
+} from "@/lib/api/filterServer";
 
 import styles from "./location-details-page.module.css";
-import { getAllRegionsServer, getAllTypesServer } from "@/lib/api/filterServer";
 
 type LocationDetailsPageProps = {
   params: Promise<{
@@ -87,13 +90,16 @@ export default async function LocationDetailsPage({
   if (!objectIdRegex.test(locationId)) {
     notFound();
   }
+
   let location;
+
   try {
     location = await fetchLocationById(locationId);
   } catch (error) {
     if (isAxiosError(error) && error.response?.status === 404) {
       notFound();
     }
+
     throw error;
   }
 
@@ -101,31 +107,34 @@ export default async function LocationDetailsPage({
     getAllTypesServer(),
     getAllRegionsServer(),
   ]);
+
   const types = typesResult.status === "fulfilled" ? typesResult.value : [];
   const regions =
     regionsResult.status === "fulfilled" ? regionsResult.value : [];
+
   return (
-    <div className="container">
-      <section className={styles.headerSection}>
-        <div className={styles.info}>
-          <LocationInfoBlock
-            location={location}
-            regions={regions}
-            types={types}
-          />
-        </div>
+    <>
+      <div className="container">
+        <section className={styles.headerSection}>
+          <div className={styles.info}>
+            <LocationInfoBlock
+              location={location}
+              regions={regions}
+              types={types}
+            />
+          </div>
 
-        <div className={styles.gallery}>
-          <LocationGallery image={location.image} name={location.name} />
-        </div>
-      </section>
+          <div className={styles.gallery}>
+            <LocationGallery image={location.image} name={location.name} />
+          </div>
+        </section>
 
-      <section className={styles.descriptionSection}>
-        <LocationDescription description={location.description} />
-      </section>
-      {/* <section className={styles.reviewsSection}>
-        <ReviewsSection />
-      </section> */}
-    </div>
+        <section className={styles.descriptionSection}>
+          <LocationDescription description={location.description} />
+        </section>
+      </div>
+
+      <AddReviewSection locationId={locationId} />
+    </>
   );
 }
