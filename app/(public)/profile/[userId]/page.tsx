@@ -1,6 +1,7 @@
 import { notFound, redirect } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { isAxiosError } from 'axios'
 
 import { ProfileInfo } from '@/components/ProfileInfo/ProfileInfo'
 import { ProfilePlaceholder } from '@/components/ProfilePlaceholder/ProfilePlaceholder'
@@ -19,7 +20,7 @@ const OBJECT_ID_REGEX = /^[0-9a-f]{24}$/i
 
 type Props = {
   params: Promise<{ userId: string }>
-  searchParams: Promise<{ page?: string }>
+  searchParams: Promise<{ page?: string | string[] }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -31,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const user = await getPublicUser(userId).catch(() => null)
 
-  const displayName = user?.name ?? user?.username ?? 'Профіль'
+  const displayName = user?.name?.trim() || user?.username || 'Профіль'
 
   return {
     title: displayName,
@@ -43,28 +44,35 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProfilePage({ params, searchParams }: Props) {
-  const { userId } = await params
+  const { userId: rawUserId } = await params
   const { page: pageParam } = await searchParams
 
-  if (!OBJECT_ID_REGEX.test(userId)) {
+  if (!OBJECT_ID_REGEX.test(rawUserId)) {
     notFound()
   }
 
-  const parsedPage = Number(pageParam)
-  const page = Number.isInteger(parsedPage) && parsedPage > 0 ? parsedPage : 1
+  const userId = rawUserId.toLowerCase()
+  const parsedPage = Number(Array.isArray(pageParam) ? pageParam[0] : pageParam)
+  const page = Number.isSafeInteger(parsedPage) && parsedPage > 0 ? parsedPage : 1
 
   let profileUser
   let locationsData
   let currentUser = null
 
   try {
-    ;[currentUser, profileUser, locationsData] = await Promise.all([
+    ;[currentUser, profileUser] = await Promise.all([
       getCurrentUser().catch(() => null),
       getPublicUser(userId),
-      getUserLocations(userId, page),
     ])
+    if (!profileUser) {
+      notFound()
+    }
+    locationsData = await getUserLocations(userId, page)
   } catch (err) {
-    if (err instanceof ProfileApiUnavailableError) {
+    if (
+      err instanceof ProfileApiUnavailableError ||
+      (isAxiosError(err) && err.response && err.response.status >= 500)
+    ) {
       return (
         <main className="container">
           <div className={styles.page}>
@@ -79,19 +87,15 @@ export default async function ProfilePage({ params, searchParams }: Props) {
   }
 
   if (
-  locationsData &&
-  locationsData.totalPages > 0 &&
-  page > locationsData.totalPages
-) {
-  redirect(`/profile/${userId}?page=${locationsData.totalPages}`)
-}
-
-  if (!profileUser) {
-    notFound()
+    locationsData &&
+    locationsData.totalPages > 0 &&
+    page > locationsData.totalPages
+  ) {
+    redirect(`/profile/${userId}?page=${locationsData.totalPages}`)
   }
 
   const isOwner = currentUser?._id === userId
-  const displayName = profileUser.name ?? profileUser.username
+  const displayName = profileUser.name?.trim() || profileUser.username
   const locations = locationsData?.data ?? []
   const totalPages = locationsData?.totalPages ?? 1
   const hasLocations = locations.length > 0
