@@ -8,10 +8,6 @@ import LocationInfoBlock from "@/components/LocationInfoBlock/LocationInfoBlock"
 import LocationMap from "@/components/LocationMap/LocationMap";
 import { AddReviewSection } from "@/components/AddReviewModal/add-review-section";
 import { fetchLocationById } from "@/lib/api/serverApi";
-import {
-  getAllRegionsServer,
-  getAllTypesServer,
-} from "@/lib/api/filterServer";
 
 import styles from "./location-details-page.module.css";
 
@@ -104,25 +100,12 @@ export default async function LocationDetailsPage({
     throw error;
   }
 
-  const [typesResult, regionsResult] = await Promise.allSettled([
-    getAllTypesServer(),
-    getAllRegionsServer(),
-  ]);
-
-  const types = typesResult.status === "fulfilled" ? typesResult.value : [];
-  const regions =
-    regionsResult.status === "fulfilled" ? regionsResult.value : [];
-
   return (
     <>
       <div className="container">
         <section className={styles.headerSection}>
           <div className={styles.info}>
-            <LocationInfoBlock
-              location={location}
-              regions={regions}
-              types={types}
-            />
+            <LocationInfoBlock location={location} />
           </div>
 
           <div className={styles.gallery}>
