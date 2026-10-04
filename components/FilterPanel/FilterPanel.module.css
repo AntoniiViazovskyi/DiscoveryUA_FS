@@ -3,89 +3,98 @@
   flex-wrap: wrap;
   width: 100%;
   gap: var(--space-4);
-  margin-bottom: 40px;
-}
-.filterInput,
-.filterSelect,
-.filterSort {
-  height: 40px;
-  white-space: nowrap;
-  word-break: normal;
-  display: block;
+  margin: 40px 0;
 }
 
 .filterInput,
-.filterSelect,
-.filterSort,
 .typeTitle {
   border: 1px solid var(--color-border);
-  border-radius: var( --radius-small);
+  border-radius: var(--radius-small);
   padding: 0 var(--space-2);
   background-color: var(--color-surface-accent);
   font: inherit;
-  color: var(--color-overlay);
   font-weight: var(--font-weight-regular);
   font-size: var(--font-size-small);
   line-height: var(--line-height-text);
-  -webkit-appearance: none;
-  -moz-appearance: none;
+  color: var(--color-overlay);
   appearance: none;
   transition: border-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
-.filterInput{
-    color: var(--color-text-primary)
-}
-.filterInput::placeholder{
-  color: var(--color-overlay);  
-}
 
-.filterInput,
-.filterSort {
-  width: 100%;
-}
-.filterRow {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  gap: var( --space-4);
-}
-
-.filterSelect,
-.typeWrap {
+.filterInput {
   display: block;
-  width: calc((100% - 16px) / 2);
-}
-.filterSelect option,
-.typeWrap option,
-.filterSort option {
-  background-color: var(--color-surface-accent);
-  color:var(--color-overlay);
+  width: 100%;
+  height: 40px;
+  color: var(--color-text-primary);
 }
 
-.filterInput:is(:focus, :hover),
-.filterSelect:is(:focus, :hover),
-.filterSort:is(:focus, :hover),
-.checkboxLabel:hover,
-.typeWrap:is(:hover, :focus-within) .typeTitle {
-  border-color: var(--color-accent);
-  outline: none;
+.filterInput::placeholder {
+  color: var(--color-overlay);
 }
 
 .filterInput:focus::placeholder {
   color: transparent;
 }
 
-.filterSelect,
-.filterSort {
-  padding-right: 36px;
-  cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='rgba(0, 0, 0, 0.6)' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  flex-shrink: 0;
+.filterInput:is(:focus, :hover),
+.checkboxLabel:hover,
+.typeWrap:is(:hover, :focus-within) .typeTitle {
+  border-color: var(--color-accent);
+  outline: none;
 }
 
-/*Помилка валідації*/
+.filterInput[aria-invalid="true"] {
+  border-color: var(--color-error);
+}
+
+.filterRow {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: var(--space-4);
+}
+
+.filterRow .filterSelect {
+  width: calc((100% - 16px) / 2);
+}
+
+.filterContainer .filterSort {
+  width: 100%;
+}
+
+.filterRow .filterSelect,
+.filterContainer .filterSort {
+  --color-text-secondary: var(--color-overlay); 
+  --color-text-primary: var(--color-overlay);    
+}
+
+.filterRow .filterSelect button[aria-expanded="true"],
+.filterContainer .filterSort button[aria-expanded="true"] {
+  border-bottom-color: var(--color-border-hover);
+  border-radius: var(--radius-small);
+}
+
+.filterRow .filterSelect [role="listbox"],
+.filterContainer .filterSort [role="listbox"] {
+  top: calc(100% + 4px);
+  overflow-x: hidden;
+  border-top: 1px solid var(--color-border-hover);
+  border-radius: var(--radius-small);
+}
+
+.hiddenLabel label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+
 .searchWrap {
   position: relative;
   width: 100%;
@@ -103,18 +112,40 @@
   pointer-events: none;
 }
 
-.filterInput[aria-invalid="true"] {
-  border-color: var(--color-error);
+
+.categoriesError {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  width: 100%;
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-text);
+  color: var(--color-error);
 }
 
-/* Тип локації  */
+.categoriesError p {
+  margin: 0;
+}
+
+.categoriesError button {
+  padding: 4px var(--space-2);
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius-small);
+  background: transparent;
+  color: var(--color-error);
+  font: inherit;
+  cursor: pointer;
+}
+
+
 .typeWrap {
   position: relative;
+  width: calc((100% - 16px) / 2);
   height: 40px;
-  padding: 0;
   outline: none;
-  transition: border-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 .typeWrap[aria-disabled="true"] {
   opacity: 0.5;
   pointer-events: none;
@@ -143,6 +174,8 @@
 .typeWrap:focus-within .typeTitle::after {
   rotate: 180deg;
 }
+
+
 .typeList {
   display: none;
   position: absolute;
@@ -151,19 +184,31 @@
   right: 0;
   z-index: 20;
   box-sizing: border-box;
-  max-height: 280px;
+  max-height: 250px;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: var(--space-1);
-  border: 1px solid var(--color-border);
-  border-radius: var( --radius-small);
-  background-color:var(--color-surface-accent);
+  padding: 12px 8px;
+  border: 1px solid var(--color-border-hover);
+  border-radius: var(--radius-small);
+  background-color: var(--color-surface-accent);
+  box-shadow: 0 12px 24px rgb(0 0 0 / 10%);
   white-space: normal;
-  scrollbar-width: none;
+  scrollbar-color: var(--color-border-hover) #fce6db;
+  scrollbar-width: thin;
 }
 
 .typeList::-webkit-scrollbar {
-  display: none;
+  width: 6px;
+}
+
+.typeList::-webkit-scrollbar-track {
+  background: #fce6db;
+  border-radius: 8px;
+}
+
+.typeList::-webkit-scrollbar-thumb {
+  background-color: var(--color-border-hover);
+  border-radius: 20px;
 }
 
 .typeWrap:focus-within .typeList {
@@ -173,10 +218,10 @@
 .checkboxLabel {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: 6px var(--space-2);
+  gap: var(--space-1);
+  padding: var(--space-1) 6px;
   border: 1px solid transparent;
-  border-radius: var( --radius-small);
+  border-radius: var(--radius-small);
   color: var(--color-overlay);
   line-height: var(--line-height-text);
   cursor: pointer;
@@ -190,91 +235,6 @@
   overflow-wrap: anywhere;
 }
 
-/* Кастомний випадний список */
-@supports (appearance: base-select) {
-  .filterSelect,
-  .filterSort {
-    appearance: base-select;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 var(--space-2);
-    background-image: none;
-  }
-
-  .filterSelect::picker-icon,
-  .typeWrap::picker-icon,
-  .filterSort::picker-icon {
-    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%23000' stroke-opacity='0.6' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .filterSelect:open::picker-icon,
-  .typeWrap:open::picker-icon,
-  .filterSort:open::picker-icon {
-    rotate: 180deg;
-  }
-
-  .filterSelect::picker(select),
-  .filterSort::picker(select) {
-    appearance: base-select;
-    width: anchor-size(width);
-    max-width: anchor-size(width);
-    max-height: 280px;
-    margin-block: var(--space-1);
-    padding: var(--space-1);
-    border: 1px solid var(--color-border);
-    border-radius: var( --radius-small);
-    background-color:var(--color-surface-accent);
-    box-shadow: none;
-    font: inherit;
-    scrollbar-width: none;
-  }
-  .filterSelect::picker(select)::-webkit-scrollbar,
-  .filterSort::picker(select)::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-    background: transparent;
-  }
-
-  .filterSelect option,
-  .filterSort option {
-    padding: var(--space-1) 6px;
-    border: 1px solid transparent;
-    border-radius: var( --radius-small);
-    cursor: pointer;
-    color: var(--color-overlay);
-    white-space: normal;
-    overflow-wrap: anywhere;
-    line-height:var(--line-height-text);
-    transition: border-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .filterSelect option:hover,
-  .filterSort option:hover {
-    border-color:var(--color-accent);
-  }
-
-  .filterSelect option:checked,
-  .filterSort option:checked {
-    background-color: var(--color-border-hover);
-  }
-  .filterSelect option::checkmark,
-  .filterSort option::checkmark {
-    display: none;
-  }
-}
-.checkboxLabel {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-  padding: var(--space-1) 6px;
-  border-radius: var( --radius-small);
-  cursor: pointer;
-  color: var(--color-overlay);
-  transition: background-color 0.2s;
-}
-
 .checkboxInput {
   appearance: none;
   position: relative;
@@ -283,7 +243,7 @@
   height: 14px;
   margin: 0 6px;
   border: 1px solid var(--color-overlay);
-  border-radius: var( --radius-small);
+  border-radius: var(--radius-small);
   background-color: transparent;
   cursor: pointer;
   transition: background-color 250ms;
@@ -310,61 +270,69 @@
   opacity: 1;
 }
 
-/* Styles for Tablet devices */
+/* Tablet */
 @media screen and (min-width: 768px) {
   .filterRow {
     flex: 0 1 431px;
     min-width: 431px;
     width: auto;
   }
+
   .filterContainer {
     column-gap: var(--space-4);
   }
-  .filterSort {
+
+  .filterContainer .filterSort {
     flex: 0 1 190px;
     min-width: 158px;
     width: auto;
     margin-left: auto;
   }
 }
-/* Styles for Desktop devices */
+
+/* Desktop */
 @media screen and (min-width: 1440px) {
   .filterContainer {
     gap: 0;
   }
+
   .filterRow {
     min-width: 422px;
     align-self: flex-start;
     gap: var(--space-5);
   }
+
   .searchWrap {
     width: 310px;
     margin-right: var(--space-5);
   }
-  .filterSort {
+
+  .filterContainer .filterSort {
     margin-left: auto;
     min-width: 160px;
   }
+
   .filterInput {
     min-width: 310px;
   }
 
   .filterInput,
-  .filterSelect,
-  .filterSort,
   .typeWrap {
     height: 43px;
-    font-size: var(--font-size-regular);
-    line-height: var(--line-height-text);
   }
+
+  .filterInput,
   .typeTitle {
     font-size: var(--font-size-regular);
     line-height: var(--line-height-text);
   }
+
   .filterError {
     top: 47px;
-  }
-  .filterError {
     font-size: 12px;
+  }
+
+  .categoriesError {
+    font-size: var(--font-size-regular);
   }
 }

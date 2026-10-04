@@ -1,11 +1,11 @@
 "use client";
+import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-
 import { getAllRegions, getAllTypes } from "@/lib/api/filterClient";
-import { useState } from "react";
 import { sort } from "@/types/categories";
+import Select from "@/components/Select/Select";
 import css from "./FilterPanel.module.css";
 
 export default function FilterPanel() {
@@ -13,31 +13,36 @@ export default function FilterPanel() {
   const searchParams = useSearchParams();
   const [searchError, setSearchError] = useState("");
 
+  const urlSearch = searchParams.get("search") ?? "";
+  const [searchValue, setSearchValue] = useState(urlSearch);
+
   const {
-  data: regions = [],
-  isError: isRegionsError,
-  refetch: refetchRegions,
-} = useQuery({
-  queryKey: ["regions"],
-  queryFn: () => getAllRegions(),
-});
+    data: regions = [],
+    isLoading: isRegionsLoading,
+    isError: isRegionsError,
+    refetch: refetchRegions,
+  } = useQuery({
+    queryKey: ["regions"],
+    queryFn: () => getAllRegions(),
+  });
 
-const {
-  data: types = [],
-  isError: isTypesError,
-  refetch: refetchTypes,
-} = useQuery({
-  queryKey: ["locationTypes"],
-  queryFn: () => getAllTypes(),
-});
+  const {
+    data: types = [],
+    isError: isTypesError,
+    refetch: refetchTypes,
+  } = useQuery({
+    queryKey: ["locationTypes"],
+    queryFn: () => getAllTypes(),
+  });
 
-const hasCategoriesError = isRegionsError || isTypesError;
-const retryCategories = () => {
-  if (isRegionsError) refetchRegions();
-  if (isTypesError) refetchTypes();
-};
+  const hasCategoriesError = isRegionsError || isTypesError;
 
-const updateParam = (key: string, value: string) => {
+  const retryCategories = () => {
+    if (isRegionsError) refetchRegions();
+    if (isTypesError) refetchTypes();
+  };
+
+  const updateParam = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     if (value) {
       params.set(key, value);
@@ -57,10 +62,15 @@ const updateParam = (key: string, value: string) => {
     setSearchError("");
     updateParam("search", trimmed);
   }, 400);
-    
-const currentTypesString = searchParams.get("type") || "";
-  const selectedTypes = currentTypesString ? currentTypesString.split(",") : [];
 
+  useEffect(() => {
+    handleSearch.cancel();
+    setSearchValue(urlSearch);
+    setSearchError("");
+  }, [urlSearch, handleSearch]);
+
+  const currentTypesString = searchParams.get("type") || "";
+  const selectedTypes = currentTypesString ? currentTypesString.split(",") : [];
 
   const handleCheckboxChange = (slug: string) => {
     const updatedTypes = selectedTypes.includes(slug)
@@ -70,14 +80,24 @@ const currentTypesString = searchParams.get("type") || "";
     updateParam("type", updatedTypes.join(","));
   };
 
+  const regionOptions = [
+    { value: "", label: "Усі регіони" },
+    ...regions.map((r) => ({ value: r.slug, label: r.region })),
+  ];
+
+  const sortOptions = [{ value: "", label: "Без сортування" }, ...sort];
+
   return (
     <div className={css.filterContainer}>
       <div className={css.searchWrap}>
         <input
           className={css.filterInput}
           placeholder="Пошук"
-          defaultValue={searchParams.get("search") ?? ""}
-          onChange={(e) => handleSearch(e.target.value)}
+          value={searchValue}
+          onChange={(e) => {
+            setSearchValue(e.target.value);
+            handleSearch(e.target.value);
+          }}
           aria-label="Пошук локацій"
           aria-invalid={Boolean(searchError)}
           aria-describedby={searchError ? "search-error" : undefined}
@@ -88,44 +108,43 @@ const currentTypesString = searchParams.get("type") || "";
           </p>
         )}
       </div>
+
       {hasCategoriesError && (
-  <div role="alert" className={css.filterError}>
-    <p>
-      Не вдалося завантажити {isRegionsError && isTypesError
-        ? "регіони та типи локацій"
-        : isRegionsError
-        ? "регіони"
-        : "типи локацій"}
-      . Спробуйте ще раз.
-    </p>
-    <button type="button" onClick={retryCategories}>
-      Повторити
-    </button>
-  </div>
-)}
+        <div role="alert" className={css.filterError}>
+          <p>
+            Не вдалося завантажити{" "}
+            {isRegionsError && isTypesError
+              ? "регіони та типи локацій"
+              : isRegionsError
+                ? "регіони"
+                : "типи локацій"}
+            . Спробуйте ще раз.
+          </p>
+          <button type="button" onClick={retryCategories}>
+            Повторити
+          </button>
+        </div>
+      )}
+
       <div className={css.filterRow}>
-        <select
-          className={css.filterSelect}
+        <Select
+          className={`${css.filterSelect} ${css.hiddenLabel}`}
+          label="Фільтр за регіоном"
+          placeholder="Регіон"
+          options={regionOptions}
           value={searchParams.get("region") ?? ""}
-          onChange={(e) => updateParam("region", e.target.value)}
+          onChange={(value) => updateParam("region", value)}
+          loading={isRegionsLoading}
           disabled={isRegionsError}
-          aria-label="Фільтр за регіоном"
-        >
-          <option value="">Регіон</option>
-          {regions.map((r) => (
-            <option key={r._id} value={r.slug}>
-              {r.region}
-            </option>
-          ))}
-        </select>
+        />
 
         <div
-  className={css.typeWrap}
-  tabIndex={isTypesError ? -1 : 0}
-  aria-disabled={isTypesError}
-  role="group"
-  aria-label="Тип локації"
->
+          className={css.typeWrap}
+          tabIndex={isTypesError ? -1 : 0}
+          aria-disabled={isTypesError}
+          role="group"
+          aria-label="Тип локації"
+        >
           <span className={css.typeTitle}>Тип локації</span>
 
           <div className={css.typeList}>
@@ -148,21 +167,14 @@ const currentTypesString = searchParams.get("type") || "";
         </div>
       </div>
 
-      <select
-        className={css.filterSort}
+      <Select
+        className={`${css.filterSort} ${css.hiddenLabel}`}
+        label="Сортування результатів"
+        placeholder="Сортування"
+        options={sortOptions}
         value={searchParams.get("sortBy") ?? ""}
-        onChange={(e) => updateParam("sortBy", e.target.value)}
-        aria-label="Сортування результатів"
-      >
-        <option value="" className={css.placeholder}>
-          Сортування
-        </option>
-        {sort.map((s) => (
-          <option key={s.value} value={s.value}>
-            {s.label}
-          </option>
-        ))}
-      </select>
+        onChange={(value) => updateParam("sortBy", value)}
+      />
     </div>
   );
 }
