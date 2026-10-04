@@ -31,29 +31,29 @@
 }
 
 .type {
-  overflow: hidden;
   color: var(--color-text-secondary);
   font-size: 14px;
-  line-height: 1.4;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-weight: var(--font-weight-regular);
+  line-height: 18px;
+  overflow-wrap: anywhere;
 }
 
 .rating {
   display: flex;
-  min-height: 20px;
+  min-height: 24px;
   align-items: center;
 }
 
+.rating > * {
+  margin: 0;
+}
+
 .name {
-  display: -webkit-box;
-  overflow: hidden;
+  min-width: 0;
   font-size: var(--font-size-regular);
   font-weight: var(--font-weight-bold);
-  line-height: 1.3;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  line-height: var(--line-height-text);
+  overflow-wrap: anywhere;
 }
 
 .actions {
