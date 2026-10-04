@@ -7,7 +7,7 @@ import Logo from "../Logo/Logo";
 const Footer = () => {
   return (
     <footer className={styles.footer}>
-      <div className={styles.container}>
+      <div className="container">
         <div className={styles.topContent}>
           <Logo className={styles.logoMargin} />
 
