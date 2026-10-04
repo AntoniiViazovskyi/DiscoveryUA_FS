@@ -1,89 +1,106 @@
 .section {
+  width: 100%;
+  margin: 0;
   padding-block: var(--space-9);
-  color: #4c2613;
+  color: var(--color-text-primary);
+}
+
+.locationSection {
+  padding-top: var(--space-9);
+  padding-bottom: 0;
 }
 
 .heading {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
+  gap: var(--space-4);
+}
+
+.locationSection .heading {
+  flex-wrap: wrap;
+}
+
+.action {
+  flex: 0 0 auto;
 }
 
 .title {
+  color: var(--color-text-primary);
+  font-family: var(--font-family-primary);
   font-size: 28px;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   line-height: 1.2;
   letter-spacing: -0.01em;
 }
 
 .message {
   min-height: 203px;
-  margin-top: 40px;
-  color: #4c2613;
-  font-size: 16px;
-  line-height: 1.5;
+  margin-top: var(--space-7);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-text);
 }
 
 .slider {
-  margin-top: 40px;
+  margin-top: var(--space-7);
 }
 
 .swiper {
   width: 100%;
 }
 
-.slide {
-  display: flex;
-  height: auto;
-  justify-content: center;
-}
-
 .controls {
   display: flex;
-  min-height: 48px;
-  align-items: center;
   justify-content: flex-end;
-  margin-top: 50px;
-}
-
-.navigation {
-  display: flex;
-  gap: 10px;
-  margin-right: 10px;
+  gap: var(--space-2-5);
+  padding-right: var(--space-2-5);
+  margin-top: var(--space-slider-controls);
 }
 
 .prevButton,
 .nextButton {
   display: grid;
-  width: 48px;
-  height: 48px;
-  flex: 0 0 48px;
+  width: var(--space-8);
+  height: var(--space-8);
+  flex: 0 0 var(--space-8);
   place-items: center;
   padding: 0;
-  border: 1px solid rgb(76 38 19 / 24%);
-  border-radius: 8px;
-  background: #ffe5d9;
-  color: #4c2613;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-button);
+  background: var(--color-surface-accent);
+  color: var(--color-text-primary);
   cursor: pointer;
-  transition: background-color 160ms ease, border-color 160ms ease;
+  transition:
+    background-color var(--transition-interactive),
+    border-color var(--transition-interactive),
+    transform var(--transition-transform);
 }
 
 .prevButton:hover,
 .nextButton:hover {
-  border-color: #cc6534;
-  background: #ffd2bd;
+  border-color: var(--color-border-hover);
+  background: var(--color-surface-hover);
+  transform: scale(1.05);
 }
 
 .prevButton:focus-visible,
 .nextButton:focus-visible {
-  outline: 2px solid #4c2613;
-  outline-offset: 2px;
+  outline: 2px solid var(--color-text-primary);
+  outline-offset: var(--space-1);
+}
+
+.prevButton:global(.swiper-button-disabled),
+.nextButton:global(.swiper-button-disabled) {
+  background: var(--color-muted-background);
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 @media (min-width: 768px) {
-  .section {
-    height: 532px;
+  .heading {
+    align-items: center;
   }
 
   .title {
@@ -92,9 +109,8 @@
 }
 
 @media (min-width: 1440px) {
-  .section {
-    height: 581px;
-    padding-block: var(--space-10);
+  .locationSection {
+    padding-top: var(--space-10);
   }
 
   .title {
