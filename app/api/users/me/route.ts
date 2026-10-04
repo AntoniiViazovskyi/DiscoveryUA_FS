@@ -37,3 +37,39 @@ export async function GET() {
     )
   }
 }
+
+export async function PATCH(request: Request) {
+  const cookieStore = await cookies()
+
+  try {
+    const body = await request.json()
+
+    const response = await api.patch('/users/me', body, {
+      headers: {
+        Cookie: cookieStore.toString(),
+      },
+      timeout: 10_000,
+    })
+
+    return NextResponse.json(response.data, {
+      status: response.status,
+    })
+  } catch (error) {
+    if (isAxiosError(error)) {
+      return NextResponse.json(
+        {
+          error: error.message,
+          response: error.response?.data,
+        },
+        {
+          status: error.response?.status ?? 502,
+        },
+      )
+    }
+
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 },
+    )
+  }
+}

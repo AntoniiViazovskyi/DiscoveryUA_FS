@@ -45,6 +45,9 @@
   font-weight: var(--font-weight-regular);
   line-height: 18px;
   overflow-wrap: anywhere;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .rating {
@@ -63,6 +66,10 @@
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-text);
   overflow-wrap: anywhere;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .actions {

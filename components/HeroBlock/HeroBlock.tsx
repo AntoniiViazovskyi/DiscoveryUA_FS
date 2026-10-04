@@ -6,6 +6,7 @@ import SearchForm from "../SearchForm/SearchForm";
 export default function HeroBlock() {
   return (
     <section className={css.heroSection}>
+      
       <Image
         src={bgImage}
         alt="Big river"
@@ -27,6 +28,7 @@ export default function HeroBlock() {
           <SearchForm />
         </div>
       </div>
+    
     </section>
   );
 }

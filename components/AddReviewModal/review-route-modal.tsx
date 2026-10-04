@@ -1,9 +1,6 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-
-import AuthPromptModal from '@/components/AuthPromptModal/AuthPromptModal'
-import { AddReviewSubmission } from '@/components/AddReviewModal/add-review-submission'
+import { AddReviewEntry } from '@/components/AddReviewModal/add-review-entry'
 
 type ReviewRouteModalProps = {
   locationId: string
@@ -14,10 +11,11 @@ export default function ReviewRouteModal({
   locationId,
   isAuthenticated,
 }: ReviewRouteModalProps) {
-  const router = useRouter()
-  const onClose = () => router.back()
-
-  if (!isAuthenticated) return <AuthPromptModal onClose={onClose} />
-
-  return <AddReviewSubmission locationId={locationId} onClose={onClose} />
+  return (
+    <AddReviewEntry
+      locationId={locationId}
+      isAuthenticated={isAuthenticated}
+      intercepted
+    />
+  )
 }

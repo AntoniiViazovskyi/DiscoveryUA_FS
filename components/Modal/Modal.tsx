@@ -40,6 +40,22 @@ export default function Modal({ onClose, children, className }: ModalProps) {
       if (e.key === "Escape") {
         onClose();
       }
+      if (e.key === "Tab") {
+        const modal = modalRef.current;
+        const focusable = Array.from(
+          modal?.querySelectorAll<HTMLElement>(
+            'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+          ) ?? [],
+        );
+        const activeIndex = focusable.indexOf(document.activeElement as HTMLElement);
+        const target = e.shiftKey
+          ? activeIndex <= 0 ? focusable.at(-1) : null
+          : activeIndex < 0 || activeIndex === focusable.length - 1 ? focusable[0] : null;
+        if (target || focusable.length === 0) {
+          e.preventDefault();
+          target?.focus();
+        }
+      }
     };
     document.addEventListener("keydown", handleKeyDown);
     document.body.style.overflow = "hidden";

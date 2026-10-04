@@ -7,7 +7,7 @@
 
 .text {
   text-align: left;
-  color: var(--color-text-primary);
+  color: var(--color-scheme-2-text);
   font-size: var(--font-size-regular);
   font-weight: var(--font-weight-regular);
   line-height: var(--line-height-text);

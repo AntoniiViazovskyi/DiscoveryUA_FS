@@ -94,6 +94,7 @@ export default function EditLocationClient({
             type: location.locationType,
             region: location.region,
             description: location.description,
+            coordinates: location.coordinates ?? null,
           }}
         />
       )}
