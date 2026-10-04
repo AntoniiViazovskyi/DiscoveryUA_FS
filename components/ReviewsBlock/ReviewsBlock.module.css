@@ -7,7 +7,7 @@
 
 .locationSection {
   padding-top: var(--space-9);
-  padding-bottom: 0;
+  padding-bottom: var(--space-9);
 }
 
 .heading {
@@ -111,6 +111,7 @@
 @media (min-width: 1440px) {
   .locationSection {
     padding-top: var(--space-10);
+    padding-bottom: var(--space-10);
   }
 
   .title {

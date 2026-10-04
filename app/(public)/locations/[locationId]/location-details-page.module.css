@@ -19,17 +19,6 @@
   margin-top: 0;
 }
 
-/* .reviewsSection {
-  padding-top: var(--space-9);
-  padding-bottom: var(--space-9);
-} */
-
-@media (min-width: 768px) {
-  .descriptionSection {
-    margin-top: var(--space-6);
-  }
-}
-
 @media (min-width: 1440px) {
   .headerSection {
     display: grid;
