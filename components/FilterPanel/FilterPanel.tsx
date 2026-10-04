@@ -13,14 +13,40 @@ export default function FilterPanel() {
   const searchParams = useSearchParams();
   const [searchError, setSearchError] = useState("");
 
-  const { data: regions = [] } = useQuery({
-    queryKey: ["regions"],
-    queryFn: () => getAllRegions(),
-  });
-  const { data: types = [] } = useQuery({
-    queryKey: ["locationTypes"],
-    queryFn: () => getAllTypes(),
-  });
+  const {
+  data: regions = [],
+  isError: isRegionsError,
+  refetch: refetchRegions,
+} = useQuery({
+  queryKey: ["regions"],
+  queryFn: () => getAllRegions(),
+});
+
+const {
+  data: types = [],
+  isError: isTypesError,
+  refetch: refetchTypes,
+} = useQuery({
+  queryKey: ["locationTypes"],
+  queryFn: () => getAllTypes(),
+});
+
+const hasCategoriesError = isRegionsError || isTypesError;
+const retryCategories = () => {
+  if (isRegionsError) refetchRegions();
+  if (isTypesError) refetchTypes();
+};
+
+const updateParam = (key: string, value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
+    }
+    params.set("page", "1");
+    router.replace(`?${params.toString()}`);
+  };
 
   const handleSearch = useDebouncedCallback((value: string) => {
     const trimmed = value.trim();
@@ -31,19 +57,10 @@ export default function FilterPanel() {
     setSearchError("");
     updateParam("search", trimmed);
   }, 400);
-
-  const updateParam = (key: string, value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (value) {
-      params.set(key, value);
-    } else {
-      params.delete(key);
-    }
-    router.replace(`?${params.toString()}`);
-  };
-
-  const currentTypesString = searchParams.get("type") || "";
+    
+const currentTypesString = searchParams.get("type") || "";
   const selectedTypes = currentTypesString ? currentTypesString.split(",") : [];
+
 
   const handleCheckboxChange = (slug: string) => {
     const updatedTypes = selectedTypes.includes(slug)
@@ -61,8 +78,9 @@ export default function FilterPanel() {
           placeholder="Пошук"
           defaultValue={searchParams.get("search") ?? ""}
           onChange={(e) => handleSearch(e.target.value)}
+          aria-label="Пошук локацій"
           aria-invalid={Boolean(searchError)}
-          aria-describedby="search-error"
+          aria-describedby={searchError ? "search-error" : undefined}
         />
         {searchError && (
           <p id="search-error" className={css.filterError}>
@@ -70,11 +88,28 @@ export default function FilterPanel() {
           </p>
         )}
       </div>
+      {hasCategoriesError && (
+  <div role="alert" className={css.filterError}>
+    <p>
+      Не вдалося завантажити {isRegionsError && isTypesError
+        ? "регіони та типи локацій"
+        : isRegionsError
+        ? "регіони"
+        : "типи локацій"}
+      . Спробуйте ще раз.
+    </p>
+    <button type="button" onClick={retryCategories}>
+      Повторити
+    </button>
+  </div>
+)}
       <div className={css.filterRow}>
         <select
           className={css.filterSelect}
           value={searchParams.get("region") ?? ""}
           onChange={(e) => updateParam("region", e.target.value)}
+          disabled={isRegionsError}
+          aria-label="Фільтр за регіоном"
         >
           <option value="">Регіон</option>
           {regions.map((r) => (
@@ -84,7 +119,13 @@ export default function FilterPanel() {
           ))}
         </select>
 
-        <div className={css.typeWrap} tabIndex={0}>
+        <div
+  className={css.typeWrap}
+  tabIndex={isTypesError ? -1 : 0}
+  aria-disabled={isTypesError}
+  role="group"
+  aria-label="Тип локації"
+>
           <span className={css.typeTitle}>Тип локації</span>
 
           <div className={css.typeList}>
@@ -111,6 +152,7 @@ export default function FilterPanel() {
         className={css.filterSort}
         value={searchParams.get("sortBy") ?? ""}
         onChange={(e) => updateParam("sortBy", e.target.value)}
+        aria-label="Сортування результатів"
       >
         <option value="" className={css.placeholder}>
           Сортування
