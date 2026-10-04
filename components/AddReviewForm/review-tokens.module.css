@@ -1,0 +1,32 @@
+.tokens {
+  --review-color-text: #000;
+  --review-color-active: #66321a;
+  --review-heading-size: 26px;
+  --review-heading-line-height: 1.2;
+  --review-field-height: 180px;
+  --review-actions-width: 430px;
+  --review-button-padding-block: 6px;
+  --review-border-width: 1px;
+  --review-focus-width: 2px;
+  --review-focus-offset: 2px;
+  --review-focus-radius: 4px;
+  --review-hidden-size: 1px;
+  --review-disabled-opacity: 0.3;
+  --review-transition-duration: 250ms;
+  --review-transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  --review-star-size: var(--space-6);
+  --review-control-height: var(--space-8);
+  --review-error-height: calc(var(--font-size-xs) * var(--line-height-text));
+}
+
+@media (min-width: 768px) {
+  .tokens {
+    --review-heading-size: 32px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .tokens {
+    --review-heading-size: 48px;
+  }
+}

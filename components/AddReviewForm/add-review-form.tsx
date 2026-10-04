@@ -5,6 +5,7 @@ import { Field, Form, Formik } from 'formik'
 import { Oval } from 'react-loader-spinner'
 
 import styles from './add-review-form.module.css'
+import tokens from './review-tokens.module.css'
 import {
   addReviewSchema,
   type AddReviewFormValues,
@@ -124,7 +125,11 @@ export function AddReviewForm({ onCancel, onSubmit, onSuccess }: AddReviewFormPr
         touched,
         values,
       }) => (
-        <Form className={styles.form} noValidate aria-busy={isSubmitting}>
+        <Form
+          className={`${tokens.tokens} ${styles.form}`}
+          noValidate
+          aria-busy={isSubmitting}
+        >
           <div className={styles.field}>
             <label className={styles.label} htmlFor={descriptionId}>
               Ваш відгук
@@ -185,8 +190,8 @@ export function AddReviewForm({ onCancel, onSubmit, onSuccess }: AddReviewFormPr
               {isSubmitting && (
                 <span className={styles.loader}>
                   <Oval
-                    width={18}
-                    height={18}
+                    width="100%"
+                    height="100%"
                     color="currentColor"
                     secondaryColor="currentColor"
                     strokeWidth={5}

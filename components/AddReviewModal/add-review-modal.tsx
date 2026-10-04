@@ -5,6 +5,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 import Modal from '@/components/Modal/Modal'
 import { AddReviewForm } from '@/components/AddReviewForm/add-review-form'
 import type { AddReviewFormValues } from '@/components/AddReviewForm/add-review-form-schema'
+import tokens from '@/components/AddReviewForm/review-tokens.module.css'
 
 import styles from './add-review-modal.module.css'
 
@@ -41,7 +42,12 @@ export function AddReviewModal({ onClose, onSubmit, onSuccess }: AddReviewModalP
 
   return (
     <Modal onClose={onClose}>
-      <h2 className={styles.title} id={titleId} ref={titleRef} tabIndex={-1}>
+      <h2
+        className={`${tokens.tokens} ${styles.title}`}
+        id={titleId}
+        ref={titleRef}
+        tabIndex={-1}
+      >
         Залишити відгук
       </h2>
       <AddReviewForm onCancel={onClose} onSubmit={onSubmit} onSuccess={onSuccess} />

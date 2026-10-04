@@ -1,27 +1,15 @@
 .title {
-  margin: 0 0 24px;
-  color: #000;
-  font-family: var(--font-montserrat), sans-serif;
-  font-size: 26px;
+  margin: 0 0 var(--space-5);
+  color: var(--review-color-text);
+  font-family: var(--font-family-primary);
+  font-size: var(--review-heading-size);
   font-weight: var(--font-weight-bold);
-  line-height: 1.2;
+  line-height: var(--review-heading-line-height);
   text-align: center;
   overflow-wrap: anywhere;
 }
 
 .title:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 4px;
-}
-
-@media (min-width: 768px) {
-  .title {
-    font-size: 32px;
-  }
-}
-
-@media (min-width: 1440px) {
-  .title {
-    font-size: 48px;
-  }
+  outline: var(--review-focus-width) solid var(--color-accent);
+  outline-offset: var(--space-1);
 }

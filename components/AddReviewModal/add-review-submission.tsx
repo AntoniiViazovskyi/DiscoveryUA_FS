@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef } from 'react'
 import toast from 'react-hot-toast'
 import { AddReviewModal } from './add-review-modal'
+import { REVIEW_TOASTER_ID } from './review-notifications'
 import type { AddReviewFormValues } from '@/components/AddReviewForm/add-review-form-schema'
 
 type AddReviewSubmissionProps = {
@@ -63,7 +64,9 @@ export function AddReviewSubmission({
       ) {
         throw new Error('Не вдалося підтвердити збереження відгуку.')
       }
-      toast.success('Ваш відгук надіслано на модерацію.')
+      toast.success('Ваш відгук надіслано на модерацію.', {
+        toasterId: REVIEW_TOASTER_ID,
+      })
     } catch (error) {
       const message =
         error instanceof DOMException && error.name === 'TimeoutError'
@@ -73,7 +76,7 @@ export function AddReviewSubmission({
             : error instanceof Error
               ? error.message
               : 'Не вдалося надіслати відгук. Спробуйте ще раз.'
-      toast.error(message)
+      toast.error(message, { toasterId: REVIEW_TOASTER_ID })
       throw new Error(message)
     } finally {
       pending.current = false
