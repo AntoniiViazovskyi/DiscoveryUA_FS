@@ -224,7 +224,7 @@ function ReviewsBlockContent({
       aria-labelledby={title ? 'reviews-title' : undefined}
       aria-label={title ? undefined : 'Відгуки'}
     >
-      <div className={styles.container}>
+      <div className="container">
         {hasHeading && (
           <div className={styles.heading}>
             {title && (

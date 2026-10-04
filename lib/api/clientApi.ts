@@ -1,6 +1,10 @@
 import { isAxiosError } from "axios";
 
-import { Location, LocationsHttpResponse } from "@/types/location";
+import {
+  Location,
+  LocationDetails,
+  LocationsHttpResponse,
+} from "@/types/location";
 import { FetchLocationsParams, http } from "./http";
 
 export type RegisterRequest = {
@@ -141,9 +145,13 @@ export async function createLocation(data: FormData): Promise<{ _id: string }> {
   }
 }
 
-export async function fetchLocationById(locationId: string): Promise<Location> {
+export async function fetchLocationById(
+  locationId: string,
+): Promise<LocationDetails> {
   try {
-    const response = await http.get<Location>(`/locations/${locationId}`);
+    const response = await http.get<LocationDetails>(
+      `/locations/${locationId}`,
+    );
     return response.data;
   } catch (error) {
     if (isAxiosError(error)) {
