@@ -17,7 +17,7 @@
   font-family: var(--font-montserrat), sans-serif;
 }
 .btn:hover {
-  background-color: #ffe5d9;
+  background-color: var(--color-surface-accent);
   color: var(--color-scheme-2-text);
 }
 .btn:active {

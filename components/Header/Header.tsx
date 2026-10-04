@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -11,6 +12,7 @@ import MobileMenu from "./MobileMenu";
 import styles from "./Header.module.css";
 
 export default function Header() {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
@@ -80,6 +82,7 @@ export default function Header() {
         <EditProfileModal
           user={user}
           onClose={() => setIsEditModalOpen(false)}
+          onSuccess={() => router.refresh()}
         />
       )}
     </header>

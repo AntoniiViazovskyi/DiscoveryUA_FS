@@ -25,6 +25,8 @@
   --font-size-regular: 18px;
   --font-size-medium: 20px;
   --font-size-heading-1: 56px;
+  --font-size-heading-tablet: 48px;
+  --font-size-heading-mobile: 32px;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
@@ -74,6 +76,8 @@
   --section-padding-small: 48px;
   --section-padding-medium: 80px;
   --section-padding-large: 72px;
+  --catalog-button-min-width-tablet: 133px;
+  --catalog-button-min-width-desktop: 160px;
 }
 
 *,

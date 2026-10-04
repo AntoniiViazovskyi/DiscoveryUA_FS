@@ -12,6 +12,8 @@ import css from "./EditProfileModal.module.css";
 const DEFAULT_AVATAR =
   "https://ac.goit.global/fullstack/react/default-avatar.jpg";
 
+const TOAST_OPTIONS = { toasterId: "profile-edit" };
+
 type EditProfileModalProps = {
   user: {
     name: string;
@@ -48,12 +50,12 @@ export default function EditProfileModal({
     if (!file) return;
 
     if (!["image/jpeg", "image/png"].includes(file.type)) {
-      toast.error("Дозволені тільки JPG та PNG");
+      toast.error("Дозволені тільки JPG та PNG", TOAST_OPTIONS);
       return;
     }
 
     if (file.size >= 1024 * 1024) {
-      toast.error("Розмір фото має бути менше 1 МБ");
+      toast.error("Розмір фото має бути менше 1 МБ", TOAST_OPTIONS);
       return;
     }
 
@@ -67,12 +69,12 @@ export default function EditProfileModal({
     const trimmedName = name.trim();
 
     if (!trimmedName && !avatarFile) {
-      toast.error("Введіть ім'я або завантажте фото");
+      toast.error("Введіть ім'я або завантажте фото", TOAST_OPTIONS);
       return;
     }
 
     if (trimmedName && trimmedName.length < 3) {
-      toast.error("Ім'я має містити щонайменше 3 символи");
+      toast.error("Ім'я має містити щонайменше 3 символи", TOAST_OPTIONS);
       return;
     }
 
@@ -93,13 +95,14 @@ export default function EditProfileModal({
       await queryClient.invalidateQueries({ queryKey: ["me"] });
       onSuccess?.();
 
-      toast.success("Профіль оновлено");
+      toast.success("Профіль оновлено", TOAST_OPTIONS);
       onClose();
     } catch (error) {
       toast.error(
         error instanceof Error
           ? error.message
           : "Не вдалося оновити профіль",
+        TOAST_OPTIONS,
       );
     } finally {
       setIsSubmitting(false);

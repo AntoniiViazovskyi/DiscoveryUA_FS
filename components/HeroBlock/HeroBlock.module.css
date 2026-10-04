@@ -43,7 +43,7 @@
 .heroTitle {
   font-family: var(--font-montserrat), sans-serif;
   font-weight: var(--font-weight-bold);
-  font-size: 32px;
+  font-size: var(--font-size-heading-mobile);
   line-height: var(--line-height-heading);
   letter-spacing: -0.01em;
   color: var(--color-white);
@@ -63,7 +63,7 @@
 /* Styles for Tablet devices */
 @media screen and (min-width: 768px) {
   .heroTitle {
-    font-size: var(--space-8);
+    font-size: var(--font-size-heading-tablet);
   }
 }
 /* Styles for Desktop devices */
@@ -73,9 +73,9 @@
     padding: var(--space-10) 0;
   }
   .heroTitle {
-    font-size: 56px;
+    font-size: var(--font-size-heading-1);
   }
   .heroText {
-    font-size: 20px;
+    font-size: var(--font-size-medium);
   }
 }
