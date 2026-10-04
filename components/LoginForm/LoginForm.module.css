@@ -13,7 +13,7 @@
 }
 
 .label {
-  color: #000;
+  color: var(--color-text-primary);
   font-size: var(--font-size-small);
   font-weight: var(--font-weight-regular);
   line-height: var(--line-height-text);
@@ -30,7 +30,7 @@
   outline: none;
 
   background: var(--color-surface-accent);
-  color: #000;
+  color: var(--color-text-primary);
 
   font-size: var(--font-size-small);
   font-weight: var(--font-weight-regular);
@@ -43,7 +43,7 @@
 }
 
 .input::placeholder {
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--color-placeholder);
   opacity: 1;
 }
 
@@ -57,19 +57,19 @@
 }
 
 .input[aria-invalid="true"] {
-  border-color: #d00101;
-  color: #d00101;
+  border-color: var(--color-error);
+  color: var(--color-error);
 }
 
 .input[aria-invalid="true"]:focus-visible {
-  box-shadow: 0 0 0 1px #d00101;
+  box-shadow: 0 0 0 1px var(--color-error);
 }
 
 .error {
   display: none;
   margin: 0;
 
-  color: #d00101;
+  color: var(--color-error);
   font-size: 12px;
   font-weight: var(--font-weight-regular);
   line-height: var(--line-height-text);
