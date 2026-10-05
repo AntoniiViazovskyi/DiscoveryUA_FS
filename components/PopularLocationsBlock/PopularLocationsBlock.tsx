@@ -18,7 +18,7 @@ export default function PopularLocationsBlock() {
       fetchAllLocations({
         page: 1,
         limit: 6,
-        sortBy: "popularity",
+        sortBy: "rate",
         sortOrder: "desc",
       }),
   });
