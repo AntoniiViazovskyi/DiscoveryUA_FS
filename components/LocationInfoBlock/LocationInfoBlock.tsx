@@ -51,7 +51,7 @@ export default function LocationInfoBlock({
         <span className={css.rateNumber}>{rating.toFixed(1)}</span>
       </div>
 
-      <h2 className={css.title}>{location.name}</h2>
+      <h1 className={css.title}>{location.name}</h1>
       <ul className={css.list}>
         <li className={css.item}>
           <p className={css.text}>

@@ -30,7 +30,7 @@
 }
 .title {
   font-weight: var(--font-weight-bold);
-  font-size: 32px;
+  font-size: var(--font-size-heading-1);
   line-height: var(--line-height-heading);
   text-align: start;
   letter-spacing: -0.01em;
@@ -92,17 +92,11 @@ a.link {
     padding: 0;
     max-width: 533px;
   }
-  .title {
-    font-size: 48px;
-  }
 }
 
 @media (min-width: 1440px) {
   .rateNumber {
     font-size: var(--font-size-regular);
-  }
-  .title {
-    font-size: var(--font-size-heading-1);
   }
   .text {
     font-size: var(--font-size-regular);

@@ -1,7 +1,7 @@
 import "server-only";
 
 import { cookies } from "next/headers";
-
+import { cache } from "react";
 import { api } from "@/app/api/api";
 import type { LocationDetails, LocationsHttpResponse } from "@/types/location";
 import { FetchLocationsParams } from "./http";
@@ -47,3 +47,5 @@ export async function fetchLocationById(
   });
   return response.data;
 }
+
+export const getLocationByIdCached = cache(fetchLocationById);
