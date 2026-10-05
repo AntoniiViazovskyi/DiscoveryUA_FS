@@ -85,7 +85,7 @@ export default function FilterPanel() {
     ...regions.map((r) => ({ value: r.slug, label: r.region })),
   ];
 
-  const sortOptions = [{ value: "", label: "Без сортування" }, ...sort];
+  const sortOptions = [{ value: "", label: "Сортування" }, ...sort];
 
   return (
     <div className={css.filterContainer}>
