@@ -9,22 +9,27 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-y: auto;
+  padding-block: 20px;
 }
 .modal {
   position: relative;
-  min-width: 334px;
+  width: calc(100vw - 40px);
+  max-width: 334px;
+  min-width: 0;
   min-height: 595px;
-  border-radius: 24px;
-  background-color: #fff2ec;
-  padding: 64px 20px;
+  border-radius: var(--radius-xlarge);
+  background-color:var(--color-surface);
+  padding: var(--space-9) 20px;
+  margin-block: auto;
 }
 .closeButton {
   position: absolute;
-  top: 24px;
-  right: 24px;
+  top: var(--space-5);
+  right: var(--space-5);
   background-color: transparent;
   border: 1px solid transparent;
-  border-radius: 6px;
+  border-radius:  var(--radius-small);
   border: none;
   width: 32px;
   height: 32px;
@@ -38,7 +43,7 @@
     background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .icon {
-  fill: #fff;
+  fill: var(--color-white);
   stroke: black;
 }
 .closeButton:hover {
@@ -54,15 +59,17 @@
 
 @media screen and (min-width: 768px) {
   .modal {
-    min-width: 704px;
+    width: 704px;
+    max-width: 704px;
     min-height: 530px;
-    padding: 64px 32px;
+    padding: var(--space-9) var(--space-6);
   }
 }
 @media screen and (min-width: 1440px) {
   .modal {
-    padding: 64px;
+    padding: var(--space-9);
     width: 768px;
+    max-width: 768px;
     min-height: 553px;
   }
 }

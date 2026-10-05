@@ -34,6 +34,7 @@ type FeedbackApiItem = {
   author?: { name?: string }
   owner?: { name?: string }
   user?: { name?: string }
+  location?: { _id?: string; name?: string; locationType?: string }
 }
 
 const PAGE_SIZE = 50
@@ -59,34 +60,11 @@ async function fetchJson(url: string, signal: AbortSignal): Promise<unknown> {
   return response.json()
 }
 
-async function fetchLocations(signal: AbortSignal): Promise<Location[]> {
-  const firstPage = await fetchJson(
-    `/api/locations?page=1&limit=${PAGE_SIZE}&sortBy=name&sortOrder=asc`,
-    signal,
-  )
-  const locations = getArrayProperty(firstPage, 'locations') as Location[]
-  const totalPages = getTotalPages(firstPage)
-
-  if (totalPages <= 1) return locations
-
-  const remainingPages = await Promise.all(
-    Array.from({ length: totalPages - 1 }, (_, index) =>
-      fetchJson(
-        `/api/locations?page=${index + 2}&limit=${PAGE_SIZE}&sortBy=name&sortOrder=asc`,
-        signal,
-      ),
-    ),
-  )
-
-  return locations.concat(
-    ...remainingPages.map((page) => getArrayProperty(page, 'locations') as Location[]),
-  )
-}
-
 function normalizeFeedbacks(
   data: unknown,
   location: Location | undefined,
   fallbackLocationId: string,
+  locationType?: string,
 ): Feedback[] {
   const records = getArrayProperty(data, 'data').length
     ? getArrayProperty(data, 'data')
@@ -114,8 +92,10 @@ function normalizeFeedbacks(
       rate,
       description,
       authorName,
-      locationId: location?._id ?? fallbackLocationId,
-      locationName: location?.name ?? '',
+      locationId: location?._id ?? item.location?._id ?? fallbackLocationId,
+      locationName: location?.name ?? item.location?.name ?? '',
+      locationType:
+        locationType ?? item.location?.locationType ?? location?.locationType,
     }]
   })
 }
@@ -124,12 +104,18 @@ async function fetchLocationFeedbacks(
   locationId: string,
   signal: AbortSignal,
   location?: Location,
+  locationType?: string,
 ): Promise<Feedback[]> {
   const firstPage = await fetchJson(
     `/api/feedbacks?locationId=${encodeURIComponent(locationId)}&page=1&limit=${PAGE_SIZE}`,
     signal,
   )
-  const feedbacks = normalizeFeedbacks(firstPage, location, locationId)
+  const feedbacks = normalizeFeedbacks(
+    firstPage,
+    location,
+    locationId,
+    locationType,
+  )
   const totalPages = getTotalPages(firstPage)
 
   if (totalPages <= 1) return feedbacks
@@ -144,7 +130,9 @@ async function fetchLocationFeedbacks(
   )
 
   return feedbacks.concat(
-    ...remainingPages.map((page) => normalizeFeedbacks(page, location, locationId)),
+    ...remainingPages.map((page) =>
+      normalizeFeedbacks(page, location, locationId, locationType),
+    ),
   )
 }
 
@@ -153,36 +141,25 @@ function getObjectIdTimestamp(id: string) {
   return /^[\da-f]{24}$/i.test(id) && Number.isFinite(timestamp) ? timestamp : 0
 }
 
-async function fetchAllReviews(
+function sortReviews(reviews: Feedback[]) {
+  return reviews.sort((first, second) => {
+    const timestampDifference =
+      getObjectIdTimestamp(second._id) - getObjectIdTimestamp(first._id)
+    return timestampDifference || second._id.localeCompare(first._id)
+  })
+}
+
+async function fetchHomeReviews(signal: AbortSignal): Promise<Feedback[]> {
+  const response = await fetchJson('/api/feedbacks/latest', signal)
+  return normalizeFeedbacks(response, undefined, '')
+}
+
+async function fetchReviews(
   signal: AbortSignal,
   locationId?: string,
 ): Promise<Feedback[]> {
-  if (locationId) {
-    const feedbacks = await fetchLocationFeedbacks(locationId, signal)
-    return feedbacks.sort((first, second) => {
-      const timestampDifference =
-        getObjectIdTimestamp(second._id) - getObjectIdTimestamp(first._id)
-      return timestampDifference || second._id.localeCompare(first._id)
-    })
-  }
-
-  const locations = (await fetchLocations(signal)).filter(
-    (location) =>
-      Array.isArray(location.feedbacksId) && location.feedbacksId.length > 0,
-  )
-  const feedbacksByLocation = await Promise.all(
-    locations.map((location) =>
-      fetchLocationFeedbacks(location._id, signal, location),
-    ),
-  )
-
-  return feedbacksByLocation
-    .flat()
-    .sort((first, second) => {
-      const timestampDifference =
-        getObjectIdTimestamp(second._id) - getObjectIdTimestamp(first._id)
-      return timestampDifference || second._id.localeCompare(first._id)
-    })
+  if (!locationId) return fetchHomeReviews(signal)
+  return sortReviews(await fetchLocationFeedbacks(locationId, signal))
 }
 
 function ReviewsBlockContent({
@@ -203,7 +180,7 @@ function ReviewsBlockContent({
 
     async function loadReviews() {
       try {
-        setReviews(await fetchAllReviews(controller.signal, locationId))
+        setReviews(await fetchReviews(controller.signal, locationId))
       } catch {
         if (!controller.signal.aborted) setHasError(true)
       } finally {
@@ -217,14 +194,17 @@ function ReviewsBlockContent({
   }, [initialReviews, locationId])
 
   const hasHeading = Boolean(title || action)
+  const sectionClassName = locationId
+    ? `${styles.section} ${styles.locationSection}`
+    : `${styles.section} ${styles.homeSection}`
 
   return (
     <section
-      className={styles.section}
+      className={sectionClassName}
       aria-labelledby={title ? 'reviews-title' : undefined}
       aria-label={title ? undefined : 'Відгуки'}
     >
-      <div className={styles.container}>
+      <div className={locationId ? 'container' : styles.homeContainer}>
         {hasHeading && (
           <div className={styles.heading}>
             {title && (
@@ -232,7 +212,7 @@ function ReviewsBlockContent({
                 {title}
               </h2>
             )}
-            {action}
+            {action && <div className={styles.action}>{action}</div>}
           </div>
         )}
 
@@ -268,7 +248,7 @@ function ReviewsBlockContent({
                     rating={review.rate}
                     comment={review.description}
                     authorName={review.authorName}
-                    locationName={review.locationName}
+                    locationName={review.locationType ?? review.locationName}
                     locationHref={`/locations/${review.locationId}`}
                   />
                 </SwiperSlide>
@@ -276,26 +256,24 @@ function ReviewsBlockContent({
             </Swiper>
 
             <div className={styles.controls}>
-              <div className={styles.navigation}>
-                <button
-                  className={styles.prevButton}
-                  type="button"
-                  aria-label="Попередній відгук"
-                >
-                  <svg aria-hidden="true" width="24" height="24">
-                    <use href="/icons/sprite.svg#icon-arrow-back" />
-                  </svg>
-                </button>
-                <button
-                  className={styles.nextButton}
-                  type="button"
-                  aria-label="Наступний відгук"
-                >
-                  <svg aria-hidden="true" width="24" height="24">
-                    <use href="/icons/sprite.svg#icon-arrow-forward" />
-                  </svg>
-                </button>
-              </div>
+              <button
+                className={styles.prevButton}
+                type="button"
+                aria-label="Попередній відгук"
+              >
+                <svg aria-hidden="true" width="24" height="24">
+                  <use href="/icons/sprite.svg#icon-arrow-back" />
+                </svg>
+              </button>
+              <button
+                className={styles.nextButton}
+                type="button"
+                aria-label="Наступний відгук"
+              >
+                <svg aria-hidden="true" width="24" height="24">
+                  <use href="/icons/sprite.svg#icon-arrow-forward" />
+                </svg>
+              </button>
             </div>
           </div>
         )}

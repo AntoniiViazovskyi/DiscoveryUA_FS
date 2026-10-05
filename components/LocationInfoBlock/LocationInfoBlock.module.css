@@ -10,32 +10,32 @@
   display: flex;
   align-items: center;
   min-height: 24px;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-3);
 }
 .star {
-  color: #000;
+  color: var(--color-black);
 }
 .rateDot {
   width: 4px;
   height: 4px;
-   color: #1b391b;
+  color: var(--color-scheme-2-text);
   margin: 0 9px;
-   flex-shrink: 0;
+  flex-shrink: 0;
 }
 .rateNumber {
   font-weight: var(--font-weight-regular);
   font-size: var(--font-size-small);
   line-height: var(--line-height-text);
-  color: #1b391b;
+  color: var(--color-scheme-2-text);
 }
 .title {
   font-weight: var(--font-weight-bold);
-  font-size: 32px;
+  font-size: var(--font-size-heading-mobile);
   line-height: var(--line-height-heading);
   text-align: start;
-  letter-spacing: -0.01em;
-  color: #1b391b;
-  margin-bottom: 12px;
+  letter-spacing: var(--letter-spacing-tight);
+   color: var(--color-scheme-2-text);
+  margin-bottom: var(--space-3);
 }
 
 .list {
@@ -52,12 +52,12 @@
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-small);
   line-height: var(--line-height-text);
-  color: #1b391b;
+  color: var(--color-scheme-2-text);
 }
 .label {
   font-weight: var(--font-weight-regular);
-  margin-left: 8px;
-  color: #1b391b;
+  margin-left: var(--space-2);
+  color: var(--color-scheme-2-text);
 }
 
 a.link {
@@ -65,7 +65,7 @@ a.link {
   text-decoration-skip-ink: none;
   font-size: var(--font-size-small);
   line-height: var(--line-height-text);
-  color: #1b391b;
+   color: var(--color-scheme-2-text);
 }
 
 .author {
@@ -75,7 +75,7 @@ a.link {
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-small);
   line-height: var(--line-height-text);
-  color: #1b391b;
+ color: var(--color-scheme-2-text);
 }
 
 .authorLabel {
@@ -93,7 +93,7 @@ a.link {
     max-width: 533px;
   }
   .title {
-    font-size: 48px;
+    font-size: var(--font-size-heading-tablet);
   }
 }
 

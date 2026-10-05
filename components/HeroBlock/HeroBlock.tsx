@@ -6,6 +6,7 @@ import SearchForm from "../SearchForm/SearchForm";
 export default function HeroBlock() {
   return (
     <section className={css.heroSection}>
+      
       <Image
         src={bgImage}
         alt="Big river"
@@ -15,7 +16,7 @@ export default function HeroBlock() {
         className={css.backgroundImage}
       />
       <div className={css.overlay}></div>
-      <div className={css.heroContainer}>
+      <div className={`container ${css.heroContainer}`}>
         <div className={css.contantContainer}>
           <h1 className={css.heroTitle}>
             Відкрий для себе Україну. Знайди ідеальне місце для відпочинку
@@ -27,6 +28,7 @@ export default function HeroBlock() {
           <SearchForm />
         </div>
       </div>
+    
     </section>
   );
 }

@@ -7,6 +7,15 @@
 }
 
 .filterInput,
+.filterSelect,
+.filterSort {
+  height: 40px;
+  white-space: nowrap;
+  word-break: normal;
+  display: block;
+}
+
+.filterInput,
 .typeTitle {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-small);
@@ -62,10 +71,17 @@
   width: 100%;
 }
 
+.filterSelect option,
+.typeWrap option,
+.filterSort option {
+  background-color: var(--color-surface-accent);
+  color: var(--color-overlay);
+}
+
 .filterRow .filterSelect,
 .filterContainer .filterSort {
-  --color-text-secondary: var(--color-overlay); 
-  --color-text-primary: var(--color-overlay);    
+  --color-text-secondary: var(--color-overlay);
+  --color-text-primary: var(--color-overlay);
 }
 
 .filterRow .filterSelect button[aria-expanded="true"],
@@ -94,7 +110,6 @@
   border: 0;
 }
 
-
 .searchWrap {
   position: relative;
   width: 100%;
@@ -111,7 +126,6 @@
   white-space: nowrap;
   pointer-events: none;
 }
-
 
 .categoriesError {
   display: flex;
@@ -137,7 +151,6 @@
   font: inherit;
   cursor: pointer;
 }
-
 
 .typeWrap {
   position: relative;
@@ -174,7 +187,6 @@
 .typeWrap:focus-within .typeTitle::after {
   rotate: 180deg;
 }
-
 
 .typeList {
   display: none;
@@ -225,7 +237,9 @@
   color: var(--color-overlay);
   line-height: var(--line-height-text);
   cursor: pointer;
-  transition: border-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    border-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.2s;
 }
 
 .checkboxLabel > span {
@@ -233,6 +247,83 @@
   min-width: 0;
   white-space: normal;
   overflow-wrap: anywhere;
+}
+
+/* Кастомний випадний список */
+@supports (appearance: base-select) {
+  .filterSelect,
+  .filterSort {
+    appearance: base-select;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-2);
+    background-image: none;
+  }
+
+  .filterSelect::picker-icon,
+  .typeWrap::picker-icon,
+  .filterSort::picker-icon {
+    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%23000' stroke-opacity='0.6' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .filterSelect:open::picker-icon,
+  .typeWrap:open::picker-icon,
+  .filterSort:open::picker-icon {
+    rotate: 180deg;
+  }
+
+  .filterSelect::picker(select),
+  .filterSort::picker(select) {
+    appearance: base-select;
+    width: anchor-size(width);
+    max-width: anchor-size(width);
+    max-height: 280px;
+    margin-block: var(--space-1);
+    padding: var(--space-1);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    background-color: var(--color-surface-accent);
+    box-shadow: none;
+    font: inherit;
+    scrollbar-width: none;
+  }
+
+  .filterSelect::-webkit-scrollbar,
+  .filterSort::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background: transparent;
+  }
+
+  .filterSelect option,
+  .filterSort option {
+    padding: var(--space-1) 6px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-small);
+    cursor: pointer;
+    color: var(--color-overlay);
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: var(--line-height-text);
+    transition: border-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .filterSelect option:hover,
+  .filterSort option:hover {
+    border-color: var(--color-accent);
+  }
+
+  .filterSelect option:checked,
+  .filterSort option:checked {
+    background-color: var(--color-border-hover);
+  }
+
+  .filterSelect option::checkmark,
+  .filterSort option::checkmark {
+    display: none;
+  }
 }
 
 .checkboxInput {

@@ -1,0 +1,52 @@
+.state,
+.empty {
+  color: var(--color-text-secondary);
+}
+
+.error {
+  color: var(--color-error);
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.pageResults {
+  width: 100%;
+}
+
+.rating {
+  display: flex;
+  min-height: var(--space-5);
+  align-items: center;
+}
+
+.star {
+  color: var(--color-black);
+}
+
+.buttonWrap {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-7);
+}
+
+.actionButton {
+  width: 100%;
+  height: var(--space-8);
+}
+
+@media (min-width: 768px) {
+  .actionButton {
+    width: auto;
+    min-width: var(--catalog-button-min-width-tablet);
+  }
+}
+
+@media (min-width: 1440px) {
+  .actionButton {
+    min-width: var(--catalog-button-min-width-desktop);
+  }
+}

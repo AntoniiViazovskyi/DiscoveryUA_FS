@@ -23,24 +23,24 @@
 }
 
 .title {
-  color: #000;
-  font-size: 28px;
+  color: var(--color-form-text);
+  font-size: var(--font-size-auth-heading);
   font-weight: var(--font-weight-bold);
-  line-height: 1.2;
-  letter-spacing: -0.28px;
+  line-height: var(--line-height-title);
+  letter-spacing: var(--letter-spacing-tight);
   text-align: center;
 }
 
 @media (min-width: 768px) {
   .title {
-    font-size: 44px;
-    letter-spacing: -0.44px;
+    font-size: var(--font-size-auth-heading-tablet);
+    letter-spacing: var(--letter-spacing-tight);
   }
 }
 
 @media (min-width: 1440px) {
   .title {
-    font-size: 52px;
-    letter-spacing: -0.52px;
+    font-size: var(--font-size-auth-heading-desktop);
+    letter-spacing: var(--letter-spacing-tight);
   }
 }

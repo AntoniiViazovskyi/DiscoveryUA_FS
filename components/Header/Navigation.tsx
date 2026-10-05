@@ -15,6 +15,7 @@ type Props = {
   isAuthenticated: boolean;
   user: User;
   onLogout: () => void;
+  onEditProfile: () => void;
 };
 
 export default function Navigation({
@@ -23,6 +24,7 @@ export default function Navigation({
   isAuthenticated,
   user,
   onLogout,
+  onEditProfile,
 }: Props) {
   return (
     <>
@@ -51,15 +53,22 @@ export default function Navigation({
               Поділитись локацією
             </Link>
             <div className={styles.userInfo}>
-              <Image
-                src={user.avatarUrl || DEFAULT_AVATAR}
-                alt={user.name}
-                width={32}
-                height={32}
-                className={styles.avatar}
-                unoptimized
-              />
-              <span className={styles.userName}>{user.name}</span>
+              <button
+                type="button"
+                className={styles.userButton}
+                onClick={onEditProfile}
+                aria-label="Редагувати профіль"
+              >
+                <Image
+                  src={user.avatarUrl || DEFAULT_AVATAR}
+                  alt={user.name}
+                  width={32}
+                  height={32}
+                  className={styles.avatar}
+                  unoptimized
+                />
+                <span className={styles.userName}>{user.name}</span>
+              </button>
               <button
                 type="button"
                 className={styles.logoutButton}
