@@ -28,9 +28,9 @@
   width: 20px;
   height: 20px;
   border: 3px solid var(--color-white);
-  border-radius: 50% 50% 50% 0;
+  border-radius: var(--radius-round);
   background-color: var(--color-accent);
-  box-shadow: 0 4px 12px rgb(0 0 0 / 30%);
+  box-shadow: 0 4px 12px var(--color-overlay);
   transform: rotate(-45deg);
 }
 
@@ -41,7 +41,7 @@
   left: 50%;
   width: 6px;
   height: 6px;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background-color: var(--color-white);
   transform: translate(-50%, -50%);
 }

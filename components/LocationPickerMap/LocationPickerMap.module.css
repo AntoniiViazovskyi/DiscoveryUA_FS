@@ -23,7 +23,7 @@
   font-family: inherit;
   font-size: var(--font-size-small);
   line-height: var(--line-height-text);
-  transition: border-color 0.2s ease;
+  transition: border-color var(--transition-interactive);
 }
 
 .searchInput::placeholder {
@@ -59,9 +59,9 @@
   line-height: var(--line-height-text);
   cursor: pointer;
   transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    opacity 0.2s ease;
+    background-color var(--transition-interactive),
+    color var(--transition-interactive),
+    opacity var(--transition-interactive);
 }
 
 .searchButton:hover:not(:disabled) {

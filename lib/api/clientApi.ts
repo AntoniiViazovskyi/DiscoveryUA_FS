@@ -143,6 +143,7 @@ export async function uploadUserImage(file: File): Promise<string> {
 
 export type UpdateCurrentUserRequest = {
   username?: string;
+  name?: string;
   avatarUrl?: string;
 };
 
