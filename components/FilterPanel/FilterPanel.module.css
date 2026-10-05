@@ -69,6 +69,11 @@
 
 .filterContainer .filterSort {
   width: 100%;
+  padding: 0;
+}
+
+.filterSort button {
+  gap: var(--space-2);
 }
 
 .filterSelect option,
@@ -378,7 +383,7 @@
   }
 
   .filterContainer .filterSort {
-    flex: 0 1 190px;
+    flex: 0 0 158px;
     min-width: 158px;
     width: auto;
     margin-left: auto;
@@ -403,6 +408,7 @@
 
   .filterContainer .filterSort {
     margin-left: auto;
+    flex-basis: 160px;
     min-width: 160px;
   }
 

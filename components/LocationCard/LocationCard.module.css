@@ -104,8 +104,14 @@
   font-weight: var(--font-weight-medium);
 }
 
-.editButton {
+.actions .viewButton {
+  min-width: 0;
+  width: auto;
+}
+
+.actions .editButton {
   width: 48px;
+  min-width: 48px;
   flex: 0 0 48px;
 }
 

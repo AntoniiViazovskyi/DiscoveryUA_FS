@@ -1,3 +1,7 @@
+.page {
+  padding-bottom: var(--space-9);
+}
+
 .heading {
   margin: var(--space-6) 0;
   line-height: var(--line-height-heading);
@@ -20,6 +24,10 @@
 }
 
 @media (min-width: 1440px) {
+  .page {
+    padding-bottom: var(--space-10);
+  }
+
   .heading {
     margin-top: var(--space-8);
     font-size: var(--font-size-heading-1);

@@ -12,7 +12,7 @@ export default async function CreateLocationPage() {
   } catch (err) {
     if (err instanceof ProfileApiUnavailableError) {
       return (
-        <main className="container">
+        <main className={`container ${css.page}`}>
           <h1 className={css.heading}>Додавання нового місця</h1>
           <p className={css.notice} role="alert">
             Сервіс тимчасово недоступний. Спробуйте пізніше.
@@ -28,7 +28,7 @@ export default async function CreateLocationPage() {
   }
 
   return (
-    <main className="container">
+    <main className={`container ${css.page}`}>
       <h1 className={css.heading}>Додавання нового місця</h1>
       <LocationForm />
     </main>
