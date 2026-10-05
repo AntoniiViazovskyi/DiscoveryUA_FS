@@ -1,14 +1,19 @@
-import { getAllTypesServer, getAllRegionsServer } from "@/lib/api/filterServer";
+import type { Metadata } from "next";
+import { Suspense } from "react";
 import {
-  QueryClient,
   HydrationBoundary,
+  QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
+
 import FilterPanel from "@/components/FilterPanel/FilterPanel";
 import LocationsCatalog from "@/components/LocationsCatalog/LocationsCatalog";
-import { Suspense } from "react";
-import type { Metadata } from "next";
+import {
+  getAllRegionsServer,
+  getAllTypesServer,
+} from "@/lib/api/filterServer";
 import { SITE_URL } from "@/lib/seo";
+
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -29,16 +34,17 @@ export default async function LocationsPage() {
       queryFn: () => getAllTypesServer(),
       retry: false,
     }),
-
     queryClient.prefetchQuery({
       queryKey: ["regions"],
       queryFn: () => getAllRegionsServer(),
       retry: false,
     }),
   ]);
+
   return (
     <div className={`container ${styles.page}`}>
       <h1 className={styles.title}>Усі місця відпочинку</h1>
+
       <HydrationBoundary state={dehydrate(queryClient)}>
         <Suspense fallback={null}>
           <FilterPanel />
