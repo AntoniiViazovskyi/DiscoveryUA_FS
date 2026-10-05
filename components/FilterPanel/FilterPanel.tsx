@@ -12,7 +12,6 @@ export default function FilterPanel() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [searchError, setSearchError] = useState("");
-
   const urlSearch = searchParams.get("search") ?? "";
   const [searchValue, setSearchValue] = useState(urlSearch);
 
