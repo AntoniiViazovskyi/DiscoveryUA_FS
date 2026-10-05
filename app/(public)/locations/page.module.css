@@ -4,7 +4,7 @@
   padding-top: var(--space-6);
 }
 .title {
-  font-size: var(--font-size-heading-1);
+  font-size: var(--font-size-heading-mobile);
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-heading);
   color: var(--color-black);
@@ -14,7 +14,16 @@
   display: flex;
 }
 
+@media (min-width: 768px) {
+  .title {
+    font-size: var(--font-size-heading-tablet);
+  }
+}
+
 @media (min-width: 1440px) {
+  .title {
+    font-size: var(--font-size-heading-1);
+  }
   .page {
     padding-bottom: var(--space-10);
     padding-top: var(--space-8);

@@ -73,7 +73,9 @@ export async function fetchAllLocations({
   sortBy = "rate",
   sortOrder = "desc",
 }: FetchLocationsParams): Promise<LocationsHttpResponse> {
-  const response = await http.get<LocationsHttpResponse>("/locations", {
+  const response = await http.get<
+    LocationsHttpResponse & { totalItems?: number }
+  >("/locations", {
     params: {
       page,
       limit,
@@ -86,7 +88,10 @@ export async function fetchAllLocations({
     },
   });
 
-  return response.data;
+  return {
+    ...response.data,
+    totalLocations: response.data.totalLocations ?? response.data.totalItems ?? 0,
+  };
 }
 
 export async function register(data: RegisterRequest): Promise<void> {
@@ -103,6 +108,10 @@ export async function login(data: LoginRequest): Promise<void> {
   } catch (error) {
     throw getLoginRequestError(error);
   }
+}
+
+export async function logout(): Promise<void> {
+  await http.post("/auth/logout");
 }
 
 export type CurrentUser = {

@@ -15,6 +15,7 @@ type Props = {
   isAuthenticated: boolean;
   user: User;
   onLogout: () => void;
+  isLoggingOut: boolean;
   onEditProfile: () => void;
 };
 
@@ -24,11 +25,11 @@ export default function Navigation({
   isAuthenticated,
   user,
   onLogout,
+  isLoggingOut,
   onEditProfile,
 }: Props) {
   return (
     <>
-      {/* Десктопна навігація */}
       <nav className={styles.nav} aria-label="Основна навігація">
         <Link href="/" className={styles.navLink}>
           Головна
@@ -74,8 +75,8 @@ export default function Navigation({
                 className={styles.logoutButton}
                 aria-label="Вийти з акаунту"
                 onClick={onLogout}
+                disabled={isLoggingOut}
               >
-                {/* TODO: підставити реальний id іконки зі sprite.svg */}
                 <svg width="24" height="24" aria-hidden="true">
                   <use href="/icons/sprite.svg#icon-logout" />
                 </svg>

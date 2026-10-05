@@ -9,6 +9,7 @@ type Props = {
   isAuthenticated: boolean;
   userId: string;
   onLogout: () => void;
+  isLoggingOut: boolean;
 };
 
 export default function MobileMenu({
@@ -17,6 +18,7 @@ export default function MobileMenu({
   isAuthenticated,
   userId,
   onLogout,
+  isLoggingOut,
 }: Props) {
   return (
     <nav
@@ -46,6 +48,7 @@ export default function MobileMenu({
             type="button"
             className={`${styles.btn} ${styles.btnGhost}`}
             onClick={onLogout}
+            disabled={isLoggingOut}
           >
             Вийти
           </button>

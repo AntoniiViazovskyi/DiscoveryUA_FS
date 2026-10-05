@@ -1,7 +1,6 @@
 @import "modern-normalize";
 
 :root {
-  /* Colors */
   --color-page-background: #fff2ec;
   --color-surface: #fff2ec;
   --color-surface-accent: #ffe5d9;
@@ -19,7 +18,6 @@
   --color-background: var(--color-page-background);
   --color-text: var(--color-text-primary);
 
-  /* Typography */
   --font-family-primary: var(--font-montserrat), sans-serif;
   --font-size-small: 16px;
   --font-size-caption: 14px;
@@ -36,14 +34,12 @@
   --line-height-text: 1.5;
   --line-height-heading: 1.1;
 
-  /* Border radius */
   --radius-small: 6px;
   --radius-medium: 12px;
   --radius-large: 16px;
   --radius-xlarge: 24px;
   --radius-round: 999px;
 
-  /* Spacing */
   --space-1: 4px;
   --space-1-5: 6px;
   --space-2: 8px;
@@ -60,7 +56,6 @@
   --space-reviews-footer-compact: 74px;
   --space-reviews-footer-wide: 82px;
 
-  /* Shared UI form fields */
   --color-error: #b00101;
   --color-border-hover: #ffa57a;
   --color-placeholder: rgb(0 0 0 / 60%);
@@ -90,14 +85,12 @@
   --focus-outline-width: 2px;
   --focus-outline-offset: 2px;
 
-  /* Auth controls: preserve the existing sizes */
   --auth-input-height: 42px;
   --auth-input-height-desktop: 45px;
   --auth-button-height: 44px;
   --auth-nav-height: 49px;
   --auth-nav-height-desktop: 51px;
 
-  /* Layout */
   --container-max-width: 1440px;
   --container-padding: 20px;
   --section-padding-small: 48px;

@@ -104,18 +104,3 @@ export default function SwiperSlider<T>({
     </div>
   );
 }
-
-// В СВОЁМ КОМПОНЕНТЕ
-    // <SwiperSlider
-    //   items={reviews}
-    //   getKey={review => review._id}
-    //   renderItem={review => (
-    //     <CardComponent
-    //       rating={review.rate}
-    //       comment={review.description}
-    //       authorName={review.authorName}
-    //       locationName={review.locationName}
-    //       locationHref={`/locations/${review.locationId}`}
-    //     />
-    //   )}
-    // />

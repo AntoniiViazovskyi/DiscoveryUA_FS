@@ -64,7 +64,6 @@
   gap: var(--space-4);
 }
 
-/* Кнопки */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -104,13 +103,11 @@
   opacity: 0.8;
 }
 
-/* На мобільному кнопки в хедері ховаємо: вони в меню */
 .actions > .btn,
 .actions > .userInfo {
   display: none;
 }
 
-/* Користувач */
 .userInfo {
   align-items: center;
   gap: var(--space-2);
@@ -149,7 +146,6 @@
   font-size: var(--font-size-small);
 }
 
-/* Бургер */
 .burger {
   display: inline-flex;
   flex-direction: column;
@@ -184,7 +180,6 @@
   transform: translateY(-6px) rotate(-45deg);
 }
 
-/* Мобільне меню на весь екран */
 .mobileNav {
   position: fixed;
   inset: 0;
@@ -226,7 +221,6 @@
   transform: translateY(0);
 }
 
-/* Планшет */
 @media (min-width: 768px) {
   .actions > .btn,
   .actions > .userInfo {
@@ -238,7 +232,6 @@
   }
 }
 
-/* Десктоп */
 @media (min-width: 1440px) {
   .nav {
     display: flex;
