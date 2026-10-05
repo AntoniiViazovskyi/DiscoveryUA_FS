@@ -118,7 +118,10 @@ export default async function LocationDetailsPage({
         </section>
 
         <section className={styles.mapSection}>
-          <LocationMap coordinates={location.coordinates} name={location.name} />
+          <LocationMap
+            coordinates={location.coordinates}
+            name={location.name}
+          />
         </section>
       </div>
 

@@ -9,7 +9,7 @@
 .navigation {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: var(--space-2-5);
 }
 
 .prevButton,
@@ -21,20 +21,20 @@
   height: var(--space-8);
   padding: 0;
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: var(--radius-button);
   background-color: var(--color-surface-accent);
   cursor: pointer;
   transition:
-    background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
-    transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    background-color var(--transition-interactive),
+    border-color var(--transition-interactive),
+    transform var(--transition-transform);
   outline: none;
 }
 
 .prevButton:hover,
 .nextButton:hover{
   border: 1px solid var(--color-border-hover);
-  background-color: #f2f2f2;
+  background-color: var(--color-surface-hover);
   transform: scale(1.05);
 
 }
@@ -42,7 +42,7 @@
 .prevButton:focus,
 .nextButton:focus {
   border: 1px solid var(--color-border-hover);
-  background-color: #f2f2f2;
+  background-color: var(--color-surface-hover);
 
 }
 
@@ -56,7 +56,7 @@
 .prevButton:global(.swiper-button-disabled),
 .nextButton:global(.swiper-button-disabled) {
   border: 1px solid var(--color-border);
-  background-color: #f2f2f2;
+  background-color: var(--color-surface-hover);
   opacity: 0.4;
   cursor: not-allowed;
   pointer-events: none;
