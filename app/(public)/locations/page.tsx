@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import {
   HydrationBoundary,
@@ -11,8 +12,18 @@ import {
   getAllRegionsServer,
   getAllTypesServer,
 } from "@/lib/api/filterServer";
+import { SITE_URL } from "@/lib/seo";
 
 import styles from "./page.module.css";
+
+export const metadata: Metadata = {
+  title: "Усі місця відпочинку",
+  description:
+    "Переглядайте місця для відпочинку в Україні, знаходьте цікаві локації за регіоном, типом та рейтингом.",
+  alternates: {
+    canonical: new URL("/locations", SITE_URL),
+  },
+};
 
 export default async function LocationsPage() {
   const queryClient = new QueryClient();
@@ -32,6 +43,8 @@ export default async function LocationsPage() {
 
   return (
     <div className={`container ${styles.page}`}>
+      <h1 className={styles.title}>Усі місця відпочинку</h1>
+
       <HydrationBoundary state={dehydrate(queryClient)}>
         <Suspense fallback={null}>
           <FilterPanel />

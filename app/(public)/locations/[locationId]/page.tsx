@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { isAxiosError } from "axios";
 import { notFound } from "next/navigation";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
 
 import LocationDescription from "@/components/LocationDescription/LocationDescription";
 import LocationGallery from "@/components/LocationGallery/LocationGallery";
 import LocationInfoBlock from "@/components/LocationInfoBlock/LocationInfoBlock";
 import LocationMap from "@/components/LocationMap/LocationMap";
 import { AddReviewSection } from "@/components/AddReviewModal/add-review-section";
-import { fetchLocationById } from "@/lib/api/serverApi";
+import { getLocationByIdCached } from "@/lib/api/serverApi";
 
 import styles from "./location-details-page.module.css";
 
@@ -32,9 +33,10 @@ export async function generateMetadata({
   }
 
   let location;
+  const locationUrl = new URL(`/locations/${locationId}`, SITE_URL);
 
   try {
-    location = await fetchLocationById(locationId);
+    location = await getLocationByIdCached(locationId);
   } catch (error) {
     if (isAxiosError(error) && error.response?.status === 404) {
       return {
@@ -51,13 +53,13 @@ export async function generateMetadata({
     description: location.description?.slice(0, 160),
 
     alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_APP_URL}/locations/${locationId}`,
+      canonical: locationUrl,
     },
     openGraph: {
       title: location.name,
       description: location.description?.slice(0, 160),
-      url: `${process.env.NEXT_PUBLIC_APP_URL}/locations/${locationId}`,
-      siteName: "RelaxMap",
+      url: locationUrl,
+      siteName: SITE_NAME,
       images: location.image
         ? [
             {
@@ -91,7 +93,7 @@ export default async function LocationDetailsPage({
   let location;
 
   try {
-    location = await fetchLocationById(locationId);
+    location = await getLocationByIdCached(locationId);
   } catch (error) {
     if (isAxiosError(error) && error.response?.status === 404) {
       notFound();
