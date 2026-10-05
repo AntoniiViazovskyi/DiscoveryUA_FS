@@ -30,7 +30,7 @@
 }
 .title {
   font-weight: var(--font-weight-bold);
-  font-size: 32px;
+  font-size: var(--font-size-heading-mobile);
   line-height: var(--line-height-heading);
   text-align: start;
   letter-spacing: var(--letter-spacing-tight);
