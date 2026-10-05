@@ -145,7 +145,13 @@
     order: 3;
   }
 
+  .navLink {
+    font-weight: var(--font-weight-regular);
+    font-size: var(--font-size-regular);
+  }
+
   .copyright {
     padding-top: var(--space-6);
+    font-size: var(--font-size-small);
   }
 }
