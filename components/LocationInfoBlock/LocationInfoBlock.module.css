@@ -6,15 +6,18 @@
   padding-bottom: 9px;
   width: 100%;
 }
+
 .rate {
   display: flex;
   align-items: center;
   min-height: 24px;
   margin-bottom: var(--space-3);
 }
+
 .star {
   color: var(--color-black);
 }
+
 .rateDot {
   width: 4px;
   height: 4px;
@@ -22,19 +25,21 @@
   margin: 0 9px;
   flex-shrink: 0;
 }
+
 .rateNumber {
   font-weight: var(--font-weight-regular);
   font-size: var(--font-size-small);
   line-height: var(--line-height-text);
   color: var(--color-scheme-2-text);
 }
+
 .title {
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-heading-mobile);
   line-height: var(--line-height-heading);
   text-align: start;
   letter-spacing: var(--letter-spacing-tight);
-   color: var(--color-scheme-2-text);
+  color: var(--color-scheme-2-text);
   margin-bottom: var(--space-3);
 }
 
@@ -45,15 +50,18 @@
   gap: var(--space-2);
   width: 100%;
 }
+
 .item {
   width: 100%;
 }
+
 .text {
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-small);
   line-height: var(--line-height-text);
   color: var(--color-scheme-2-text);
 }
+
 .label {
   font-weight: var(--font-weight-regular);
   margin-left: var(--space-2);
@@ -65,17 +73,16 @@ a.link {
   text-decoration-skip-ink: none;
   font-size: var(--font-size-small);
   line-height: var(--line-height-text);
-   color: var(--color-scheme-2-text);
+  color: var(--color-scheme-2-text);
 }
 
 .author {
   display: grid;
   grid-template-columns: max-content minmax(0, 1fr);
-
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-small);
   line-height: var(--line-height-text);
- color: var(--color-scheme-2-text);
+  color: var(--color-scheme-2-text);
 }
 
 .authorLabel {
@@ -92,6 +99,7 @@ a.link {
     padding: 0;
     max-width: 533px;
   }
+
   .title {
     font-size: var(--font-size-heading-tablet);
   }
@@ -101,12 +109,11 @@ a.link {
   .rateNumber {
     font-size: var(--font-size-regular);
   }
-  .title {
-    font-size: var(--font-size-heading-1);
-  }
+
   .text {
     font-size: var(--font-size-regular);
   }
+
   .author {
     font-size: var(--font-size-regular);
     line-height: var(--line-height-text);
