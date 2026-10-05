@@ -8,6 +8,8 @@ import { fetchAllLocations } from "@/lib/api/clientApi";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { getAllTypes, getAllRegions } from "@/lib/api/filterClient";
+import Loader from "../Loader/Loader";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 export default function PopularLocationsBlock() {
   const router = useRouter();
@@ -35,21 +37,11 @@ export default function PopularLocationsBlock() {
 
   const locations = data?.locations ?? [];
 
-  if (isLoading) {
-    return (
-      <section className={css.popularLocationSection}>
-        <div className="container">
-          <p>Завантаження...</p>
-        </div>
-      </section>
-    );
-  }
-
   if (isError) {
     return (
       <section className={css.popularLocationSection}>
         <div className="container">
-          <p>Не вдалося завантажити локації</p>
+          <ErrorMessage message="Не вдалося завантажити локації" />
         </div>
       </section>
     );
@@ -65,7 +57,9 @@ export default function PopularLocationsBlock() {
             Всі локації
           </Link>
         </div>
-
+    {isLoading ? (
+      <Loader />
+    ) : (
         <SwiperSlider
           items={locations}
           getKey={(location) => location._id}
@@ -122,6 +116,7 @@ export default function PopularLocationsBlock() {
             );
           }}
         />
+    )}
       </div>
     </section>
   );
