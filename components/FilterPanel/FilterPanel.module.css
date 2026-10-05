@@ -152,6 +152,11 @@
   cursor: pointer;
 }
 
+.categoriesError button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
 .typeWrap {
   position: relative;
   width: calc((100% - 16px) / 2);
@@ -249,7 +254,7 @@
   overflow-wrap: anywhere;
 }
 
-/* Кастомний випадний список */
+
 @supports (appearance: base-select) {
   .filterSelect,
   .filterSort {
@@ -361,7 +366,6 @@
   opacity: 1;
 }
 
-/* Tablet */
 @media screen and (min-width: 768px) {
   .filterRow {
     flex: 0 1 431px;
@@ -381,7 +385,6 @@
   }
 }
 
-/* Desktop */
 @media screen and (min-width: 1440px) {
   .filterContainer {
     gap: 0;

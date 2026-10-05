@@ -27,6 +27,7 @@ export default function FilterPanel() {
 
   const {
     data: types = [],
+    isLoading: isTypesLoading,
     isError: isTypesError,
     refetch: refetchTypes,
   } = useQuery({
@@ -109,7 +110,7 @@ export default function FilterPanel() {
       </div>
 
       {hasCategoriesError && (
-        <div role="alert" className={css.filterError}>
+        <div role="alert" className={css.categoriesError}>
           <p>
             Не вдалося завантажити{" "}
             {isRegionsError && isTypesError
@@ -139,8 +140,9 @@ export default function FilterPanel() {
 
         <div
           className={css.typeWrap}
-          tabIndex={isTypesError ? -1 : 0}
-          aria-disabled={isTypesError}
+          tabIndex={isTypesError || isTypesLoading ? -1 : 0}
+          aria-disabled={isTypesError || isTypesLoading}
+          aria-busy={isTypesLoading}
           role="group"
           aria-label="Тип локації"
         >

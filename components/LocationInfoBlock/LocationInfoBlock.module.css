@@ -106,6 +106,10 @@ a.link {
 }
 
 @media (min-width: 1440px) {
+  .title {
+    font-size: var(--font-size-heading-1);
+  }
+
   .rateNumber {
     font-size: var(--font-size-regular);
   }

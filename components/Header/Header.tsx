@@ -3,18 +3,21 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 import EditProfileModal from "@/components/EditProfileModal/EditProfileModal";
-import { fetchCurrentUser } from "@/lib/api/clientApi";
+import { fetchCurrentUser, logout } from "@/lib/api/clientApi";
 import Navigation from "./Navigation";
 import MobileMenu from "./MobileMenu";
 import styles from "./Header.module.css";
 
 export default function Header() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const { data: currentUser } = useQuery({
     queryKey: ["me"],
@@ -25,14 +28,29 @@ export default function Header() {
   const isAuthenticated = Boolean(currentUser);
   const user = {
     id: currentUser?._id ?? "",
-    name: currentUser?.username ?? "",
+    name: currentUser?.name?.trim() || currentUser?.username || "",
     avatarUrl: currentUser?.avatarUrl ?? null,
   };
 
   const closeMenu = () => setIsOpen(false);
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    if (isLoggingOut) return;
+    setIsLoggingOut(true);
     closeMenu();
-    console.log("logout clicked");
+    try {
+      await logout();
+      await queryClient.cancelQueries();
+      queryClient.clear();
+      setIsEditModalOpen(false);
+      router.replace("/login");
+      router.refresh();
+    } catch {
+      toast.error("Не вдалося вийти. Спробуйте ще раз.", {
+        toasterId: "profile-edit",
+      });
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
   const handleEditProfile = () => {
     closeMenu();
@@ -66,6 +84,7 @@ export default function Header() {
           isAuthenticated={isAuthenticated}
           user={user}
           onLogout={handleLogout}
+          isLoggingOut={isLoggingOut}
           onEditProfile={handleEditProfile}
         />
       </div>
@@ -76,6 +95,7 @@ export default function Header() {
         isAuthenticated={isAuthenticated}
         userId={user.id}
         onLogout={handleLogout}
+        isLoggingOut={isLoggingOut}
       />
 
       {isEditModalOpen && isAuthenticated && (

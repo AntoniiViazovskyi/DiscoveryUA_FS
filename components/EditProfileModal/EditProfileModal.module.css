@@ -126,6 +126,12 @@
   outline: none;
 }
 
+.error {
+  color: var(--color-error);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-text);
+}
+
 .input:disabled {
   cursor: not-allowed;
 }
@@ -176,6 +182,13 @@
 .cancelButton:hover:not(:disabled) {
   background-color: var(--color-surface-accent);
   color: var(--color-text-primary);
+}
+
+.submitButton:focus-visible,
+.cancelButton:focus-visible,
+.fileButton:focus-within {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 .submitButton:disabled,
