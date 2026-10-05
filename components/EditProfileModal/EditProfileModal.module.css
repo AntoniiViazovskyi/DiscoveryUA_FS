@@ -112,6 +112,8 @@
   font-size: var(--font-size-small);
   line-height: var(--line-height-text);
   transition: border-color 0.2s ease;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .input::placeholder {

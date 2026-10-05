@@ -60,7 +60,10 @@ export const ProfileInfo = ({ user, locationsAmount, isOwner = false }: ProfileI
 
       {isEditOpen && (
         <EditProfileModal
-          user={{ name: user.username, avatarUrl: user.avatarUrl ?? null }}
+          user={{
+            name: user.name?.trim() || user.username,
+            avatarUrl: user.avatarUrl ?? null,
+          }}
           onClose={() => setIsEditOpen(false)}
           onSuccess={router.refresh}
         />
