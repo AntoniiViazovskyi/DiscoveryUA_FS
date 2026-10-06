@@ -58,10 +58,11 @@ export default function Modal({ onClose, children, className }: ModalProps) {
       }
     };
     document.addEventListener("keydown", handleKeyDown);
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
     };
   }, [onClose]);
   if (typeof document === "undefined") {

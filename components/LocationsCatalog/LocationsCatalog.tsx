@@ -157,9 +157,6 @@ export default function LocationsCatalog() {
     if (isInitialError) {
       return (
         <div className={css.state}>
-          {/* <p className={css.error} role="alert">
-            Не вдалося завантажити локації. Спробуйте ще раз.
-          </p> */}
           <ErrorMessage message="Не вдалося завантажити локації. Спробуйте ще раз." />
           <div className={css.buttonWrap}>
             <Button
@@ -189,15 +186,6 @@ export default function LocationsCatalog() {
       <p className={css.empty}>За вибраними фільтрами місць не знайдено.</p>
     );
   }
-  //   return (
-  //     //       <p className={css.state} role="status">
-  //     //  Завантаження локацій...
-  //     //       </p>
-  //     <div className={css.state} role="status">
-  //       <Loader />
-  //     </div>
-  //   );
-  // }
 
   return (
     <section aria-label="Місця відпочинку" ref={resultsRef}>
@@ -246,17 +234,11 @@ export default function LocationsCatalog() {
       </div>
 
       {isLoadingNextPage && (
-        // <p className={css.state} role="status">
-        //   Завантаження наступних локацій...
-        // </p>
         <div className={css.state} role="status">
           <Loader />
         </div>
       )}
       {isNextPageError && (
-        // <p className={css.error} role="alert">
-        //   Не вдалося завантажити наступні локації. Спробуйте ще раз.
-        // </p>
         <ErrorMessage />
       )}
 

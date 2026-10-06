@@ -17,10 +17,6 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-6);
-  width: 100%;
-  max-width: var(--container-max-width);
-  margin: 0 auto;
-  padding: var(--space-4) var(--container-padding);
   height: var(--space-10);
 }
 

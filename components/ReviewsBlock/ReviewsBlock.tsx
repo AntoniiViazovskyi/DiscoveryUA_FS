@@ -244,14 +244,9 @@ function ReviewsBlockContent({
         )}
 
         {isLoading ? (
-            <div className={styles.message} role="status"><Loader/></div>
-          
-          // <p className={styles.message} role="status">Завантажуємо відгуки...</p>
+          <div className={styles.message} role="status"><Loader /></div>
         ) : hasError ? (
-        <ErrorMessage message="Відгуки тимчасово недоступні." />
-          // <p className={styles.message} role="status">
-          //   Відгуки тимчасово недоступні.
-          // </p>
+          <ErrorMessage message="Відгуки тимчасово недоступні." />
         ) : reviews.length === 0 ? (
           <p className={styles.message} role="status">Відгуків поки немає.</p>
         ) : (
