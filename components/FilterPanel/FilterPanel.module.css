@@ -251,7 +251,6 @@
   overflow-wrap: anywhere;
 }
 
-
 .checkboxInput {
   appearance: none;
   position: relative;
@@ -305,6 +304,7 @@
     margin-left: auto;
   }
 }
+
 
 @media screen and (min-width: 1440px) {
   .filterContainer {
