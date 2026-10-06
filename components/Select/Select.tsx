@@ -65,7 +65,8 @@ export default function Select({
 
   const selectOption = (optionValue: string) => {
     onChange(optionValue);
-    close();
+    setOpen(false);
+    setHighlightedIndex(-1);
   };
 
   useEffect(() => {

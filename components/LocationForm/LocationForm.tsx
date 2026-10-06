@@ -55,16 +55,20 @@ const emptyValues: LocationFormValues = {
 };
 
 const toTypeOptions = (categories: LocationTypeCategory[]) =>
-  categories.map((category) => ({
-    value: category.slug,
-    label: category.type,
-  }));
+  categories
+    .map((category) => ({
+      value: category.slug,
+      label: category.type,
+    }))
+    .sort((first, second) => first.label.localeCompare(second.label, "uk"));
 
 const toRegionOptions = (categories: RegionCategory[]) =>
-  categories.map((category) => ({
-    value: category.slug,
-    label: category.region,
-  }));
+  categories
+    .map((category) => ({
+      value: category.slug,
+      label: category.region,
+    }))
+    .sort((first, second) => first.label.localeCompare(second.label, "uk"));
 
 export default function LocationForm({
   mode = "create",
@@ -347,7 +351,10 @@ export default function LocationForm({
               id={`${fieldId}-type`}
               options={toTypeOptions(locationTypes)}
               value={values.type}
-              onChange={(value) => setFieldValue("type", value)}
+              onChange={(value) => {
+                setFieldTouched("type", true, false);
+                setFieldValue("type", value);
+              }}
               onBlur={() => setFieldTouched("type", true)}
               placeholder="Оберіть тип місця"
               error={touched.type && errors.type ? errors.type : null}
@@ -360,7 +367,10 @@ export default function LocationForm({
               id={`${fieldId}-region`}
               options={toRegionOptions(regions)}
               value={values.region}
-              onChange={(value) => setFieldValue("region", value)}
+              onChange={(value) => {
+                setFieldTouched("region", true, false);
+                setFieldValue("region", value);
+              }}
               onBlur={() => setFieldTouched("region", true)}
               placeholder="Оберіть регіон"
               error={touched.region && errors.region ? errors.region : null}
