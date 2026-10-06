@@ -5,14 +5,22 @@ import toast from 'react-hot-toast'
 import { AddReviewModal } from './add-review-modal'
 import { REVIEW_TOASTER_ID } from './review-notifications'
 import type { AddReviewFormValues } from '@/components/AddReviewForm/add-review-form-schema'
+import { publishReviewCreated } from '@/lib/reviews/review-events'
+import type { Feedback } from '@/types/feedback'
 
 type AddReviewSubmissionProps = {
   locationId: string
+  locationName: string
   onClose: () => void
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
 }
 
 export function AddReviewSubmission({
   locationId,
+  locationName,
   onClose,
 }: AddReviewSubmissionProps) {
   const pending = useRef<Promise<void> | null>(null)
@@ -56,20 +64,61 @@ export function AddReviewSubmission({
                 : 'Не вдалося надіслати відгук. Спробуйте ще раз.'
         throw new Error(message)
       }
+      const payload = isRecord(result) ? result : null
+      const feedbackData =
+        payload && isRecord(payload.data) ? payload.data : null
+      const locationData =
+        payload && isRecord(payload.location) ? payload.location : null
+      const userData =
+        feedbackData && isRecord(feedbackData.user) ? feedbackData.user : null
+      const feedbackLocation =
+        feedbackData && isRecord(feedbackData.location)
+          ? feedbackData.location
+          : null
+      const authorName = [
+        feedbackData?.authorName,
+        feedbackData?.userName,
+        feedbackData?.ownerName,
+        userData?.name,
+      ].find((value): value is string => typeof value === 'string')
+      const feedbackId = feedbackData?._id
+      const rate = feedbackData?.rate
+      const description = feedbackData?.description
+      const locationRate = locationData?.rate
+      const feedbacksCount = locationData?.feedbacksCount
+
       if (
         response.status !== 201 ||
-        !result ||
-        typeof result !== 'object' ||
-        !('data' in result) ||
-        !result.data ||
-        typeof result.data !== 'object' ||
-        !('_id' in result.data) ||
-        typeof result.data._id !== 'string' ||
-        !/^[a-f\d]{24}$/i.test(result.data._id)
+        typeof feedbackId !== 'string' ||
+        !/^[a-f\d]{24}$/i.test(feedbackId) ||
+        typeof rate !== 'number' ||
+        typeof description !== 'string' ||
+        typeof authorName !== 'string' ||
+        typeof locationRate !== 'number' ||
+        typeof feedbacksCount !== 'number'
       ) {
         throw new Error('Не вдалося підтвердити збереження відгуку.')
       }
-      toast.success('Ваш відгук надіслано на модерацію.', {
+
+      const feedback: Feedback = {
+        _id: feedbackId,
+        rate,
+        description,
+        authorName,
+        locationId,
+        locationName:
+          typeof feedbackLocation?.name === 'string'
+            ? feedbackLocation.name
+            : locationName,
+      }
+
+      publishReviewCreated({
+        feedback,
+        locationId,
+        rate: locationRate,
+        feedbacksCount,
+      })
+      toast.success('Ваш відгук додано.', {
         toasterId: REVIEW_TOASTER_ID,
       })
     } catch (error) {

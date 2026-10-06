@@ -33,6 +33,15 @@
   color: var(--color-scheme-2-text);
 }
 
+.feedbackCount {
+  margin-left: var(--space-2);
+  color: var(--color-scheme-2-text);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-text);
+  white-space: nowrap;
+}
+
 .title {
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-heading-mobile);
@@ -111,6 +120,10 @@ a.link {
   }
 
   .rateNumber {
+    font-size: var(--font-size-regular);
+  }
+
+  .feedbackCount {
     font-size: var(--font-size-regular);
   }
 
