@@ -25,16 +25,16 @@ export default function PopularLocationsBlock() {
       }),
   });
 
-  const { data: types = [] } = useQuery({
+  const { data: types = [], isLoading: isTypesLoading } = useQuery({
     queryKey: ["location-types"],
     queryFn: getAllTypes,
   });
 
-  const { data: regions = [] } = useQuery({
+  const { data: regions = [], isLoading: isRegionsLoading } = useQuery({
     queryKey: ["regions"],
     queryFn: getAllRegions,
   });
-
+  const isLoadingData = isLoading || isTypesLoading || isRegionsLoading;
   const locations = data?.locations ?? [];
 
   if (isError) {
@@ -57,66 +57,66 @@ export default function PopularLocationsBlock() {
             Всі локації
           </Link>
         </div>
-    {isLoading ? (
-      <Loader />
-    ) : (
-        <SwiperSlider
-          items={locations}
-          getKey={(location) => location._id}
-          navigationMarginTop={40}
-          renderItem={(location) => {
-            const region = regions.find(
-              (item) => item.slug === location.region,
-            );
+        {isLoadingData ? (
+          <Loader />
+        ) : (
+          <SwiperSlider
+            items={locations}
+            getKey={(location) => location._id}
+            navigationMarginTop={40}
+            renderItem={(location) => {
+              const region = regions.find(
+                (item) => item.slug === location.region,
+              );
 
-            const locationType = types.find(
-              (item) => item.slug === location.locationType,
-            );
+              const locationType = types.find(
+                (item) => item.slug === location.locationType,
+              );
 
-            return (
-              <LocationCard
-                location={{
-                  ...location,
-                  region: region?.region ?? location.region,
-                  locationType: locationType?.type ?? location.locationType,
-                }}
-                rating={
-                  <div className={css.rating}>
-                    {Array.from({ length: 5 }, (_, index) => {
-                      let icon = "icon-star-rate";
+              return (
+                <LocationCard
+                  location={{
+                    ...location,
+                    region: region?.region ?? location.region,
+                    locationType: locationType?.type ?? location.locationType,
+                  }}
+                  rating={
+                    <div className={css.rating}>
+                      {Array.from({ length: 5 }, (_, index) => {
+                        let icon = "icon-star-rate";
 
-                      const rate = location.rate ?? 0;
-                      const fullStars = Math.floor(rate);
-                      const hasHalfStar = rate % 1 !== 0;
+                        const rate = location.rate ?? 0;
+                        const fullStars = Math.floor(rate);
+                        const hasHalfStar = rate % 1 !== 0;
 
-                      if (index < fullStars) {
-                        icon = "icon-star-filled";
-                      } else if (index === fullStars && hasHalfStar) {
-                        icon = "icon-star-half";
-                      }
+                        if (index < fullStars) {
+                          icon = "icon-star-filled";
+                        } else if (index === fullStars && hasHalfStar) {
+                          icon = "icon-star-half";
+                        }
 
-                      return (
-                        <svg
-                          key={index}
-                          className={css.star}
-                          width={24}
-                          height={24}
-                          aria-hidden="true"
-                        >
-                          <use href={`/icons/sprite.svg#${icon}`} />
-                        </svg>
-                      );
-                    })}
-                  </div>
-                }
-                onView={(location) => {
-                  router.push(`/locations/${location._id}`);
-                }}
-              />
-            );
-          }}
-        />
-    )}
+                        return (
+                          <svg
+                            key={index}
+                            className={css.star}
+                            width={24}
+                            height={24}
+                            aria-hidden="true"
+                          >
+                            <use href={`/icons/sprite.svg#${icon}`} />
+                          </svg>
+                        );
+                      })}
+                    </div>
+                  }
+                  onView={(location) => {
+                    router.push(`/locations/${location._id}`);
+                  }}
+                />
+              );
+            }}
+          />
+        )}
       </div>
     </section>
   );
