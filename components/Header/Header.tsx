@@ -1,11 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 import EditProfileModal from "@/components/EditProfileModal/EditProfileModal";
+import ConfirmationModal from "@/components/ConfirmationModal/ConfirmationModal";
 import Logo from "@/components/Logo/Logo";
 import { fetchCurrentUser, logout } from "@/lib/api/clientApi";
 import Navigation from "./Navigation";
@@ -18,6 +19,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
   const { data: currentUser } = useQuery({
     queryKey: ["me"],
@@ -35,14 +37,24 @@ export default function Header() {
   const closeMenu = () => setIsOpen(false);
   useEffect(() => {
     if (!isOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") setIsOpen(false);
     };
     document.addEventListener("keydown", handleKeyDown);
     return () => {
+      document.body.style.overflow = previousOverflow;
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen]);
+  const requestLogout = () => {
+    closeMenu();
+    setIsLogoutModalOpen(true);
+  };
+  const closeLogoutModal = useCallback(() => {
+    if (!isLoggingOut) setIsLogoutModalOpen(false);
+  }, [isLoggingOut]);
   const handleLogout = async () => {
     if (isLoggingOut) return;
     setIsLoggingOut(true);
@@ -51,6 +63,7 @@ export default function Header() {
       await logout();
       await queryClient.cancelQueries();
       queryClient.clear();
+      setIsLogoutModalOpen(false);
       setIsEditModalOpen(false);
       router.replace("/login");
       router.refresh();
@@ -80,7 +93,7 @@ export default function Header() {
 
   return (
     <header className={`${styles.header} ${isOpen ? styles.menuOpen : ""}`}>
-      <div className={styles.container}>
+      <div className={`container ${styles.container}`}>
         <div onClick={closeMenu}>
           <Logo className={styles.logo} />
         </div>
@@ -90,7 +103,7 @@ export default function Header() {
           setIsOpen={setIsOpen}
           isAuthenticated={isAuthenticated}
           user={user}
-          onLogout={handleLogout}
+          onLogout={requestLogout}
           isLoggingOut={isLoggingOut}
           onEditProfile={handleEditProfile}
         />
@@ -102,9 +115,17 @@ export default function Header() {
         isAuthenticated={isAuthenticated}
         user={user}
         onEditProfile={handleEditProfile}
-        onLogout={handleLogout}
+        onLogout={requestLogout}
         isLoggingOut={isLoggingOut}
       />
+
+      {isLogoutModalOpen && isAuthenticated && (
+        <ConfirmationModal
+          onClose={closeLogoutModal}
+          onConfirm={handleLogout}
+          isSubmitting={isLoggingOut}
+        />
+      )}
 
       {isEditModalOpen && isAuthenticated && (
         <EditProfileModal

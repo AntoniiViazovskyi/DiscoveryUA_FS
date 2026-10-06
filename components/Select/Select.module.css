@@ -73,11 +73,11 @@
 }
 
 .value {
-  color: var(--color-text-secondary);
+  color: var(--color-field-value, var(--color-text-secondary));
 }
 
 .placeholderValue {
-  color: var(--color-placeholder);
+  color: var(--color-select-placeholder, var(--color-placeholder));
 }
 
 .arrow,

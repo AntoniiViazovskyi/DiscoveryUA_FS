@@ -6,5 +6,5 @@ type ErrorMessageProps = {
 export default function ErrorMessage({
   message = "Не вдалося завантажити дані",
 }: ErrorMessageProps) {
-  return <p className={css.text}>{message}</p>;
+  return <p className={css.text} role="alert">{message}</p>;
 }

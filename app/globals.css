@@ -67,6 +67,7 @@
   --color-field-placeholder: var(--color-placeholder);
   --color-field-error: var(--color-error);
   --font-size-xs: 12px;
+  --font-size-modal-title: 26px;
   --font-size-logo: 17px;
   --font-size-auth-heading: 28px;
   --font-size-auth-heading-tablet: 44px;
