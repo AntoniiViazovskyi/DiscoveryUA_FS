@@ -1,12 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 import EditProfileModal from "@/components/EditProfileModal/EditProfileModal";
+import Logo from "@/components/Logo/Logo";
 import { fetchCurrentUser, logout } from "@/lib/api/clientApi";
 import Navigation from "./Navigation";
 import MobileMenu from "./MobileMenu";
@@ -33,6 +33,16 @@ export default function Header() {
   };
 
   const closeMenu = () => setIsOpen(false);
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsOpen(false);
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen]);
   const handleLogout = async () => {
     if (isLoggingOut) return;
     setIsLoggingOut(true);
@@ -71,12 +81,9 @@ export default function Header() {
   return (
     <header className={`${styles.header} ${isOpen ? styles.menuOpen : ""}`}>
       <div className={styles.container}>
-        <Link href="/" className={styles.logo} aria-label="На головну">
-          <svg width="24" height="24" aria-hidden="true">
-            <use href="/icons/sprite.svg#icon-map-search" />
-          </svg>
-          <span className={styles.logoText}>Relax Map</span>
-        </Link>
+        <div onClick={closeMenu}>
+          <Logo className={styles.logo} />
+        </div>
 
         <Navigation
           isOpen={isOpen}
@@ -93,7 +100,8 @@ export default function Header() {
         isOpen={isOpen}
         closeMenu={closeMenu}
         isAuthenticated={isAuthenticated}
-        userId={user.id}
+        user={user}
+        onEditProfile={handleEditProfile}
         onLogout={handleLogout}
         isLoggingOut={isLoggingOut}
       />

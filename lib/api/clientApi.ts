@@ -19,6 +19,7 @@ export type LoginRequest = {
 
 type ApiErrorResponse = {
   error?: string;
+  message?: string;
   response?: {
     error?: string;
     message?: string;
@@ -28,39 +29,42 @@ type ApiErrorResponse = {
 function getRequestError(error: unknown): Error {
   if (isAxiosError(error)) {
     const data = error.response?.data as ApiErrorResponse | undefined;
-
-    if (data?.response?.message === "Email in use") {
-      return new Error("Користувач із такою поштою вже існує.");
-    }
-
-    return new Error(
-      data?.response?.message ??
-        data?.response?.error ??
-        data?.error ??
-        error.message,
-    );
+    const message = data?.response?.message ?? data?.response?.error ?? data?.message ?? data?.error;
+    const messages: Record<string, string> = {
+      "Email in use": "Користувач із такою поштою вже існує.",
+      "Invalid email or password": "Неправильна пошта або пароль.",
+      "Not authorized": "Увійдіть у свій акаунт, щоб продовжити.",
+      "Access token expired": "Сесія завершилася. Увійдіть знову.",
+      "Session not found or invalid": "Сесія завершилася. Увійдіть знову.",
+      "Session expired, please log in again": "Сесія завершилася. Увійдіть знову.",
+      "User not found": "Користувача не знайдено.",
+      "Location not found": "Локацію не знайдено.",
+      "Image is required": "Додайте фотографію.",
+      "Only JPG and PNG files are allowed": "Дозволені тільки фотографії JPG та PNG.",
+      "You can edit only your own locations": "Ви можете редагувати тільки власні локації.",
+      "At least one field is required": "Змініть хоча б одне поле.",
+      "File too large": "Розмір фотографії перевищує допустимий.",
+      "User has no valid username": "Перевірте ім’я у своєму профілі.",
+    };
+    if (message && messages[message]) return new Error(messages[message]);
+    if (!error.response) return new Error("Не вдалося з’єднатися із сервером. Спробуйте ще раз.");
+    const status = error.response.status;
+    if (status === 401) return new Error("Сесія завершилася. Увійдіть знову.");
+    if (status === 403) return new Error("У вас немає доступу до цієї дії.");
+    if (status === 404) return new Error("Запитані дані не знайдено.");
+    if (status === 409) return new Error("Такі дані вже використовуються.");
+    if (status === 413) return new Error("Розмір фотографії перевищує допустимий.");
+    if (status === 400 || status === 422) return new Error("Перевірте введені дані та спробуйте ще раз.");
+    if (status === 429) return new Error("Забагато запитів. Спробуйте трохи пізніше.");
+    return new Error("Сервер тимчасово недоступний. Спробуйте пізніше.");
   }
-
-  return error instanceof Error
+  return error instanceof Error && /[А-Яа-яІіЇїЄєҐґ]/.test(error.message)
     ? error
-    : new Error("Не вдалося зареєструватися. Спробуйте ще раз.");
+    : new Error("Не вдалося виконати дію. Спробуйте ще раз.");
 }
 
 function getLoginRequestError(error: unknown): Error {
-  if (isAxiosError(error)) {
-    const data = error.response?.data as ApiErrorResponse | undefined;
-
-    return new Error(
-      data?.response?.message ??
-        data?.response?.error ??
-        data?.error ??
-        error.message,
-    );
-  }
-
-  return error instanceof Error
-    ? error
-    : new Error("Не вдалося увійти. Спробуйте ще раз.");
+  return getRequestError(error);
 }
 
 export async function fetchAllLocations({

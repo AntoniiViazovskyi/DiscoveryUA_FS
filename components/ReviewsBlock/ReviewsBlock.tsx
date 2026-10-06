@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
@@ -173,6 +173,7 @@ function ReviewsBlockContent({
   const [reviews, setReviews] = useState(initialReviews ?? [])
   const [isLoading, setIsLoading] = useState(initialReviews === undefined)
   const [hasError, setHasError] = useState(false)
+  const addedReviews = useRef<Feedback[]>([])
 
   useEffect(() => {
     if (initialReviews !== undefined) return
@@ -181,9 +182,15 @@ function ReviewsBlockContent({
 
     async function loadReviews() {
       try {
-        setReviews(await fetchReviews(controller.signal, locationId))
+        const loadedReviews = await fetchReviews(controller.signal, locationId)
+        const addedIds = new Set(addedReviews.current.map((review) => review._id))
+        const nextReviews = sortReviews([
+          ...addedReviews.current,
+          ...loadedReviews.filter((review) => !addedIds.has(review._id)),
+        ])
+        setReviews(locationId ? nextReviews : nextReviews.slice(0, 7))
       } catch {
-        if (!controller.signal.aborted) setHasError(true)
+        if (!controller.signal.aborted && addedReviews.current.length === 0) setHasError(true)
       } finally {
         if (!controller.signal.aborted) setIsLoading(false)
       }
@@ -197,6 +204,7 @@ function ReviewsBlockContent({
   useEffect(() => {
     return subscribeToReviewCreated(({ feedback, locationId: createdLocationId }) => {
       if (locationId && createdLocationId !== locationId) return
+      addedReviews.current = [feedback, ...addedReviews.current.filter((review) => review._id !== feedback._id)]
 
       setReviews((currentReviews) => {
         const nextReviews = [

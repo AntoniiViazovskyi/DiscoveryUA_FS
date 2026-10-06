@@ -51,7 +51,7 @@ export default function Navigation({
               href="/locations/add"
               className={`${styles.btn} ${styles.btnPrimary} ${styles.addLink}`}
             >
-              Поділитись локацією
+              Опублікувати статтю
             </Link>
             <div className={styles.userInfo}>
               <button
@@ -102,11 +102,12 @@ export default function Navigation({
           className={styles.burger}
           aria-label={isOpen ? "Закрити меню" : "Відкрити меню"}
           aria-expanded={isOpen}
+          aria-controls="mobile-menu"
           onClick={() => setIsOpen((prev) => !prev)}
         >
-          <span />
-          <span />
-          <span />
+          <svg width="24" height="24" aria-hidden="true">
+            <use href={`/icons/sprite.svg#${isOpen ? "icon-close" : "icon-menu"}`} />
+          </svg>
         </button>
       </div>
     </>
