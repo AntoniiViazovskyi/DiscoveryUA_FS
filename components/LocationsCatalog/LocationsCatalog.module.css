@@ -28,9 +28,41 @@
 }
 
 .buttonWrap {
+  position: relative;
   display: flex;
   justify-content: center;
   margin-top: var(--space-7);
+}
+
+.buttonWrapWithTop {
+  min-height: var(--space-8);
+  padding-right: calc(var(--space-8) + var(--space-4));
+}
+
+.buttonWrap .backToTop {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: var(--space-8);
+  min-width: var(--space-8);
+  height: var(--space-8);
+  padding: 0;
+  border-radius: var(--radius-round);
+}
+
+.backToTop:focus-visible {
+  outline: var(--focus-outline-width) solid var(--color-accent);
+  outline-offset: var(--focus-outline-offset);
+}
+
+.arrowUp {
+  width: var(--space-5);
+  height: var(--space-5);
+  fill: currentColor;
+}
+
+.backToTopLabel {
+  display: none;
 }
 
 .actionButton {
@@ -39,6 +71,23 @@
 }
 
 @media (min-width: 768px) {
+  .buttonWrapWithTop {
+    padding-inline: calc(var(--catalog-button-min-width-tablet) + var(--space-4));
+  }
+
+  .buttonWrap .backToTop {
+    width: var(--catalog-button-min-width-tablet);
+    min-width: var(--catalog-button-min-width-tablet);
+    border-radius: var(--radius-small);
+  }
+
+  .backToTopLabel {
+    display: inline;
+  }
+
+  .arrowUp {
+    display: none;
+  }
   .actionButton {
     width: auto;
     min-width: var(--catalog-button-min-width-tablet);
@@ -46,6 +95,15 @@
 }
 
 @media (min-width: 1440px) {
+  .buttonWrapWithTop {
+    padding-inline: calc(var(--catalog-button-min-width-desktop) + var(--space-4));
+  }
+
+  .buttonWrap .backToTop {
+    width: var(--catalog-button-min-width-desktop);
+    min-width: var(--catalog-button-min-width-desktop);
+  }
+
   .actionButton {
     min-width: var(--catalog-button-min-width-desktop);
   }
