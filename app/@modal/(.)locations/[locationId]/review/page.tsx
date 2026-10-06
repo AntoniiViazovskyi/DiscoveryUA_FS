@@ -7,11 +7,12 @@ type ReviewModalPageProps = {
 
 export default async function ReviewModalPage({ params }: ReviewModalPageProps) {
   const { locationId } = await params
-  const { isAuthenticated } = await getReviewRouteState(locationId)
+  const { isAuthenticated, locationName } = await getReviewRouteState(locationId)
 
   return (
     <ReviewRouteModal
       locationId={locationId}
+      locationName={locationName}
       isAuthenticated={isAuthenticated}
     />
   )

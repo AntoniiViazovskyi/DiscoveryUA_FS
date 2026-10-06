@@ -1,6 +1,12 @@
-import Link from "next/link";
-import css from "./LocationInfoBlock.module.css";
-import type { LocationDetails } from "../../types/location";
+'use client'
+
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+
+import { subscribeToReviewCreated } from '@/lib/reviews/review-events'
+import type { LocationDetails } from '@/types/location'
+
+import css from './LocationInfoBlock.module.css'
 
 type LocationInfoBlockProps = {
   location: LocationDetails;
@@ -9,7 +15,27 @@ type LocationInfoBlockProps = {
 export default function LocationInfoBlock({
   location,
 }: LocationInfoBlockProps) {
-  const rating = location.rate ?? 0;
+  const [rating, setRating] = useState(location.rate ?? 0)
+  const [feedbacksCount, setFeedbacksCount] = useState(
+    location.feedbacksCount ?? 0,
+  )
+
+  useEffect(() => {
+    setRating(location.rate ?? 0)
+    setFeedbacksCount(location.feedbacksCount ?? 0)
+  }, [location._id, location.rate, location.feedbacksCount])
+
+  useEffect(
+    () =>
+      subscribeToReviewCreated((detail) => {
+        if (detail.locationId !== location._id) return
+        setRating(detail.rate)
+        setFeedbacksCount(detail.feedbacksCount)
+      }),
+    [location._id],
+  )
+
+  const reviewCountLabel = getReviewCountLabel(feedbacksCount)
 
   const fullStars = Math.floor(rating);
   const hasHalfStar = rating % 1 !== 0;
@@ -49,6 +75,7 @@ export default function LocationInfoBlock({
         </svg>
 
         <span className={css.rateNumber}>{rating.toFixed(1)}</span>
+        <span className={css.feedbackCount}>{reviewCountLabel}</span>
       </div>
 
       <h1 className={css.title}>{location.name}</h1>
@@ -88,4 +115,19 @@ export default function LocationInfoBlock({
       </ul>
     </div>
   );
+}
+
+function getReviewCountLabel(count: number) {
+  const lastTwoDigits = count % 100
+  const lastDigit = count % 10
+  const noun =
+    lastTwoDigits >= 11 && lastTwoDigits <= 14
+      ? 'відгуків'
+      : lastDigit === 1
+        ? 'відгук'
+        : lastDigit >= 2 && lastDigit <= 4
+          ? 'відгуки'
+          : 'відгуків'
+
+  return `${count} ${noun}`
 }

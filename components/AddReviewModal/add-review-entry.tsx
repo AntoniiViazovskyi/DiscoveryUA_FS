@@ -10,12 +10,14 @@ import { ReviewNotifications } from './review-notifications'
 
 type AddReviewEntryProps = {
   locationId: string
+  locationName: string
   isAuthenticated: boolean
   intercepted?: boolean
 }
 
 export function AddReviewEntry({
   locationId,
+  locationName,
   isAuthenticated,
   intercepted = false,
 }: AddReviewEntryProps) {
@@ -51,7 +53,11 @@ export function AddReviewEntry({
     <>
       {visible &&
         (isAuthenticated ? (
-          <AddReviewSubmission locationId={locationId} onClose={close} />
+          <AddReviewSubmission
+            locationId={locationId}
+            locationName={locationName}
+            onClose={close}
+          />
         ) : (
           <AuthPromptModal onClose={close} />
         ))}

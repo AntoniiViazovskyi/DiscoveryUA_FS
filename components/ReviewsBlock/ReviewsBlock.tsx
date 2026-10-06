@@ -8,6 +8,7 @@ import type { ComponentType, ReactNode } from 'react'
 
 import CommentCard from '@/components/CommentCard/CommentCard'
 import type { CommentCardProps } from '@/components/CommentCard/CommentCard'
+import { subscribeToReviewCreated } from '@/lib/reviews/review-events'
 import type { Feedback } from '@/types/feedback'
 import type { Location } from '@/types/location'
 
@@ -192,6 +193,22 @@ function ReviewsBlockContent({
 
     return () => controller.abort()
   }, [initialReviews, locationId])
+
+  useEffect(() => {
+    return subscribeToReviewCreated(({ feedback, locationId: createdLocationId }) => {
+      if (locationId && createdLocationId !== locationId) return
+
+      setReviews((currentReviews) => {
+        const nextReviews = [
+          feedback,
+          ...currentReviews.filter((review) => review._id !== feedback._id),
+        ]
+        return locationId ? nextReviews : nextReviews.slice(0, 7)
+      })
+      setHasError(false)
+      setIsLoading(false)
+    })
+  }, [locationId])
 
   const hasHeading = Boolean(title || action)
   const sectionClassName = locationId
