@@ -14,8 +14,6 @@ import css from "./LocationsCatalog.module.css";
 import Loader from "../Loader/Loader";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
-const PAGE_SIZE = 10;
-
 type CatalogState = {
   filterKey: string;
   pages: LocationsHttpResponse[];
@@ -25,6 +23,7 @@ type CatalogState = {
 export default function LocationsCatalog() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [pageSize, setPageSize] = useState<number | null>(null);
   const [catalog, setCatalog] = useState<CatalogState | null>(null);
   const [requestedPage, setRequestedPage] = useState(1);
   const [scrollTarget, setScrollTarget] = useState<{
@@ -33,6 +32,14 @@ export default function LocationsCatalog() {
   } | null>(null);
   const resultsRef = useRef<HTMLElement>(null);
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 1440px)");
+    const updatePageSize = () => setPageSize(mediaQuery.matches ? 9 : 6);
+    updatePageSize();
+    mediaQuery.addEventListener("change", updatePageSize);
+    return () => mediaQuery.removeEventListener("change", updatePageSize);
+  }, []);
+
   const search = searchParams.get("search") ?? "";
   const region = searchParams.get("region") ?? "";
   const type = searchParams.get("type") ?? "";
@@ -40,6 +47,7 @@ export default function LocationsCatalog() {
   const sortBy = searchParams.get("sortBy") || "rate";
   const sortOrder = searchParams.get("sortOrder") || "desc";
   const filterKey = JSON.stringify({
+    pageSize,
     search,
     region,
     type,
@@ -56,7 +64,7 @@ export default function LocationsCatalog() {
       "locations",
       {
         page: pageToFetch,
-        limit: PAGE_SIZE,
+        limit: pageSize ?? 6,
         search,
         region,
         type,
@@ -68,7 +76,7 @@ export default function LocationsCatalog() {
     queryFn: () =>
       fetchAllLocations({
         page: pageToFetch,
-        limit: PAGE_SIZE,
+        limit: pageSize ?? 6,
         search: search || undefined,
         region: region || undefined,
         type: type || undefined,
@@ -76,6 +84,7 @@ export default function LocationsCatalog() {
         sortBy,
         sortOrder,
       }),
+    enabled: pageSize !== null,
   });
   const { data: types = [], isLoading: isTypesLoading,
   isError: isTypesError,
@@ -140,8 +149,9 @@ export default function LocationsCatalog() {
   const pages = currentCatalog?.pages ?? [];
   const locations = pages.flatMap((page) => page.locations);
   const totalPages = currentCatalog?.totalPages ?? 0;
+  const showBackToTop = pageSize !== null && locations.length > pageSize;
   const isInitialLoading =
-  !currentCatalog && (locationsQuery.isLoading || isTypesLoading);
+  !currentCatalog && (pageSize === null || locationsQuery.isLoading || isTypesLoading);
   const isInitialError = !currentCatalog && (locationsQuery.isError || isTypesError);
   const isLoadingNextPage =
     Boolean(currentCatalog) &&
@@ -242,8 +252,9 @@ export default function LocationsCatalog() {
         <ErrorMessage />
       )}
 
-      {currentPage < totalPages && (
-        <div className={css.buttonWrap}>
+      {(currentPage < totalPages || showBackToTop) && (
+        <div className={`${css.buttonWrap} ${showBackToTop ? css.buttonWrapWithTop : ""}`}>
+          {currentPage < totalPages && (
           <Button
             className={`${buttonCss.btn} ${css.actionButton}`}
             type="button"
@@ -262,6 +273,24 @@ export default function LocationsCatalog() {
                 ? "Спробувати ще раз"
                 : "Показати ще"}
           </Button>
+          )}
+          {showBackToTop && (
+            <Button
+              className={css.backToTop}
+              type="button"
+              aria-label="Повернутися нагору"
+              onClick={() => window.scrollTo({
+                top: 0,
+                behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+                  ? "auto" : "smooth",
+              })}
+            >
+              <svg className={css.arrowUp} aria-hidden="true" focusable="false">
+                <use href="/icons/sprite.svg#icon-keyboard-arrow-up" />
+              </svg>
+              <span className={css.backToTopLabel}>Нагору</span>
+            </Button>
+          )}
         </div>
       )}
     </section>
