@@ -9,9 +9,8 @@
   line-height: var(--line-height-heading);
   color: var(--color-black);
   letter-spacing: var(--letter-spacing-tight);
-  align-items: center;
-  justify-content: center;
-  display: flex;
+  text-align: center;
+  display: block; 
 }
 
 @media (min-width: 768px) {
