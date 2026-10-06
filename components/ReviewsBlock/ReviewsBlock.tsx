@@ -13,6 +13,8 @@ import type { Feedback } from '@/types/feedback'
 import type { Location } from '@/types/location'
 
 import styles from './ReviewsBlock.module.css'
+import Loader from '../Loader/Loader'
+import ErrorMessage from '../ErrorMessage/ErrorMessage'
 
 type ReviewsBlockProps = {
   initialReviews?: Feedback[]
@@ -242,11 +244,14 @@ function ReviewsBlockContent({
         )}
 
         {isLoading ? (
-          <p className={styles.message} role="status">Завантажуємо відгуки...</p>
+            <div className={styles.message} role="status"><Loader/></div>
+          
+          // <p className={styles.message} role="status">Завантажуємо відгуки...</p>
         ) : hasError ? (
-          <p className={styles.message} role="status">
-            Відгуки тимчасово недоступні.
-          </p>
+        <ErrorMessage message="Відгуки тимчасово недоступні." />
+          // <p className={styles.message} role="status">
+          //   Відгуки тимчасово недоступні.
+          // </p>
         ) : reviews.length === 0 ? (
           <p className={styles.message} role="status">Відгуків поки немає.</p>
         ) : (

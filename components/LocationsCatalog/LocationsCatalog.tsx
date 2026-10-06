@@ -1,50 +1,59 @@
-'use client'
+"use client";
 
-import { useQuery } from '@tanstack/react-query'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useQuery } from "@tanstack/react-query";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
-import Button from '@/components/Button/Button'
-import buttonCss from '@/components/Button/Button.module.css'
-import LocationsGrid from '@/components/LocationsGrid/LocationsGrid'
-import { getAllTypes } from '@/lib/api/filterClient'
-import { fetchAllLocations } from '@/lib/api/clientApi'
-import type { Location, LocationsHttpResponse } from '@/types/location'
-import css from './LocationsCatalog.module.css'
+import Button from "@/components/Button/Button";
+import buttonCss from "@/components/Button/Button.module.css";
+import LocationsGrid from "@/components/LocationsGrid/LocationsGrid";
+import { getAllTypes } from "@/lib/api/filterClient";
+import { fetchAllLocations } from "@/lib/api/clientApi";
+import type { Location, LocationsHttpResponse } from "@/types/location";
+import css from "./LocationsCatalog.module.css";
+import Loader from "../Loader/Loader";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
-const PAGE_SIZE = 10
+const PAGE_SIZE = 10;
 
 type CatalogState = {
-  filterKey: string
-  pages: LocationsHttpResponse[]
-  totalPages: number
-}
+  filterKey: string;
+  pages: LocationsHttpResponse[];
+  totalPages: number;
+};
 
 export default function LocationsCatalog() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const [catalog, setCatalog] = useState<CatalogState | null>(null)
-  const [requestedPage, setRequestedPage] = useState(1)
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [catalog, setCatalog] = useState<CatalogState | null>(null);
+  const [requestedPage, setRequestedPage] = useState(1);
   const [scrollTarget, setScrollTarget] = useState<{
-    filterKey: string
-    index: number
-  } | null>(null)
-  const resultsRef = useRef<HTMLElement>(null)
+    filterKey: string;
+    index: number;
+  } | null>(null);
+  const resultsRef = useRef<HTMLElement>(null);
 
-  const search = searchParams.get('search') ?? ''
-  const region = searchParams.get('region') ?? ''
-  const type = searchParams.get('type') ?? ''
-  const rate = searchParams.get('rate') ?? ''
-  const sortBy = searchParams.get('sortBy') || 'rate'
-  const sortOrder = searchParams.get('sortOrder') || 'desc'
-  const filterKey = JSON.stringify({ search, region, type, rate, sortBy, sortOrder })
-  const currentCatalog = catalog?.filterKey === filterKey ? catalog : null
-  const currentPage = currentCatalog?.pages.at(-1)?.page ?? 0
-  const pageToFetch = currentCatalog ? requestedPage : 1
+  const search = searchParams.get("search") ?? "";
+  const region = searchParams.get("region") ?? "";
+  const type = searchParams.get("type") ?? "";
+  const rate = searchParams.get("rate") ?? "";
+  const sortBy = searchParams.get("sortBy") || "rate";
+  const sortOrder = searchParams.get("sortOrder") || "desc";
+  const filterKey = JSON.stringify({
+    search,
+    region,
+    type,
+    rate,
+    sortBy,
+    sortOrder,
+  });
+  const currentCatalog = catalog?.filterKey === filterKey ? catalog : null;
+  const currentPage = currentCatalog?.pages.at(-1)?.page ?? 0;
+  const pageToFetch = currentCatalog ? requestedPage : 1;
 
   const locationsQuery = useQuery({
     queryKey: [
-      'locations',
+      "locations",
       {
         page: pageToFetch,
         limit: PAGE_SIZE,
@@ -67,109 +76,128 @@ export default function LocationsCatalog() {
         sortBy,
         sortOrder,
       }),
-  })
-  const { data: types = [] } = useQuery({
-    queryKey: ['locationTypes'],
+  });
+  const { data: types = [], isLoading: isTypesLoading,
+  isError: isTypesError,
+  refetch: refetchTypes, } = useQuery({
+    queryKey: ["locationTypes"],
     queryFn: getAllTypes,
-  })
+  });
 
   useEffect(() => {
-    const response = locationsQuery.data
-    if (!response) return
+    const response = locationsQuery.data;
+    if (!response) return;
 
-    const currentPages =
-      catalog?.filterKey === filterKey ? catalog.pages : []
-    const loadedPage = currentPages.at(-1)?.page ?? 0
-    if (response.page <= loadedPage) return
+    const currentPages = catalog?.filterKey === filterKey ? catalog.pages : [];
+    const loadedPage = currentPages.at(-1)?.page ?? 0;
+    if (response.page <= loadedPage) return;
     const loadedLocationsCount = currentPages.reduce(
       (count, page) => count + page.locations.length,
       0,
-    )
+    );
 
     setCatalog((current) => {
       if (current?.filterKey !== filterKey) {
-        return { filterKey, pages: [response], totalPages: response.totalPages }
+        return {
+          filterKey,
+          pages: [response],
+          totalPages: response.totalPages,
+        };
       }
 
-      const lastPage = current.pages.at(-1)?.page ?? 0
-      if (response.page <= lastPage) return current
+      const lastPage = current.pages.at(-1)?.page ?? 0;
+      if (response.page <= lastPage) return current;
 
       return {
         ...current,
         pages: [...current.pages, response],
         totalPages: response.totalPages,
-      }
-    })
+      };
+    });
 
     if (response.page === 1) {
-      setRequestedPage(1)
-      setScrollTarget(null)
+      setRequestedPage(1);
+      setScrollTarget(null);
     } else {
-      setScrollTarget({ filterKey, index: loadedLocationsCount })
+      setScrollTarget({ filterKey, index: loadedLocationsCount });
     }
-  }, [catalog, filterKey, locationsQuery.data])
+  }, [catalog, filterKey, locationsQuery.data]);
 
   useEffect(() => {
-    if (!scrollTarget) return
+    if (!scrollTarget) return;
     if (scrollTarget.filterKey !== filterKey) {
-      setScrollTarget(null)
-      return
+      setScrollTarget(null);
+      return;
     }
 
     resultsRef.current
-      ?.querySelectorAll('article')
+      ?.querySelectorAll("article")
       .item(scrollTarget.index)
-      ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    setScrollTarget(null)
-  }, [currentCatalog?.pages.length, filterKey, scrollTarget])
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setScrollTarget(null);
+  }, [currentCatalog?.pages.length, filterKey, scrollTarget]);
 
-  const pages = currentCatalog?.pages ?? []
-  const locations = pages.flatMap((page) => page.locations)
-  const isInitialError = !currentCatalog && locationsQuery.isError
+  const pages = currentCatalog?.pages ?? [];
+  const locations = pages.flatMap((page) => page.locations);
+  const totalPages = currentCatalog?.totalPages ?? 0;
+  const isInitialLoading =
+  !currentCatalog && (locationsQuery.isLoading || isTypesLoading);
+  const isInitialError = !currentCatalog && (locationsQuery.isError || isTypesError);
   const isLoadingNextPage =
     Boolean(currentCatalog) &&
     currentPage > 0 &&
     pageToFetch > currentPage &&
-    locationsQuery.isFetching
+    locationsQuery.isFetching;
   const isNextPageError =
     Boolean(currentCatalog) &&
     pageToFetch > currentPage &&
-    locationsQuery.isError
+    locationsQuery.isError;
 
   if (!currentCatalog) {
     if (isInitialError) {
       return (
         <div className={css.state}>
-          <p className={css.error} role="alert">
+          {/* <p className={css.error} role="alert">
             Не вдалося завантажити локації. Спробуйте ще раз.
-          </p>
+          </p> */}
+          <ErrorMessage message="Не вдалося завантажити локації. Спробуйте ще раз." />
           <div className={css.buttonWrap}>
             <Button
               className={`${buttonCss.btn} ${css.actionButton}`}
               type="button"
-              onClick={() => void locationsQuery.refetch()}
+              onClick={() => {void locationsQuery.refetch(); void refetchTypes();
+              }
+              }
             >
               Спробувати ще раз
             </Button>
           </div>
         </div>
-      )
+      );
     }
-
+  if (isInitialLoading) {
     return (
-      <p className={css.state} role="status">
-        Завантаження локацій...
-      </p>
-    )
+      <div className={css.state} role="status">
+        <Loader />
+      </div>
+    );
   }
+}
 
   if (locations.length === 0) {
     return (
-      <p className={css.empty}>
-        За вибраними фільтрами місць не знайдено.
-      </p>
-    )
+      <p className={css.empty}>За вибраними фільтрами місць не знайдено.</p>
+    );
   }
+  //   return (
+  //     //       <p className={css.state} role="status">
+  //     //  Завантаження локацій...
+  //     //       </p>
+  //     <div className={css.state} role="status">
+  //       <Loader />
+  //     </div>
+  //   );
+  // }
 
   return (
     <section aria-label="Місця відпочинку" ref={resultsRef}>
@@ -182,9 +210,9 @@ export default function LocationsCatalog() {
             location.locationType
           }
           renderRating={(location) => {
-            const rating = location.rate ?? 0
-            const fullStars = Math.floor(rating)
-            const hasHalfStar = rating % 1 !== 0
+            const rating = location.rate ?? 0;
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 !== 0;
 
             return (
               <div
@@ -193,10 +221,10 @@ export default function LocationsCatalog() {
                 aria-label={`Оцінка: ${rating.toFixed(1)} з 5`}
               >
                 {Array.from({ length: 5 }, (_, index) => {
-                  let icon = 'icon-star-rate'
-                  if (index < fullStars) icon = 'icon-star-filled'
+                  let icon = "icon-star-rate";
+                  if (index < fullStars) icon = "icon-star-filled";
                   else if (index === fullStars && hasHalfStar) {
-                    icon = 'icon-star-half'
+                    icon = "icon-star-half";
                   }
 
                   return (
@@ -209,26 +237,30 @@ export default function LocationsCatalog() {
                     >
                       <use href={`/icons/sprite.svg#${icon}`} />
                     </svg>
-                  )
+                  );
                 })}
               </div>
-            )
+            );
           }}
         />
       </div>
 
       {isLoadingNextPage && (
-        <p className={css.state} role="status">
-          Завантаження наступних локацій...
-        </p>
+        // <p className={css.state} role="status">
+        //   Завантаження наступних локацій...
+        // </p>
+        <div className={css.state} role="status">
+          <Loader />
+        </div>
       )}
       {isNextPageError && (
-        <p className={css.error} role="alert">
-          Не вдалося завантажити наступні локації. Спробуйте ще раз.
-        </p>
+        // <p className={css.error} role="alert">
+        //   Не вдалося завантажити наступні локації. Спробуйте ще раз.
+        // </p>
+        <ErrorMessage />
       )}
 
-      {currentPage < currentCatalog.totalPages && (
+      {currentPage < totalPages && (
         <div className={css.buttonWrap}>
           <Button
             className={`${buttonCss.btn} ${css.actionButton}`}
@@ -236,20 +268,20 @@ export default function LocationsCatalog() {
             disabled={locationsQuery.isFetching}
             onClick={() => {
               if (isNextPageError) {
-                void locationsQuery.refetch()
-                return
+                void locationsQuery.refetch();
+                return;
               }
-              setRequestedPage(currentPage + 1)
+              setRequestedPage(currentPage + 1);
             }}
           >
             {isLoadingNextPage
-              ? 'Завантаження...'
+              ? "Завантаження..."
               : isNextPageError
-                ? 'Спробувати ще раз'
-                : 'Показати ще'}
+                ? "Спробувати ще раз"
+                : "Показати ще"}
           </Button>
         </div>
       )}
     </section>
-  )
+  );
 }
